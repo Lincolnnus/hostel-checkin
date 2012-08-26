@@ -1,7 +1,10 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
 require_once 'excel_reader.php';
-$data = new Spreadsheet_Excel_Reader("20120824.xls");
+if(isset($_REQUEST["xls"]))
+$xls=$_REQUEST["xls"];
+else die("No XLS FILE");
+$data = new Spreadsheet_Excel_Reader($xls);
 ?>
 <html>
 <head>
@@ -73,14 +76,14 @@ function saveToDB()
          $.ajax({
 	  type: "POST",
 	  url: "api/handler.php",
+          id:"book"+(i+1),
  	  dataType:"json",
 	  data: { booking: booking }
 	}).success(function( msg ) {
-          console.log(this);
-	  document.getElementById(id).style.background="green";
+	  document.getElementById(this.id).style.background="green";
 	})
         .fail(function(msg)
-        {document.getElementById(id).style.background="red";});
+        {document.getElementById(this.id).style.background="red";});
       }
       i++;
     }
