@@ -1,4 +1,7 @@
 <?php
+session_start(); 
+if (!(isset($_SESSION['email'])&&($_SESSION['role']=='admin')))
+header('Location: ../login.php?uri=upload.php');
 $allowedExts = array("xls");
 $extension = end(explode(".", $_FILES["file"]["name"]));
 if (($_FILES["file"]["size"] < 4000000)&& in_array($extension, $allowedExts))
