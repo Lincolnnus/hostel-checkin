@@ -53,6 +53,18 @@ function selectall(element)
       bookdata[i].checked=false;
    }
 }
+function gup( name )//Parse the URL 
+{
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )
+    return "";
+  else
+    return results[1];
+}
+var upid=gup("upid");
 function saveToDB(xls)
 {
    var bookdata=document.getElementsByName("bookselect");
@@ -87,22 +99,24 @@ function getXLS()
 	  type: "get",
 	  url: "api/record.php",
  	  dataType:"json",
-	  data: { upid:2}
+	  data: { upid:upid}
 	}).success(function( msg ) {
           uploader=msg.uploader;
           xls=msg.xls;
           importSource:msg.importSource;
           $("#xls").append(xls);
 	})
-        .fail(function(msg)
-        {console.log(msg);});
+        .fail(function()
+        {alert("Error Getting The XLS Document");});
 }
+$(document).ready(function() {
+      getXLS();
+});
 </script>
 </head>
 <body>
 <div id="xls">
 </div>
-<button onclick="getXLS()">GET The TEST UPLOADED XLS</button>
 <button onclick="saveToDB()">Save To Database</button>
 </body>
 </html>
