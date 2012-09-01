@@ -15,11 +15,39 @@ switch ($_SERVER['REQUEST_METHOD'])
 	    }else if(mysql_num_rows($result)<=0){echo "No Such record";}
 	    else 
 	    {
-		$row=mysql_fetch_array($result) json_encode(array('checkin' => $row));
+		$row=mysql_fetch_array($result);echo json_encode(array('checkin' => $row));
 	    }//successfully get checkin information
     }
     break;
     case 'POST':
+    if(isset($_POST["rid"]))
+    {
+            $rid=$_GET["rid"];
+	    $query = sprintf("SELECT * FROM `book` WHERE recordID='%s'",mysql_real_escape_string($rid));
+	    $result = mysql_query($query);
+	    if (!$result) {
+		    $message  = 'Invalid query: ' . mysql_error() . "\n";
+		    $message .= 'Whole query: ' . $query;
+		    die($message);
+	    }else if(mysql_num_rows($result)<=0)
+	    { 
+		    $query = sprintf("SELECT * FROM `record` WHERE rid='%s'",mysql_real_escape_string($rid));
+		    $result2 = mysql_query($query);
+		    if (!$result2) {
+			    $message  = 'Invalid query: ' . mysql_error() . "\n";
+			    $message .= 'Whole query: ' . $query;
+			    die($message);
+		    }else if(mysql_num_rows($result2)<=0){echo "No Such record";}
+		    else 
+		    {
+			$row=mysql_fetch_array($result2);echo json_encode(array('record' => $row));
+		    }//successfully get record information
+	    }
+	    else 
+	    {
+		$row=mysql_fetch_array($result);echo json_encode(array('checkin' => $row));
+	    }//successfully get checkin information
+    }
     break;
 }
 function authentication($uid)
