@@ -81,9 +81,9 @@ switch ($_SERVER['REQUEST_METHOD'])
 	    $message .= 'Whole query: ' . $query;
 	    die($message);
 	 }
-	 else  if(mysql_num_rows($result)<=0){die("No Such user");}
+	 else  if(mysql_num_rows($result)<=0){echo "No Such user";}
          else {
-		$row=mysql_fetch_array($result);$email=$row["email"];);
+		$row=mysql_fetch_array($result);$email=$row["email"];
 	 }//successfully get user information
 	  switch ($_POST['field']) 
 	 {
@@ -134,29 +134,31 @@ switch ($_SERVER['REQUEST_METHOD'])
 			    $message  = 'Invalid query: ' . mysql_error() . "\n";
 			    $message .= 'Whole query: ' . $query;
 			    die($message);
-		    }else if(mysql_num_rows($result)<=0){ echo "error:no such checkin information"}
+		    }else if(mysql_num_rows($result)<=0){ echo "error:no such checkin information";}
                     else{
-                    $row=mysql_fetch_array($result); 
-                    if (!$row["paid"]){
-                            if pay($cid) 
-                            {
-		                    $query = sprintf("UPDATE `checkin` SET paid=1 WHERE cid='%s'",mysql_real_escape_string($cid));
+		            $row=mysql_fetch_array($result); 
+		            if (!$row["paid"])
+		            {
+		                    if (pay($cid)) 
+		                    {
+				            $query = sprintf("UPDATE `checkin` SET paid=1 WHERE cid='%s'",mysql_real_escape_string($cid));
+					    $result = mysql_query($query);
+					    if (!$result) echo "payment update error";
+					    else echo json_encode("successfully paid");
+		                    }else echo "error with payment";
+		             }//Go to payment
+		             else 
+                             { 
+				    $query = sprintf("UPDATE `checkin` SET checkoutDate=CURRENT_TIMESTAMP WHERE cid='%s'",mysql_real_escape_string($cid));
 				    $result = mysql_query($query);
-				    if (!$result) {echo "payment update error";}
-				    else echo json_encode("successfully paid");
-                            }else echo "error with payment";
-                     }//Go to payment
-                    else { 
-			    $query = sprintf("UPDATE `checkin` SET status='checkout' WHERE cid='%s'",mysql_real_escape_string($cid));
-			    $result = mysql_query($query);
-			    if (!$result) {echo "error checkout";}
-		            else echo json_encode("successfully checkout");
-                         }
+				    if (!$result) {echo "error checkout";}
+				    else echo json_encode("successfully checkout");
+		             }
                    }
              }else echo "No checkin id selected";//checkout
              break;
 	  }
-    }
+     }
     break;
 }
 function authentication($uid)
