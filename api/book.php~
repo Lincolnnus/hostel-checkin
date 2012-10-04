@@ -3,10 +3,10 @@ include_once("connection.php");
 switch ($_SERVER['REQUEST_METHOD']) 
 {
     case 'GET':
-    if(isset($_GET["cid"]))
+    if(isset($_GET["bid"]))
     {
-            $cid=$_GET["cid"];
-	    $query = sprintf("SELECT * FROM `checkin` WHERE cid='%s'",mysql_real_escape_string($cid));
+            $cid=$_GET["bid"];
+	    $query = sprintf("SELECT * FROM `book` WHERE bid='%s'",mysql_real_escape_string($bid));
 	    $result = mysql_query($query);
 	    if (!$result) {
 		    $message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -15,23 +15,23 @@ switch ($_SERVER['REQUEST_METHOD'])
 	    }else if(mysql_num_rows($result)<=0){echo "No Such record";}
 	    else 
 	    {
-		$row=mysql_fetch_array($result);echo json_encode(array('checkin' => $row));
+		$row=mysql_fetch_array($result);echo json_encode(array('book' => $row));
 	    }//successfully get checkin information
     }
     break;
     case 'POST':
-    if(isset($_POST["bid"]))
+    if(isset($_POST["rid"]))
     {
-            $bid=$_POST["bid"];
-	    $query = sprintf("SELECT * FROM `book` WHERE bid='%s'",mysql_real_escape_string($bid));
+            $rid=$_GET["rid"];
+	    $query = sprintf("SELECT * FROM `book` WHERE recordID='%s'",mysql_real_escape_string($rid));
 	    $result = mysql_query($query);
 	    if (!$result) {
 		    $message  = 'Invalid query: ' . mysql_error() . "\n";
 		    $message .= 'Whole query: ' . $query;
-		    echo($message);
+		    die($message);
 	    }else if(mysql_num_rows($result)<=0)
 	    { 
-		    $query = sprintf("SELECT * FROM `record` WHERE rid='%s'",mysql_real_escape_string($bid));
+		    $query = sprintf("SELECT * FROM `record` WHERE rid='%s'",mysql_real_escape_string($rid));
 		    $result2 = mysql_query($query);
 		    if (!$result2) {
 			    $message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -40,8 +40,8 @@ switch ($_SERVER['REQUEST_METHOD'])
 		    }else if(mysql_num_rows($result2)<=0){echo "No Such record";}
 		    else 
 		    {
-			$row=mysql_fetch_array($result2);echo json_encode(array('record' => $row));
-		    }//successfully get record information
+			$row=mysql_fetch_array($result2);echo json_encode(array('checkin' => $row));
+		    }//successfully get checkin information
 	    }
 	    else 
 	    {
@@ -50,17 +50,8 @@ switch ($_SERVER['REQUEST_METHOD'])
     }
     break;
 }
-function authentication($uid,$token)
+function authentication($uid)
 {
-	$query = sprintf("SELECT * FROM `access_token` WHERE uid='%s' AND token='%s'",
-		mysql_real_escape_string($uid),
-		mysql_real_escape_string($token)
-	 );
-	$result = mysql_query($query);
-	if (!$result) {
-	    $message  = 'Invalid query: ' . mysql_error() . "\n";
-	    $message .= 'Whole query: ' . $query;
-	    return false;
-	}else{return true;}
+   return true;
 }
 ?>
