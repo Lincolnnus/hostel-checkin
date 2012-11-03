@@ -5,62 +5,15 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.mobile-1.1.1.js"></script>
 <script src="js/cookie.js"></script>
+<script src="js/main.js"></script>
 <script>
-var IP="http://localhost/hotel/api";
-function changepass()
-{
-    var oldpass=$("#oldpass").val();
-    var password=$("#password").val();
-    var confirmpass=$("#confirmpass").val();
-    if((oldpass!="")&&(password!="")&&(confirmpass!=""))
-    {
-    var uid=getCookie("uid");var token=getCookie("token");
-    $.ajax({
-	  type: "POST",
-	  url: IP+"/account.php",
-	  dataType: "json",
-	  data: { uid: uid, token: token,oldpass:oldpass,password:password,confirmpass:confirmpass,task:'changepass'}
-	}).success(function( msg ) {
-	 alert("Successful"); window.location="account.php";
-	}).fail(function(msg){alert("Fail To Update Password");window.location="account.php";});
-     }else alert("Please Enter the password correctly");
-}
-function changeprofile()
-{
-    var fname=$("#fname").val();
-    var lname=$("#lname").val();
-    var title=$("#title").val();
-    var uid=getCookie("uid");var token=getCookie("token");
-    $.ajax({
-	  type: "POST",
-	  url: IP+"/account.php",
-	  dataType: "json",
-	  data: { uid: uid, token: token,fname:fname,lname:lname,title:title,task:'changeprofile'}
-	}).success(function( msg ) {
-	 alert("Successful"); window.location="account.php";
-	}).fail(function(msg){alert("Fail To Update");window.location="account.php";});
-   
-}
-$(document).ready(function() { 
+var IP="api";
+$(document).ready(function() {
 if(checkCookie("uid")==0)
 {
    	window.location="index.php";
-}
-else 
-{
-	var uid=getCookie("uid");var token=getCookie("token");
-	$.ajax({
-	  type: "GET",
-	  url: IP+"/account.php",
-	  dataType: "json",
-	  data: { uid: uid, token: token }
-	}).success(function( msg ) {
-	  $("#fname").val(msg.fname);
-	  $("#lname").val(msg.lname);
-	  $("#title").val(msg.title);
-	}).fail(function(msg){alert("Unauthorized");window.location="index.php";});
-}
-}) 
+                  }else{var uid=getCookie("uid");$("#photoUid").val(uid);$("#passportUid").val(uid);}
+});
 </script>
 </head>
 <body>
@@ -68,26 +21,45 @@ else
 
 	<div data-role="header" data-theme="b">
 		<h1>My Accout</h1>
-		<a href="mine.php" data-icon="home" data-iconpos="notext" data-direction="reverse">Home</a>
-		<a href="account.php" data-icon="info" data-iconpos="notext" data-rel="dialog" data-transition="fade">My Account</a>
+		<a href="mine.php" data-icon="home" data-iconpos="notext" data-rel="back">Home</a>
 	</div><!-- /header -->
 
 	<div data-role="content">
 	<div data-role="collapsible-set">
 		<div id="changeprofile" data-role="collapsible">
-		<h3><img src="css/images/login.png"/>My Information</h3>
-		<p>
-			<form method="post">
-			<label>First Name:</label>
+		<h3 onclick="getProfile()" onkeypress="getProfile()"><img src="css/images/login.png"/>Basic Information</h3>
+		<p>			
 			    <input type="text" id="fname" name="fname"/>
-			<label>Last Name:</label>
 			    <input type="text" id="lname" name="lname"/>
-			<label>Title:</label>
 			    <input type="text" id="title" name="title"/>
-			<button data-theme="b" onclick="changeprofile()" onkeypress="changeprofile()">Save Changes</button>
-			</form>
+                <button data-theme="b" onclick="changeProfile()" onkeypress="changeProfile()">Save Changes</button>
 		</p>
 	</div>
+    <div data-role="collapsible-set">
+        <div id="changeprofile" data-role="collapsible">
+        <h3 onclick="getProfile()" onkeypress="getProfile()"><img src="css/images/login.png"/>Checkin Required Information</h3>
+        <p>
+                <input type="text" id="passportNo" name="passportNo" placeholder="Passport No"/>
+                <input type="text" id="passportExpire" name="passportExpire" placeholder="Passport Expire Date"/>
+                <input type="text" id="passport" name="passport" placeholder="Passport Issue Date"/>
+                <button data-theme="b" onclick="changeProfile()" onkeypress="changeProfile()">Save Changes</button>
+        </p>
+    </div>
+<div data-role="collapsible-set">
+<div data-role="collapsible">
+<h3><img src="css/images/login.png"/>Passport Photo Copy</h3>
+<p>
+<iframe src="uploadPassport.php"></iframe>
+</p>
+</div>
+<div data-role="collapsible-set">
+<div data-role="collapsible">
+<h3><img src="css/images/login.png"/>Your ID Photo</h3>
+<p>
+<iframe src="uploadPhoto.php"></iframe>
+</form>
+</p>
+</div>
 	<div data-role="collapsible-set">
 		<div id="changepass" data-role="collapsible">
 		<h3><img src="css/images/login.png"/>Change Password</h3>
@@ -99,11 +71,19 @@ else
 			    <input type="password" id="password" name="password" placeholder="New Password"/>
 			<label class="ui-hidden-accessible">Confirm Password:</label>
 			    <input type="password" id="confirmpass" name="confirmpass" placeholder="Confirm Password"/>
-			<button data-theme="b" onclick="changepass()" onkeypress="changepass()">Change Password</button>
+			<button data-theme="b" onclick="changePass()" onkeypress="changePass()">Change Password</button>
 			</form>
 		</p>
 	</div>
 	</div>
+<div data-role="collapsible-set">
+<div data-role="collapsible">
+<h3><img src="css/images/login.png"/>Add Preferences</h3>
+<p>
+<input type="checkbox" name="queensbed">Queens Bed
+<input type="checkbox" name="queensbed">Only Coffee, No Tea
+</p>
+</div>
 	<div data-role="footer" data-theme="b"><h4>Copyright&copy;Asplan2012</h4></div> 
 </div><!-- /page -->
 </body>

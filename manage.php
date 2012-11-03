@@ -15,21 +15,39 @@
 .ui-icon-arrow-d { background-position: -216px 0; }
 </style>
 <script>
-$(document).ready(function() { 
-if(checkCookie("uid")!=0) 
+function visitorCheckin()
 {
-                  if(checkCookie("type")==2)
+	var email=$("#checkinemail").val();
+	var code=$("#checkincode").val();
+    if(validateEmail(email))
+	{
+		$.ajax({
+               type: "GET",
+               url: IP+"/check.php",
+               dataType: "json",
+               data: { email: email, confirmation: code }
+               }).success(function( msg ) {
+                          console.log(msg);
+                          setCookie('email2',msg.email,1);
+                          setCookie('confirmation',msg.confirmation,1);
+                          window.location="visitorCheckin.php";
+                          }).fail(function(msg){alert("Invalid Checkin Email and Checkin Code");});
+	}
+    else
+    { showError("Invalid Email Address");}
+    
+}
+$(document).ready(function() {
+                  if(checkCookie("uid")!=0)
                   {
-                    window.location="manage.php";
-                  }
-                  else{
+                  if((checkCookie("type"))==1)
+                  {window.location="index.php";}
                   var fname=getCookie("fname");
                   getCheckin();
                   $("#welcome").html(fname+"'s Checkins");
-                  }
-} 
-else
-{window.location="public.php";} })
+                  } 
+                  else
+                  {window.location="public.php";} })
 </script>
 </head>
 <body>
@@ -43,6 +61,14 @@ else
 
 	<div data-role="content">
 	<div data-role="collapsible-set">
+        <div id="visitorCheckin" data-role="collapsible">
+            <h3><img src="css/images/login.png"/>Visitors Checkins</h3>
+            <p>
+            <input type="text" id="checkinemail" name="checkinemail" placeholder="Checkin Email"/>
+            <input type="text" id="checkincode" name="checkincode" placeholder="Checkin Code"/>
+            <button data-theme="b" onclick="visitorCheckin()" onkeypress="visitorCheckin()">Checkin</button>
+            </p>
+        </div>
          <div data-role="collapsible">
                  <h3><img src="css/images/chekin.png"/>Check In</h3>
                  <p>
@@ -94,7 +120,7 @@ else
         </div>
 	</div>
 	</div><!-- /content -->
-	<div data-role="footer" data-theme="b"><h4>Copyright&copy;Asplan2012</h4></div> 
+	<div data-role="footer" data-theme="b"><h4>Copyright&copy;Asplan2012</h4></div>
 </div><!-- /page -->
 </body>
 </html>

@@ -1,0 +1,29 @@
+<html>
+    <body>
+        
+        <script>
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            }
+            else
+            {// code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.open("GET","hotel.xml",false);
+            xmlhttp.send();
+            xmlDoc=xmlhttp.responseXML;
+            var x=xmlDoc.getElementsByTagName("hotel");
+            var hotelxml=x[0];
+            var hotel=new Object();
+            hotel.name=hotelxml.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+            hotel.address=hotelxml.getElementsByTagName("address")[0].childNodes[0].nodeValue;
+            hotel.tac=hotelxml.getElementsByTagName("tac")[0].childNodes[0].nodeValue;
+            hotel.logo=hotelxml.getElementsByTagName("logo")[0].childNodes[0].nodeValue;
+            hotel.zip=hotelxml.getElementsByTagName("zip")[0].childNodes[0].nodeValue;
+            hotel.contact=hotelxml.getElementsByTagName("contact")[0].childNodes[0].nodeValue;
+            console.log(hotel);
+            </script>
+        
+    </body>
+</html>

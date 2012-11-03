@@ -5,7 +5,7 @@ switch ($_SERVER['REQUEST_METHOD'])
     case 'GET':
     if((isset($_GET["email"]))&&(isset($_GET["token"])))
     {
-            $email=$_GET["email"];
+        $email=$_GET["email"];
 	    $confirmation=$_GET["token"];
 	    $query = sprintf("SELECT * FROM `book` WHERE email='%s'",mysql_real_escape_string($email));
 	    $result = mysql_query($query);
@@ -20,7 +20,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 	    else 
 	    {
 		while($row=mysql_fetch_array($result)){$book[]=$row;}
-		echo json_encode('booking' => $book);
+		echo json_encode($book);
 	    }//successfully get checkin information
     }
     else echo "Invalid Email or token";

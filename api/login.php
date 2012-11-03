@@ -24,6 +24,7 @@ if(isset($_POST["email"])&&isset($_POST["password"]))
 		 $uid=$row["uid"];
 		 $fname=$row["fname"];
  		 $email=$row["email"];
+                 $type=$row["type"];
                  if ($row["numlogin"]==0)
 		 $nextlocation="account.php";
                  else $nextlocation="mine.php";
@@ -44,6 +45,7 @@ if(isset($_POST["email"])&&isset($_POST["password"]))
 		    "fname"=>$fname,
 		    "email"=>$email,
 		    "nextlocation"=>$nextlocation,
+            "type"=>$type
 		 );
 		 echo json_encode($user);
              }

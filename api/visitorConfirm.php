@@ -49,7 +49,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 	    {
 		    $email=$_POST["email"];
 		    $confirmation=$_POST["confirmation"];
-		    $query = sprintf("SELECT * FROM `book` WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
+		    $query = sprintf("SELECT * FROM `book` WHERE email='%s' AND confirmation='%s' AND status='2'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
 		    $result = mysql_query($query);
 		    if (!$result) {
 			    $message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -61,7 +61,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 		    }
 		    else 
 		    {
-			$query = sprintf("UPDATE `book` SET status='2' WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
+			$query = sprintf("UPDATE `book` SET status='3' WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
 			$result = mysql_query($query);
 			    if (!$result) {
 				    $message  = 'Invalid query: ' . mysql_error() . "\n";
