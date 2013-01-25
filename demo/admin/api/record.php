@@ -1,26 +1,18 @@
 <?php
-include_once("connection.php"); 
-switch ($_SERVER['REQUEST_METHOD']) 
+function getRecord($rid)
 {
-    case 'GET':
-    if(isset($_GET["rid"]))
-    {
-	    $rid=$_GET["rid"];
 	    $query = sprintf("SELECT email FROM `record` WHERE rid='%s'",mysql_real_escape_string($rid));
 	    $result = mysql_query($query);
 	    if (!$result) {
-		    $message  = 'Invalid query: ' . mysql_error() . "\n";
-		    $message .= 'Whole query: ' . $query;
-		    die($message);
-	    }else if(mysql_num_rows($result)<=0){echo "No Such record";}
-	    else {$row=mysql_fetch_array($result);echo json_encode($row);}//successfully get record information
-    }
-    break;
-    case 'POST':
-    $uid=$_POST["uid"];
-    if (authentication($uid))
-    {
-	$booking=$_POST["booking"];
+		   return false;
+	    }else if(mysql_num_rows($result)<=0)
+	    {return false;}
+	    $row=mysql_fetch_array($result);
+	    return $row;//successfully get record information*/
+}
+
+function saveRecord($booking)
+{
 	$bid=$booking[0];
 	$confirmation=$booking[1];
 	for($i=0;$i<count($booking);$i++)
@@ -113,35 +105,6 @@ switch ($_SERVER['REQUEST_METHOD'])
 	mysql_real_escape_string($b[62]),
 	mysql_real_escape_string($uid)
  );
-   /*     $email="lishaohuan@hotmail.com";
-        $uname="xu qian";
-       ini_set('include_path', PEAR_PATH);
-        require_once "Mail.php";
-        $subject = "Your Checkin References";
-        $from = "Mobile Checkin<noreply@checkin.com>";
-        $to = $email;
-        $confirmation="12345";
-        $message = "Dear ".$uname.",\n\n. Below is your hotel checkin information\n\nYour Email Address is: ".$email."\nYour Confirmation Reference Number is:".$confirmation."\n\nBest Regards,\nMobile Checkin Team\n";
-        $host = "ssl://smtp.gmail.com";
-        $port = "465";
-        $username = "lincolnnus@gmail.com";
-        $password = "33455432";
-        $headers = array ('From' => $from,
-                          'To' => $to,
-                          'Subject' => $subject);
-        $smtp = Mail::factory('smtp',
-                              array ('host' => $host,
-                                     'port' => $port,
-                                     'auth' => true,
-                                     'username' => $username,
-                                     'password' => $password));
-        $mail = $smtp->send($to, $headers, $message);
-        if (PEAR::isError($mail)) {
-            echo  $mail->getMessage();
-            echo "Error Sending Email".$email;
-        } else {
-            echo "Email sent for ".$email;
-        }*/
 
 	// Perform Query
 	$result = mysql_query($query);
@@ -152,18 +115,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 	    $message .= 'Whole query: ' . $query;
 	    die($message);
 	}else {
-		require_once('email.php');
 		$name=$b[7]."".$b[9]." ".$b[8];
-		if (sendConfirmation($b[16],$name,$b[0]))
-		{echo json_encode("success");}//successfully insert the record
-		else{ echo "Fail";}
+		return sendConfirmation($b[16],$name,$b[0]);
 	}
-      }
-      else echo "Authentication Failed";
-    break;
 }
-function authentication($uid)
-{
-   return true;
-}
-?>

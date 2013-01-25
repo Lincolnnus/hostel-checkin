@@ -65,6 +65,7 @@ function saveToDB()
 {
     var bookdata=document.getElementsByName("bookselect");
     var uid=getCookie("uid");
+    var token=getCookie("token");
     var i=0;
     while(i<bookdata.length)
     {
@@ -77,10 +78,10 @@ function saveToDB()
                 booking[j]=selected[j].innerHTML;
             $.ajax({
                    type: "POST",
-                   url: "record.php",
+                   url: "admin.php",
                    id:"book"+(i+1),
                    dataType:"json",
-                   data: { booking: booking,uid:uid}
+                   data: { booking: booking,uid:uid,token:token,action:"saveRecord"}
                    }).success(function( msg ) {
                               document.getElementById(this.id).style.background="green";
                               })
@@ -100,9 +101,6 @@ $path="../upload/";
 switch ($_SERVER['REQUEST_METHOD']) 
 {
     case 'POST':
-    $uid=$_POST["uid"];
-    if (authentication($uid))
-    {
 	    $allowedExts = array("xls");
 	    $extension = end(explode(".", $_FILES["file"]["name"]));
 	    if (($_FILES["file"]["size"] < 4000000)&& in_array($extension, $allowedExts))
@@ -130,13 +128,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 		     }
 		  }
 	      }else { echo "Invalid file"; }
-      }
-      else echo "Authentication Failed";
     break;
-}
-function authentication($uid)
-{
-   return true;
 }
 ?>
 </div>

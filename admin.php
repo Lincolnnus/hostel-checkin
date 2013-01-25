@@ -347,57 +347,7 @@ function timer()
            <div data-role="collapsible">
              <h3 onclick="getEmails()">Email Templates</h3>
               <p>
-                   <div id="emailTemplates" data-role="collapsible-set">
-           <div data-role="collapsible" style="color:blue">
-             <h3>Template For New Requests:</h3>
-            <p>  
-                  Title:Thank you for contacting Asplan
-                  <p> Dear </p>
-                  <p>Thank you for your interests in the mobile checkin system developed by Asplan Service.</p>
-                  <p>Below is your hotel information: Hotel Name </p>
-                  <p>Hotel Address:</p>
-                  <p>Zip Code:</p>
-                  <p>Your Phone Number:</p>
-                  <p>Please confirm the above information is correct by replying this email and attach your company logo.</p>
-                  <p>Best Regards,</p>
-                  <p>Asplan Service Team</p>
-                  <textarea>
-                  <p> Dear. </p>
-                  <p>Thank you for your interests in the mobile checkin system developed by Asplan Service.</p>
-                  <p>Below is your hotel information: Hotel Name </p>
-                  <p>Hotel Address:</p>
-                  <p>Zip Code:</p>
-                  <p>Your Phone Number:</p>
-                  <p>Please confirm the above information is correct by replying this email and attach your company logo.</p>
-                  <p>Best Regards,</p>
-                  <p>Asplan Service Team</p>
-                  </textarea>
-                </p>
-              </div>
-              <div data-role="collapsible" style="color:blue">
-             <h3>Template For Verification Email:</h3>
-                 <p>   Title:Verfied By Asplan
-                  <p> Dear ,</p>
-                  <p>Your request has been approved by Asplan Service.</p>
-                  <p>You are now the default system admin for </p><p>Email Address:</p><p>Password:</p>
-                  <p>Please access your admin account via </p><p>Best Regards,</p><p>Asplan Service Team</p>
-            
-                  <textarea><p> Dear ,</p>
-                  <p>Your request has been approved by Asplan Service.</p>
-                  <p>You are now the default system admin for </p><p>Email Address:</p><p>Password:</p>
-                  <p>Please access your admin account via </p><p>Best Regards,</p><p>Asplan Service Team</p>
-                  </textarea>
-                </p>
-              </div>
-               <div data-role="collapsible" style="color:blue">
-             <h3>Uploading HTML Group Email:</h3>
-                 <p>  
-                Subject:<input type="text" placeholder="Title of the Email">
-                From:<input type="text" value="Asplan Services<asplanservices@gmail.com>">
-                Message: <textarea cols="100" rows="100" placeholder="Please Paste The HTML Email"></textarea>            
-               <button data-theme="b"> Send Group Email</button>
-                </p>
-              </div>
+               <div id="emailTemplates" data-role="collapsible-set">
               </div>
              </p>
            </div>

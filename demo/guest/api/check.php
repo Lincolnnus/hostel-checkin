@@ -24,12 +24,14 @@ switch ($_SERVER['REQUEST_METHOD'])
             $confirmation=$_GET["confirmation"];
             $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND rid='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
             $result = mysql_query($query);
+            // var_dump($query);
             if (!$result) {
                 $message  = 'Invalid query: ' . mysql_error() . "\n";
                 $message .= 'Whole query: ' . $query;
                 echo($message);
             }else if(mysql_num_rows($result)<=0)
             {
+		//var_dump(mysql_fetch_array( $result));
                 echo "Invalid Record";
             }
             else

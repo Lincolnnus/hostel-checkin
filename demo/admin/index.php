@@ -96,7 +96,7 @@ function login()
 		  setCookie('token',msg.token,1);
 		  setCookie('fname',msg.fname,1);
           if(checkCookie('confirmation')){window.location="checkin.php";}
-          else{window.location="index.php";}
+          else{window.location="admin.php";}
 		}).fail(function(msg){
                 showError("Error Login");
 		});
@@ -179,15 +179,6 @@ function showHotel(hotel)
 }
 function checkUser()
 {
-  if(checkCookie('uid')){
-    $('#loginPage').hide();
-  }else{
-    $('#adminPage').hide();
-    $('#passPage').hide();
-    $('#stuffPage').hide();
-    $('#importPage').hide();
-    $('#logoutPage').hide();
-  }
 }
 function assignStuff()
 {
@@ -244,16 +235,6 @@ $(document).ready(function() {
 	<br>
 	</div>
 	<div data-role="collapsible-set">
-	<div id="confirmapage" data-role="collapsible">
-            <h3><img src="css/images/chekin.png"/>Guest Confirmation</h3>
-            <p>
-                <label class="ui-hidden-accessible">Email:</label>
-			    <input type="text" id="checkinemail" name="checkinemail" placeholder="Email"/>
-                <label class="ui-hidden-accessible">Code:</label>
-			    <input type="text" id="checkincode" name="checkincode" placeholder="Confirmation Code"/>
-                 <button data-theme="b" onclick="checkin()" onkeypress="checkin()">Checkin</button>
-            </p>
-		</div>
 		<div id="loginPage" data-role="collapsible">
 		<h3><img src="css/images/login.png"/>Login</h3>
 		<p>
@@ -263,58 +244,14 @@ $(document).ready(function() {
                  <a onclick="gotoGuest()" style="float:right;">Guest Login</a>
 		</p>
 		</div>
-    <div id="importPage" data-role="collapsible">
-    <h3><img src="css/images/signup.png"/>Import Checkin Data</h3>
-    <p>
-                  <iframe width="100%" height="50%" src="upload.php" seamless>
-                    <p>Your browser does not support iframes.</p>
-                   </iframe>  </p>
-    </div>
-		<div id="adminPage" data-role="collapsible">
-		<h3><img src="css/images/signup.png"/>Assign Staffs</h3>
-		<p>
-			    <input type="text" id="stuffEmail" name="stuffEmail" placeholder="Stuff Email"/>
-          <input type="text" id="stuffFirstname" name="stuffFirstname" placeholder="Stuff First Name"/>
-          <input type="text" id="stuffLastname" name="stuffLastname" placeholder="Stuff Last Name"/>
-                 <button data-theme="b" onclick="assignStuff()">Assign Staff Role</button>
-		</p>
-		</div>
-    <div id="stuffPage" data-role="collapsible">
-    <h3 onclick="getStuff()"><img src="css/images/signup.png"/>Current Staffs</h3>
-    <p>
-       <ul id="stuffList" data-role="listview" data-filter="true" data-filter-placeholder="Search Stuffs..." data-filter-theme="d"data-theme="d" data-divider-theme="d">
-       </ul>
-    </p>
-    </div>
-    <div id="passPage" data-role="collapsible">
-    <h3><img src="css/images/login.png"/>Change Password</h3>
-    <p>
-      <form method="post">
-      <label class="ui-hidden-accessible">Old Password:</label>
-          <input type="text" id="oldpass" name="oldpass" placeholder="Old Password"/>
-      <label class="ui-hidden-accessible">New Password:</label>
-          <input type="password" id="password" name="password" placeholder="New Password"/>
-      <label class="ui-hidden-accessible">Confirm Password:</label>
-          <input type="password" id="confirmpass" name="confirmpass" placeholder="Confirm Password"/>
-      <button data-theme="b" onclick="changePass()" onkeypress="changePass()">Change Password</button>
-      </form>
-    </p>
-  </div>
-    <div id="logoutPage" data-role="collapsible">
-                 <h3> <img src="css/images/signup.png"/>Log Out</h3>
-                 <p>
-                 <a id="logout" data-rel="dialog" data-theme="a" onclick="logout()" onkeypress="logout()" data-role="button">
-                 Confirm
-                 </a>
-                 </p>
-    </div>
 		<div data-role="collapsible">
 		<h3><img src="css/images/about.png"/>Contact Us</h3>
 		<p id="aboutUs"></p>
 		</div>
 	</div>
 	</div><!-- /content -->
-	<div data-role="footer" data-theme="b"><h4>Copyright&copy;Asplan2012</h4></div>
+	<div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
+Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div>
     <div id="errorWrapper" style="display:none;">
                   <center id="errorMsg"></center>
                   <img src="css/images/close_icon.png" width="30px" title="close" onclick="hideError()" id="errorClose"/>
