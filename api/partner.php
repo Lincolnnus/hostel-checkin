@@ -25,14 +25,13 @@ if ( ($_REQUEST["txtCaptcha"] == $_SESSION["security_code"]) &&
         //Initialize Settings
         {
         include_once("hotel.php");
-        addHotel($email,$hotelname,$hoteladdr,$hotelmanager,$hotelphone,$hotelzip);
   			include_once("email.php");
         $emails=getEmails();
-        $from=$emails[0]["from"].'<noreply@asplan.com>';
+        $from=$emails[0]["from"].'<norepy@asplan.com>';
         $subject=$emails[0]["subject"];
-        $message="<p>Dear <b>".$hotelmanager."</b>,</p><html>".$emails[0]["message"]."</html>";
-        $message=preg_replace("/\\\\/", "", $message);
-        sendHTMLEmail($from,$email,$subject,$message);
+        $body2="Hotel Name:".$hotelname."\nHotel Address:".$hoteladdr."\nZip Code:".$hotelzip."\nPhone Number:".$hotelphone."\n\n";
+        $message="Dear ".$hotelmanager."\n\n".$emails[0]["body1"]."\n".$body2."\n".$emails[0]["body2"]."\n";
+        sendEmail($from,$email,$subject,$message);
   			echo "success";
         }
   		}

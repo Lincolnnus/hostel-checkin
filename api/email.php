@@ -16,10 +16,9 @@ function sendVerificationEmail($email,$hotelname,$hotelmanager,$hotelURL){
 	$subject="Verfied By Asplan";
 	return sendEmail($to,$subject,$message);
 }
-function sendEmail($to,$subject,$message){
+function sendEmail($from,$to,$subject,$message){
 	ini_set('include_path', PEAR_PATH);
 	require_once "Mail.php";
-	$from = COMPANY_NAME;
 	$headers = array ('From' => $from,
                   'To' => $to,
                   'Subject' => $subject);
@@ -88,12 +87,13 @@ $text = preg_replace("/=\"\"/", "=", $text);*/
 $text = preg_replace("/\\\\/", "", $text);
 return $text;
 }
-function updateEmails($eid,$subject,$from,$message)
+function updateEmails($eid,$subject,$from,$body1,$body2)
 {
-	$query = sprintf("UPDATE `email` SET subject='%s',`from`='%s',message='%s' WHERE eid='%s'",
+	$query = sprintf("UPDATE `email` SET subject='%s',`from`='%s',body1='%s',body2='%s' WHERE eid='%s'",
 	mysql_real_escape_string($subject),
 	mysql_real_escape_string($from),
-	mysql_real_escape_string($message),
+	mysql_real_escape_string($body1),
+	mysql_real_escape_string($body2),
 	mysql_real_escape_string($eid)
 	);
 	$result = mysql_query($query);

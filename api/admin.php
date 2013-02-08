@@ -133,8 +133,9 @@ if(isset($_POST["uid"])&&isset($_POST["token"]))
 			$eid=$_POST["eid"];
 			$from=$_POST["from"];
 			$subject=$_POST["subject"];
-			$message=trim($_POST["message"]);
-			echo json_encode(updateEmails($eid,$subject,$from,$message));
+			$body1=trim($_POST["body1"]);
+			$body2=trim($_POST["body2"]);
+			echo json_encode(updateEmails($eid,$subject,$from,$body1,$body2));
 			break;
 		}
 	}

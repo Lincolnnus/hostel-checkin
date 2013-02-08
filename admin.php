@@ -219,8 +219,8 @@ function timer()
                   var newEmail=$('<div data-role="collapsible"><h3>'+emails[i]['subject']+'</h3>'+
                     '<p> Subject:<input type="text" id="subject'+emails[i].eid+'" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" value="'+emails[i]['subject']+'">'+
                     'From:<input type="text" id="from'+emails[i].eid+'" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" value="'+emails[i]["from"]+'">'+
-                    '<a onclick="gotoPreview()">Copy&Paste the HTML Email to Preview <button>Preview</button></a>'+
-                    'Message:<textarea id="message'+emails[i].eid+'"  class="ui-input-textarea ui-body-c ui-corner-all ui-shadow-inset">'+emails[i]['message']+'</textarea>'+
+                    'Message (body1):<textarea id="body1'+emails[i].eid+'"  class="ui-input-textarea ui-body-c ui-corner-all ui-shadow-inset">'+emails[i]['body1']+'</textarea>'+
+                    'Message (body2):<textarea id="body2'+emails[i].eid+'"  class="ui-input-textarea ui-body-c ui-corner-all ui-shadow-inset">'+emails[i]['body2']+'</textarea>'+
                     '<button data-theme="b" onclick="updateEmails('+emails[i].eid+')">Save Change</button>'+
                     '</p></div>').appendTo($('#emailTemplates'));
                   $('button').button();
@@ -233,12 +233,13 @@ function timer()
         var token=getCookie("token");
         var from=$('#from'+eid).val();
         var subject=$('#subject'+eid).val();
-        var message=$('#message'+eid).val();
+        var body1=$('#body1'+eid).val();
+        var body2=$('#body2'+eid).val();
         $.ajax({
                type: "POST",
                url: "api/admin.php",
                dataType: "json",
-               data: { uid:uid, token: token,eid:eid,from:from,subject:subject,message:message,action:'updateEmails' }
+               data: { uid:uid, token: token,eid:eid,from:from,subject:subject,body1:body1,body2:body2,action:'updateEmails' }
                }).success(function( msg ) {
                 showError("Done!");
             }).fail(function(msg){showError("Fail Getting Emails");});
