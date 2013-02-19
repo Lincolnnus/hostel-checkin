@@ -105,38 +105,6 @@ function login()
         { showError("Invalid Email Address");}
 
 }
-                 function checkin()
-                 {
-                 var email=$("#checkinemail").val();
-                 var confirmation=$("#checkincode").val();
-                 if(validateEmail(email))
-                 {
-                 $.ajax({
-                        type: "GET",
-                        url: IP+"/confirm.php",
-                        dataType: "json",
-                        data: { email: email, confirmation: confirmation}
-                        }).success(function( msg ) {
-                                   if(msg.status=='sent')
-                                   {
-                                   showError("Please Check Your Email To Verify your email address and then Login");
-                                   }
-                                   else if (checkCookie('uid')){
-                                   setCookie('email',msg.email,1);
-                                   setCookie('confirmation',msg.confirmation,1);
-                                    window.location="checkin.php";
-                                   }else{showError("To Protect User Data,Please Login");
-                                   setCookie('email',msg.email,1);
-                                   setCookie('confirmation',msg.confirmation,1);
-                                   $('#confirmpage').trigger('collapse');
-                                   $('#loginPage').trigger('expand');
-                                 }
-                                   }).fail(function(msg){showError("Invalid Checkin Email and Checkin Code");});
-                 }
-                 else {
-                    showError("Invalid Email Address");
-                 }
-                 
                  }
 function gotoGuest()
 {

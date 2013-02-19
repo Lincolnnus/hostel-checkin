@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/1/asplan/demo/guest/api
+END
+account.php
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/1/asplan/demo/guest/api/account.php
+END
+constants.php
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/1/asplan/demo/guest/api/constants.php
+END
+check.php
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/1/asplan/demo/guest/api/check.php
+END
+confirm.php
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/1/asplan/demo/guest/api/confirm.php
+END
+record.php
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/1/asplan/demo/guest/api/record.php
+END
+uploadPhoto.php
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/1/asplan/demo/guest/api/uploadPhoto.php
+END
+connection.php
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/1/asplan/demo/guest/api/connection.php
+END
+uploadPassport.php
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/1/asplan/demo/guest/api/uploadPassport.php
+END
+register.php
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/1/asplan/demo/guest/api/register.php
+END
+upload.php
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/1/asplan/demo/guest/api/upload.php
+END
+signup.php
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/1/asplan/demo/guest/api/signup.php
+END
+login.php
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/1/asplan/demo/guest/api/login.php
+END
+mine.php
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/1/asplan/demo/guest/api/mine.php
+END
