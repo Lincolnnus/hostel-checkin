@@ -370,7 +370,7 @@ alert(from);
             </p>
     </div>
     <div id="buildPage" data-role="collapsible"> 
-            <h3> Build App for this Hotel</h3>
+            <h3 onClick="showError('Root User Required, Please Access Via Terminal')"> Build App for this Hotel</h3>
             <p>
               <div data-role="collapsible-set">
                 <div data-role="collapsible">

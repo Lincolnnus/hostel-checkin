@@ -529,7 +529,7 @@ $(document).ready(function() {
       </p>
     </div>
     <div data-role="collapsible">
-      <h3>System Operations Management</h3>
+      <h3 onClick="showError('For System Engineers Only, Please Access via Terminal')">System Operations Management</h3>
       <p>
       <div data-role="collapsible-set">
     <div data-role="collapsible">
@@ -560,7 +560,7 @@ $(document).ready(function() {
       </p>
     </div>
      <div data-role="collapsible">
-      <h3>Rebuild The App</h3>
+      <h3>Change Hotel Information</h3>
       <p><div data-role="collapsible-set">
       <div id="hotelInfo" data-role="collapsible">
             <h3>Hotel Information</h3>
@@ -618,12 +618,9 @@ $(document).ready(function() {
                    </iframe>
             </p>
     </div>
-    <div data-role="collapsible">
-      <h3>Build</h3>
-      <p>
-         <button data-theme="b" onClick="buildApp()">Confirm</button>
-      </p>
-    </div>
+	
+    
+	 
   </div>
   </p>
   </div>

@@ -463,7 +463,7 @@ function timer()
       </p>
     </div>
     <div data-role="collapsible">
-      <h3>System Operations Management</h3>
+      <h3 onClick="showError('Root User Required, Please Use The Terminal To Accees')">System Operations Management</h3>
       <p>
       <div data-role="collapsible-set">
     <div data-role="collapsible">
