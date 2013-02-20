@@ -57,7 +57,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 }
 function authentication($uid,$token)
 {
-    $query = sprintf("SELECT * FROM `admin` WHERE uid='%s' AND token='%s'",
+    $query = sprintf("SELECT * FROM `staff` WHERE uid='%s' AND token='%s'",
         mysql_real_escape_string($uid),
         mysql_real_escape_string($token)
      );

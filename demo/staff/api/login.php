@@ -5,7 +5,7 @@ if(isset($_POST["email"])&&isset($_POST["password"]))
 	include_once("connection.php"); 
 	$email=$_POST["email"];
 	$password=$_POST["password"];
-	$query = sprintf("SELECT * FROM `stuff` WHERE email='%s' AND password='%s'",
+	$query = sprintf("SELECT * FROM `staff` WHERE email='%s' AND password='%s'",
 		mysql_real_escape_string($email),
 		mysql_real_escape_string($password)
 	 );
@@ -29,7 +29,7 @@ if(isset($_POST["email"])&&isset($_POST["password"]))
 		 $nextlocation="account.php";
                  else $nextlocation="mine.php";
                  $access_token=$row["token"];
-		 $query = sprintf("UPDATE `stuff` SET numlogin=numlogin+1,lastlogin=CURRENT_TIMESTAMP WHERE email='%s' AND password='%s'",
+		 $query = sprintf("UPDATE `staff` SET numlogin=numlogin+1,lastlogin=CURRENT_TIMESTAMP WHERE email='%s' AND password='%s'",
 			mysql_real_escape_string($email),
 			mysql_real_escape_string($password)
 		 );
@@ -58,7 +58,7 @@ function update_token($uid)
 		$randomData = mt_rand() . mt_rand() . mt_rand() . mt_rand() . microtime(true) . uniqid(mt_rand(), true);
    }
    $token= substr(hash('sha512', $randomData), 0, $tokenLen);
-   $query = sprintf("UPDATE stuff SET token='%s' WHERE uid='%s'",
+   $query = sprintf("UPDATE staff SET token='%s' WHERE uid='%s'",
 		mysql_real_escape_string($token),
 		mysql_real_escape_string($uid)
 	 );

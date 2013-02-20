@@ -131,7 +131,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 			if (!validateoldpass($uid,$oldpass)){echo "Old password Not Correct!";exit;}
 			if (authentication($uid,$token))
 			{
-				$query = sprintf("UPDATE `stuff` SET password='%s' WHERE uid='%s'",
+				$query = sprintf("UPDATE `staff` SET password='%s' WHERE uid='%s'",
 				mysql_real_escape_string($password),
 				mysql_real_escape_string($uid)
 				 );
@@ -156,7 +156,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 }
 function authentication($uid,$token)
 {
-	$query = sprintf("SELECT * FROM `stuff` WHERE uid='%s' AND token='%s'",
+	$query = sprintf("SELECT * FROM `staff` WHERE uid='%s' AND token='%s'",
 		mysql_real_escape_string($uid),
 		mysql_real_escape_string($token)
 	 );
@@ -172,7 +172,7 @@ function authentication($uid,$token)
 }
 function validateoldpass($uid,$oldpass)
 {
-	$query = sprintf("SELECT * FROM `stuff` WHERE uid='%s' AND password='%s'",
+	$query = sprintf("SELECT * FROM `staff` WHERE uid='%s' AND password='%s'",
 		mysql_real_escape_string($uid),
 		mysql_real_escape_string($oldpass)
 	 );
