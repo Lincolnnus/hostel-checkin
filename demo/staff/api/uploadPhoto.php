@@ -1,4 +1,6 @@
 <?php
+
+include_once("connection.php");
     function base64_encode_image ($imagefile) {
         $imgtype = array('jpg', 'gif', 'png');
         $filename = file_exists($imagefile) ? htmlentities($imagefile) : die('Image file name does not exist');
@@ -67,7 +69,7 @@
         $message .= 'Whole query: ' . $query;
         return false;
     }
-    else if(mysql_num_rows($result) == 0)
+   else if(mysql_num_rows($result) == 0)
         { return false;}
     return true;
 }

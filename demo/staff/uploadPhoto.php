@@ -7,6 +7,8 @@
 $(document).ready(function() {
                   var uid=getCookie('uid');
                   var token=getCookie('token');
+                  var email=getCookie('email');
+                  $('#email').val(email);
                   $('#uid').val(uid);
                   $('#token').val(token);});
 </script>
@@ -16,6 +18,7 @@ $(document).ready(function() {
 <input id="uploadjing" type="file" accept="image/*" name="file">
 <input type="hidden" id="uid" name="uid">
 <input type="hidden" id="token" name="token">
+<input type="hidden" id="email" name="email">
 <input type="submit" name="submit" value="Upload" data-theme="b">
 </form>
 </body>
