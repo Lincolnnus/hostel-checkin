@@ -1,4 +1,6 @@
 <?php
+require_once("settings.php");
+getPreferences();
 function sendhotelEmail($email,$hotelname,$hoteladdr,$hotelmanager,$hotelphone,$hotelzip){
 	$message="Dear ".$hotelmanager.",\n\nThank you for your interests in the mobile checkin system developed by Asplan Service.\n\n".
 	"Below is your hotel information:\n\n"."Hotel Name:".$hotelname."\nHotel Address:".$hoteladdr."\nZip Code:".$hotelzip."\nYour Phone Number:".$hotelphone."\n\n".
@@ -20,12 +22,11 @@ function sendVerificationEmail($email,$hotelname,$hotelmanager,$hotelURL){
 function sendConfirmation($email,$name,$confirmation){
 	$message="Dear ".$name.",\n\nThank you for booking with ".HOTEL_NAME."\n".
 	"You can access your mobile booking via: ".HOTEL_URL."/guest\n\nEmail Address: ".$email."\nConfirmation ID: ".$confirmation."\n\nBest Regards,\nAsplan Service Team";
-	$to='lishaohuan@hotmail.com';
+	$to='vspenglin@gmail.com';
 	$subject="Booking Confirmation from ".$hotelname;
 	$from=HOTEL_NAME."<noreply@gmail.com>";
 	return sendEmail($from,$to,$subject,$message);
-}
-function sendStuffEmail($email,$name,$password){
+}function sendStuffEmail($email,$name,$password){
 	$message="Dear ".$name.",\n\nYou are assigned as a staff of ".HOTEL_NAME."\n\nEmail Address: ".$email."\nPassword: ".$password."\n\n".
 	"Please login your stuff account via ".HOTEL_URL."/staff\n\nBest Regards,\n".HOTEL_NAME." Team";
 	$to=$email;
@@ -47,12 +48,11 @@ function sendEmail($from,$to,$subject,$message){
                              'password' => GMAIL_PASSWORD));
 	$mail = $smtp->send($to, $headers, $message);
 	if (PEAR::isError($mail)) {
-    return false;
+  		 false;
 	} else {
-    return true;
+   		return true;
 	}
-}
-function sendHTMLEmail($from,$to,$subject,$message){
+}function sendHTMLEmail($from,$to,$subject,$message){
 	ini_set('include_path', PEAR_PATH);
 	require_once "Mail.php";
 	require_once "Mail/mime.php";  

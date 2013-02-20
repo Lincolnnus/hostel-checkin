@@ -39,6 +39,31 @@ float:right;
 }
 </style>
 <script>
+  function getEmails(){
+      var uid=getCookie("uid");
+        var token=getCookie("token");
+        $.ajax({
+               type: "GET",
+               url: "api/admin.php",
+               dataType: "json",
+               data: { uid:uid, token: token,action:'getEmails' }
+               }).success(function( msg ) {
+                $('#message').html('');
+                var emails=msg;
+                for (var i=1;i<emails.length;i++)
+                {
+                  var newEmail=$('<div data-role="collapsible"><h3>'+emails[i]['subject']+'</h3>'+
+                    '<p> Subject:<input type="text" id="subject'+emails[i].eid+'" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" value="'+emails[i]['subject']+'">'+
+                    'From:<input type="text" id="from'+emails[i].eid+'" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" value="'+emails[i]["from"]+'">'+
+                    '<a onclick="gotoPreview()">Copy&Paste the HTML Email to Preview <button>Preview</button></a>'+
+                    'Message:<textarea id="message'+emails[i].eid+'"  class="ui-input-textarea ui-body-c ui-corner-all ui-shadow-inset">'+emails[i]['message']+'</textarea>'+
+                    '<button data-theme="b" onclick="updateEmails('+emails[i].eid+')">Save Change</button>'+
+                    '</p></div>').appendTo($('#message'));
+                  $('button').button();
+                }
+                $('div[data-role=collapsible]').collapsible();
+            }).fail(function(msg){showError("Fail Getting Browsers");});
+    }
     function showError(msg)
     {
         $('#hotelInfo').trigger('collapse');
@@ -57,6 +82,7 @@ float:right;
     $(document).ready(function() {
                       if(checkCookie("hid")){
                         getHotel();
+						$("#fuck").hide();
                       }else{
                          window.location="index.php";
                       }
@@ -320,9 +346,10 @@ alert(from);
                    </iframe>
             </p>
 		</div>
+        <div id="emailTemplates2" data-role="collapsible-set"></div>
      <div data-role="collapsible"> 
             <h3 id="sendEmail"> Send Verification Email</h3>
-            <p>
+            <p id="fuck">
                 Subject:<input id="emailSubject" type="text" placeholder="Title of the Email" value="Verified By Asplan">
                 To:<input id="emailTo" type="text" placeholder="Receiver's Email Address"> 
                 From:<input type="text" id="emailFrom" value="Asplan Services<asplanservices@gmail.com>">
@@ -333,6 +360,10 @@ alert(from);
                 <p>Please access your admin account via <a id="hotelURL"></a></p>
                 <p>Best Regards,</p>
                 <p>Asplan Service Team</p></div>
+                
+                
+                
+                
                 <textarea cols="100" rows="100" id="emailMessage" placeholder="Please Paste The HTML Email"></textarea>        
                      <div id="verified"><button onClick="unverifyHotel()" data-theme="b">Verified</button></div>
                      <div id="verify"><button onClick="verifyHotel()" data-theme="a">Verify</button></div>

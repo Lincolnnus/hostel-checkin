@@ -122,3 +122,4 @@ function updateEmails($eid,$subject,$from,$message)
 		return true;
 	}
 }
+?>

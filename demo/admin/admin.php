@@ -560,8 +560,10 @@ $(document).ready(function() {
       </p>
     </div>
      <div data-role="collapsible">
-      <h3>Hotel Information</h3>
-      
+      <h3>Rebuild The App</h3>
+      <p><div data-role="collapsible-set">
+      <div id="hotelInfo" data-role="collapsible">
+            <h3>Hotel Information</h3>
             <p>
               <table>
                 <tr>
@@ -595,20 +597,33 @@ $(document).ready(function() {
                   <td>
                     <input id="hphone" name="hphone">
                   </td>
-                </tr>				                
+                </tr>
+                <tr>
+                   <td>
+                  </td>
+                  <td>
+                    <button onClick="saveHotel()">Save</button>
+                  </td>
+                </tr>
               </table>
-			  <p>
+            </p>
+    </div>
+    <div data-role="collapsible"> 
+            <h3> Change Logo</h3>
+            <p>
                    <img width="100px" id="hlogo"><br>
                     Change Logo:
-                   <iframe src="upload.php" seamless>
+                   <iframe src="uploadlogo.php" seamless>
                     <p>Your browser does not support iframes.</p>
                    </iframe>
             </p>
-			  <button onClick="saveHotel()">Save</button>
-            </p>
-    
-    
-    
+    </div>
+    <div data-role="collapsible">
+      <h3>Build</h3>
+      <p>
+         <button data-theme="b" onClick="buildApp()">Confirm</button>
+      </p>
+    </div>
   </div>
   </p>
   </div>
