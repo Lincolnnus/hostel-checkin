@@ -37,7 +37,7 @@
                             $img=base64_encode_image($fname);
                             include_once("connection.php");
                             unlink($fname);
-                            $query = sprintf("UPDATE `User` SET idPhoto='%s' WHERE uid='%s' AND token='%s'",
+                            $query = sprintf("UPDATE `user` SET idPhoto='%s' WHERE uid='%s' AND token='%s'",
                                              mysql_real_escape_string($img),
                                              mysql_real_escape_string($uid),
                                              mysql_real_escape_string($token));

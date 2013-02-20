@@ -36,7 +36,7 @@ switch ($_SERVER['REQUEST_METHOD'])
                  $fname=$path . $_FILES["file"]["name"];
                  $img=base64_encode_image($fname);
                  include_once("connection.php");
-                 $query = sprintf("UPDATE `User` SET passportPhoto='%s' WHERE uid='%s' AND token='%s'",
+                 $query = sprintf("UPDATE `user` SET passportPhoto='%s' WHERE uid='%s' AND token='%s'",
                                   mysql_real_escape_string($img),
                                   mysql_real_escape_string($uid),
                                   mysql_real_escape_string($token));

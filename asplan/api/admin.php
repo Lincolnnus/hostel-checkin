@@ -1,9 +1,10 @@
 <?php
 require_once("includes/connection.php");//Connect to the Database
 require_once("settings.php");//Input Settings
-//getPreferences();//Initialize Settings
-require_once("record.php");
-require_once("email.php");
+require_once("user.php");//Include User Functions
+require_once("hotel.php");
+require_once('email.php');
+getPreferences();//Initialize Settings
 switch ($_SERVER['REQUEST_METHOD']) 
 {
 case 'GET':
@@ -15,17 +16,8 @@ if(isset($_GET["uid"])&&isset($_GET["token"]))
 	{
 		switch ($_GET["action"])
 		{
-			case 'getStaff':
-			$result = mysql_query("SELECT * FROM `stuff`");
-	    	if (!$result) {
-		  		  $message  = 'Invalid query: ' . mysql_error() . "\n";
-		  		  $message .= 'Whole query: ' . $query;
-		   		 echo($message);
-	  		  }else 
-	   		 {
-				while($row=mysql_fetch_array($result)){$stuff[]=$row;}
-				echo json_encode($stuff);
-	   		 }//successfully get checkin information
+			case 'getNewHotels':
+			echo json_encode(getNewHotels());
 			break;
 			case 'getPreferences':
 			echo json_encode(getPreferences());
@@ -42,10 +34,6 @@ if(isset($_GET["uid"])&&isset($_GET["token"]))
 			break;
 			case 'getEmails':
 			echo json_encode(getEmails());
-			break;
-			case 'getRecord':
-			$rid=$_GET["rid"];
-			echo json_encode(getRecord($rid));
 			break;
 		}
 	}
@@ -71,15 +59,17 @@ if(isset($_POST["uid"])&&isset($_POST["token"]))
 			break;
 			case 'verifyHotel':
 			$hid=$_POST["hid"];
-			$email=$_POST["email"];
+			
 			if(verifyHotel($hid))
 			{
-				$from=$email["from"].'<noreply@asplan.com>';
-				$to=$email["to"];
-				$subject=$email["subject"];
-				$message=$email["message"];
-				if(sendHTMLEmail($from,$to,$subject,$message)) echo json_encode("success");
+	 $from = $_POST["from"];                              // Your name and email address
+        $to = $_POST["to"];                           // The Recipients name and email address
+        $subject = $_POST["subject"];    				
+          $html1 = $_POST["message"];
+
+				if(sendHTMLEmail($from,$to,$subject,$html1 )) echo json_encode("success");
 				else echo "Error Sending Email";
+				
 			}else echo "Error Verifying";
 			break;
 			case 'unverifyHotel':
@@ -91,7 +81,7 @@ if(isset($_POST["uid"])&&isset($_POST["token"]))
 				$to=$email["to"];
 				$subject=$email["subject"];
 				$message=$email["message"];
-				if(sendHTMLEmail($from,$to,$subject,$message)) echo json_encode("success");
+				if(sendHTMLEmail($from,$to,$subject)) echo json_encode("success");
 				else echo "Error Sending Email";
 			}else echo "Error Unverifying";
 			break;
@@ -148,12 +138,6 @@ if(isset($_POST["uid"])&&isset($_POST["token"]))
 			$message=trim($_POST["message"]);
 			echo json_encode(updateEmails($eid,$subject,$from,$message));
 			break;
-			case 'saveRecord':
-			$booking=$_POST["booking"];
-			if(saveRecord($booking))
-				echo json_encode("Success");
-			else echo "Fail";
-			break;
 		}
 	}
 }else if(isset($_POST["email"])&&isset($_POST["password"]))//user login
@@ -174,20 +158,5 @@ if(isset($_POST["uid"])&&isset($_POST["token"]))
 	}else echo "Error getting user";
 }
 break;
-}
-function verifyToken($uid,$token)
-{
-	$query = sprintf("SELECT * FROM `admin` WHERE uid='%s' AND token='%s'",
-		mysql_real_escape_string($uid),
-		mysql_real_escape_string($token)
-	 );
-	$result = mysql_query($query);
-	if (!$result) {
-	    return false;
-	}
-	else {    
-           $row=mysql_fetch_array($result);
-           return $row;
-    }
 }
 ?>

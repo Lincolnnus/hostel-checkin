@@ -29,4 +29,23 @@ if((isset($_POST["stuffEmail"]))&&(isset($_POST["stuffFirstname"]))&&(isset($_PO
 			}
 		}
 }
+else{
+	$stuffEmail=$_POST["stuffEmail"];
+	include_once("connection.php"); 
+	$query=sprintf("DELETE FROM  `stuff` WHERE email= '%s' ",
+				mysql_real_escape_string($stuffEmail));
+	
+	$result=mysql_query($query);
+	if (!$result) {
+		    $message  = 'Invalid query: ' . mysql_error() . "\n";
+		    $message .= 'Whole query: ' . $query;
+		    echo $message;
+		}else{
+			
+			echo json_encode("success");
+			
+			}
+	
+	
+	}
 ?>

@@ -105,6 +105,38 @@ function login()
         { showError("Invalid Email Address");}
 
 }
+                 function checkin()
+                 {
+                 var email=$("#checkinemail").val();
+                 var confirmation=$("#checkincode").val();
+                 if(validateEmail(email))
+                 {
+                 $.ajax({
+                        type: "GET",
+                        url: IP+"/confirm.php",
+                        dataType: "json",
+                        data: { email: email, confirmation: confirmation}
+                        }).success(function( msg ) {
+                                   if(msg.status=='sent')
+                                   {
+                                   showError("Please Check Your Email To Verify your email address and then Login");
+                                   }
+                                   else if (checkCookie('uid')){
+                                   setCookie('email',msg.email,1);
+                                   setCookie('confirmation',msg.confirmation,1);
+                                    window.location="checkin.php";
+                                   }else{showError("To Protect User Data,Please Login");
+                                   setCookie('email',msg.email,1);
+                                   setCookie('confirmation',msg.confirmation,1);
+                                   $('#confirmpage').trigger('collapse');
+                                   $('#loginPage').trigger('expand');
+                                 }
+                                   }).fail(function(msg){showError("Invalid Checkin Email and Checkin Code");});
+                 }
+                 else {
+                    showError("Invalid Email Address");
+                 }
+                 
                  }
 function gotoGuest()
 {
@@ -139,7 +171,9 @@ function logout(){
 function showHotel(hotel)
 {
   $("#logo").html('<center><img src="'+hotel.logo+'" title="'+hotel.name+'" width="150px"></center>');
-                  $("#welcome").html("Admin Panel");
+                  $("#welcome").html("Enterprise Guest Engagement System - Customer Instance System Administration Modulel"+'<br />');
+		    $("#welcome").append(hotel.name);
+
                   $("#aboutUs").append('<h3>'+hotel.name+'</3>');
                   $("#aboutUs").append('<a> Address:'+hotel.address+'</a><br>');
                   $("#aboutUs").append('<a> Zip Code:'+hotel.zip+'</a><br>');
@@ -208,8 +242,8 @@ $(document).ready(function() {
 		<p>
 			    <input type="text" id="loginemail" name="loginemail" placeholder="Email"/>
 			    <input type="password" id="loginpassword" name="loginpassword" placeholder="Password"/>
-                 <button data-theme="b" onclick="login()" onkeypress="login()">Login</button>
-                 <a onclick="gotoGuest()" style="float:right;">Guest Login</a>
+                 <button data-theme="b" onClick="login()" onKeyPress="login()">Login</button>
+                 <a onClick="gotoGuest()" style="float:right;">Guest Login</a>
 		</p>
 		</div>
 		<div data-role="collapsible">
@@ -222,7 +256,7 @@ $(document).ready(function() {
 Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div>
     <div id="errorWrapper" style="display:none;">
                   <center id="errorMsg"></center>
-                  <img src="css/images/close_icon.png" width="30px" title="close" onclick="hideError()" id="errorClose"/>
+                  <img src="css/images/close_icon.png" width="30px" title="close" onClick="hideError()" id="errorClose"/>
                 </div>
   </div><!-- /page -->
 </body>

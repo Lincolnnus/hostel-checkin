@@ -29,6 +29,7 @@
                                                           }).fail(function(msg){alert("Fail To Update");window.location="account.php";});
                                         
                                         }
+
                                         function changePassport()
                                         {
                                         var passport=$("#passportNo").val();

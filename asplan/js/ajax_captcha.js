@@ -50,20 +50,26 @@ function updatePage() {
  //Check if our response is ready
  if (receiveReq.readyState == 4) {
    //Set the content of the DIV element with the response text
-   document.getElementById('result').innerHTML = receiveReq.responseText;
+     if(receiveReq.responseText=='success'){
+         showError("Thank you for submitting your details. We will be in touch shortly.");
+     }
+     else{
+         showError(receiveReq.responseText);
+     }
    //Get a reference to CAPTCHA image
    img = document.getElementById('imgCaptcha'); 
    //Change the image
-   img.src = 'create_image.php?' + Math.random();
+   img.src = 'api/create_image.php?' + Math.random();
  }
 }
 
 //Called every time when form is perfomed
 function getParam(theForm) {
+ showError("Processing...");
  //Set the URL
- var url = 'captcha.php';
+ var url = 'api/partner.php';
  //Set up the parameters of our AJAX call
- var postStr = theForm.txtCaptcha.name + "=" + encodeURIComponent( theForm.txtCaptcha.value );
+ var postStr = theForm.txtCaptcha.name + "=" + encodeURIComponent( theForm.txtCaptcha.value )+"&hotelphone="+encodeURIComponent( theForm.hotelphone.value )+"&signupemail="+encodeURIComponent( theForm.signupemail.value )+"&hoteladdr="+encodeURIComponent( theForm.hoteladdr.value )+"&hotelzip="+encodeURIComponent( theForm.hotelzip.value )+"&hotelmanager="+encodeURIComponent( theForm.hotelmanager.value )+"&hotelname="+encodeURIComponent( theForm.hotelname.value );
  //Call the function that initiate the AJAX request
  makeRequest(url, postStr);
 }

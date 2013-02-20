@@ -5,6 +5,8 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.mobile-1.1.1.js"></script>
 <script src="js/cookie.js"></script>
+<link rel="stylesheet" href="css/datepicker.css" /> 
+<script src="js/jQuery.ui.datepicker.js"></script>
 <style>
 .ui-collapsible.ui-collapsible-collapsed .ui-collapsible-heading .ui-icon-plus,
 .ui-icon-arrow-r { background-position: -108px 0; }
@@ -13,12 +15,22 @@
 .ui-collapsible .ui-collapsible-heading .ui-icon-minus,
 .ui-icon-arrow-d { background-position: -216px 0; }
 #errorWrapper{
+ border: 1px solid  #456f9a /*{b-bar-border}*/;
+  background:       #5e87b0 /*{b-bar-background-color}*/;
+  color:          #fff /*{b-bar-color}*/;
+  font-weight: bold;
+  text-shadow: 0 /*{b-bar-shadow-x}*/ 1px /*{b-bar-shadow-y}*/ 1px /*{b-bar-shadow-radius}*/ #3e6790 /*{b-bar-shadow-color}*/;
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #6facd5 /*{b-bar-background-start}*/), to( #497bae /*{b-bar-background-end}*/)); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/); /* Chrome 10+, Saf5.1+ */
+  background-image:    -moz-linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/); /* FF3.6 */
+  background-image:     -ms-linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/); /* IE10 */
+  background-image:      -o-linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/); /* Opera 11.10+ */
+  background-image:         linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/);
 position:absolute;
+z-index: 100;
 width:33%;
 left:33%;
 top:30%;
-border:1px solid grey;
-background-color:white;
 }
 #errorClose{
 float:right;
@@ -55,6 +67,55 @@ function getHotel()
                  hotel.contact=hotelxml.getElementsByTagName("contact")[0].childNodes[0].nodeValue;
                  return hotel;
 }
+function getCheckData(){
+	
+	 var uid=getCookie('uid');
+  var token=getCookie('token');
+	$.ajax({
+		type:"POST",
+		url:"api/getCheckData.php",
+		dataType:"json",
+		data:{uid:uid,token:token}
+		
+		
+		}).success(function(msg){	
+			var data=msg;
+			var checkData=$("#checkdata");
+			checkData.html('');
+			for(var i=0;i<data.length;i++){
+				
+			
+				 var newli=$('<li>'+data[i].email+data[i].confirmation+'</li>').appendTo(checkData);
+				
+				}
+		
+		stuffList.listview( "refresh" );
+		
+		}) .fail(function(msg){
+			
+			alert("nimei");
+			showError("Error Getting Stuffs");
+    });
+	
+	}
+
+function buildApp(){
+        showError("Building...");
+        var uid=getCookie("uid");
+        var token=getCookie("token");
+        var hid=getCookie("hid");
+         $.ajax({
+               type: "POST",
+               url: "api/hotel.php",
+               dataType: "json",
+               data: { uid:uid, token: token,step:'4'}
+               }).success(function( msg ) {
+				   alert(msg);
+                showError("Built");
+         }).fail(function(msg){
+			 alert("ni mei");
+			 showError(msg);});
+    }
 function changePass()
                                         {
                                         var oldpass=$("#oldpass").val();
@@ -174,6 +235,7 @@ function signup()
                 var settings=msg;
                 console.log(settings);
                 $('#inactivityTimer').val(settings.inactivityTimer);
+				$('#legend1').append(settings.inactivityTimer);
                 $('#mailHost').val(settings.mailHost);
                 $('#mailUsername').val(settings.mailUsername);
                 $('#mailPassword').val(settings.mailPassword);
@@ -315,8 +377,45 @@ function assignStuff()
       data: { stuffEmail: stuffEmail,stuffFirstname:stuffFirstname,stuffLastname:stuffLastname}
     }).success(function( msg ) {
                    showError("Email Sent to "+stuffEmail+", Please Verify the Email Address");
-    }).fail(function(msg){showError("Error Assigning Stuff");});
+    }).fail(function(msg){showError("Error Assigning User");
+	
+	$('#stuffEmail').val("");
+	$('#stuffFirstname').val("");
+	$('#stuffLastname').val("");
+	
+	
+	});
 }
+
+function deleteStuff(){
+	var stuffEmail=$('#stuffList').val();
+	showError("Processing");
+
+	$.ajax({
+		   type:"POST",
+		   url:"api/assignStuff.php",
+		   dataType:"json",
+		   data:{stuffEmail:stuffEmail}		   		   	   
+		   
+		   }).success(function(msg){
+			   showError("Delete Successfully");
+															  
+	
+			   }).fail(function(msg){showError("error");
+			   	showError(stuffEmail);
+											   
+											   });
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	}
+
 function getStuff()
 {
   var uid=getCookie('uid');
@@ -332,12 +431,13 @@ function getStuff()
                           stuffList.html('');
                           for(var i=0;i<stuffs.length;i++)
                           {
-                            var newli=$('<li><a>'+stuffs[i].email+'</a></li>').appendTo(stuffList);
+                            var newli=$('<option><a>'+stuffs[i].email+'</a></li>').appendTo(stuffList);
                           }
                           stuffList.listview( "refresh" );
     }).fail(function(msg){showError("Error Getting Stuffs");});
 }
 $(document).ready(function() {
+				  $("#businessDate").datepicker();
                   var hotel=getHotel();
                   showHotel(hotel);
                   checkUser();
@@ -360,25 +460,33 @@ $(document).ready(function() {
 	<div data-role="collapsible-set">
     <div data-role="collapsible-set">
     <div data-role="collapsible">
-      <h3 id="preferencePage" onclick="getPreferences()">System Preferences</h3>
+      <h3 id="preferencePage" onClick="getPreferences()">System Preferences</h3>
       <p>
         <div data-role="collapsible-set">
            <div data-role="collapsible">
              <h3>Session Inactivity Timer(minutes)</h3>
               <p>
-                <input id="inactivityTimer" type="text">
-                <button data-theme="b" onclick="saveSettings()">Change</button>
+                 <form>
+                <label ></label>
+                <legend id="legend1">Click to select your preferred timer and Current Timer is:</legend>
+                <select id="inactivityTimer">
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="300">300</option>
+                </select>
+                </form>
+                <button data-theme="b" onClick="saveSettings()">Change</button>
              </p>
            </div>
            <div data-role="collapsible">
             <h3>Set Business Date</h3>
            <p>
               <input type="text" id="businessDate">
-              <button data-theme="b" onclick="saveSettings()">Set</button>
+              <button data-theme="b" onClick="saveSettings()">Set</button>
             </p>
           </div>
            <div data-role="collapsible">
-             <h3 onclick="getEmails()">Email Templates</h3>
+             <h3 onClick="getEmails()">Email Templates</h3>
               <p>
                    <div id="emailTemplates" data-role="collapsible-set">
                    </div>
@@ -386,7 +494,7 @@ $(document).ready(function() {
            </div>
 
            <div data-role="collapsible">
-             <h3 onclick="">Email Defaults</h3>
+             <h3 onClick="">Email Defaults</h3>
               <p>
                 <ul>
                 <li>Mail Server Host:<input id="mailHost"  type="text" value="ssl://smtp.gmail.com"></li>
@@ -394,12 +502,12 @@ $(document).ready(function() {
                 <li>Mail Server Password:<input id="mailPassword" type="password" value="***"></li>
                 <li>Mail Server Port:<input id="mailPort" type="text" value="465"></li>
                 <li>Hotel Name Displayed in the Email:<input id="companyName" type="text" value="Asplan Checkin<noreply@asplan.com>"></li>
-                <li><button data-theme="b" onclick="saveSettings()">Save</button></li>
+                <li><button data-theme="b" onClick="saveSettings()">Save</button></li>
               </ul>
              </p>
            </div>
            <div data-role="collapsible">
-             <h3 onclick="">Web Services</h3>
+             <h3 onClick="">Web Services</h3>
               <p>
                Web Service Parameters
                <li>Application Server:Apache2</li>
@@ -409,7 +517,7 @@ $(document).ready(function() {
            </div>
                 <input id="maxInstance" type="hidden" value="100">
             <div data-role="collapsible">
-             <h3 onclick="getBrowsers()">Browser Type Support</h3>
+             <h3 onClick="getBrowsers()">Browser Type Support</h3>
               <p>
                 Any browser which supports HTML5<br>
                 <ul id="supportedBrowsers">
@@ -427,35 +535,33 @@ $(document).ready(function() {
     <div data-role="collapsible">
       <h3>Set System Online/Offline</h3>
       <p>
-           <button data-theme="a" onclick="setOffline()">Confirm</button>
+           <button data-theme="a" onClick="setOffline()">Confirm</button>
       </p>
     </div>
     <div data-role="collapsible">
       <h3>Shutdown my Instance</h3>
       <p>
-           <button data-theme="a" onclick="shutdownAll()">Confirm</button>
+           <button data-theme="a" onClick="shutdownAll()">Confirm</button>
       </p>
     </div>
     <div data-role="collapsible">
       <h3>Start my Instance</h3>
       <p>
-           <button data-theme="b" onclick="startAll()">Confirm</button>
+           <button data-theme="b" onClick="startAll()">Confirm</button>
       </p>
     </div>
     <div data-role="collapsible">
       <h3>Backup my Instance</h3>
       <p>
-           <button data-theme="b" onclick="backupAll">Backup</button>
+           <button data-theme="b" onClick="backupAll">Backup</button>
       </p>
     </div>
     </div>
       </p>
     </div>
      <div data-role="collapsible">
-      <h3>Rebuild The App</h3>
-      <p><div data-role="collapsible-set">
-      <div id="hotelInfo" data-role="collapsible">
-            <h3>Hotel Information</h3>
+      <h3>Hotel Information</h3>
+      
             <p>
               <table>
                 <tr>
@@ -489,33 +595,20 @@ $(document).ready(function() {
                   <td>
                     <input id="hphone" name="hphone">
                   </td>
-                </tr>
-                <tr>
-                   <td>
-                  </td>
-                  <td>
-                    <button onclick="saveHotel()">Save</button>
-                  </td>
-                </tr>
+                </tr>				                
               </table>
-            </p>
-    </div>
-    <div data-role="collapsible"> 
-            <h3> Change Logo</h3>
-            <p>
+			  <p>
                    <img width="100px" id="hlogo"><br>
                     Change Logo:
                    <iframe src="upload.php" seamless>
                     <p>Your browser does not support iframes.</p>
                    </iframe>
             </p>
-    </div>
-    <div data-role="collapsible">
-      <h3>Build</h3>
-      <p>
-         <button data-theme="b" onclick="buildApp()">Confirm</button>
-      </p>
-    </div>
+			  <button onClick="saveHotel()">Save</button>
+            </p>
+    
+    
+    
   </div>
   </p>
   </div>
@@ -524,23 +617,34 @@ $(document).ready(function() {
     <p>
                   <iframe width="100%" height="50%" src="upload.php" seamless>
                     <p>Your browser does not support iframes.</p>
-                   </iframe>  </p>
+                   </iframe>  
+	 <p>
+            <ul id="checkdata" data-role="listview" data-filter="true" data-filter-placeholder="Search hotels..." data-filter-theme="d"data-theme="d" data-divider-theme="d">
+		      	</ul>
+            </p>
+					
+				    <button data-theme="b" onClick=" getCheckData()">Get CheckData</button>
     </div>
 		<div id="adminPage" data-role="collapsible">
-		<h3>Assign Staffs</h3>
+		<h3>Enrol New User</h3>
 		<p>
-			    <input type="text" id="stuffEmail" name="stuffEmail" placeholder="Stuff Email"/>
-          <input type="text" id="stuffFirstname" name="stuffFirstname" placeholder="Stuff First Name"/>
-          <input type="text" id="stuffLastname" name="stuffLastname" placeholder="Stuff Last Name"/>
-                 <button data-theme="b" onclick="assignStuff()">Assign Staff Role</button>
+			    <input type="text" id="stuffEmail" name="stuffEmail" placeholder="New User Email"/>
+          <input type="text" id="stuffFirstname" name="stuffFirstname" placeholder="New User First Name"/>
+          <input type="text" id="stuffLastname" name="stuffLastname" placeholder="New User Last Name"/>
+                 <button data-theme="b" onClick="assignStuff()">Proceed to Enrol</button>
 		</p>
 		</div>
     <div id="stuffPage" data-role="collapsible">
-    <h3 onclick="getStuff()">Current Staffs</h3>
+    <h3 onClick="getStuff()">Enrolled Users</h3>
     <p>
-       <ul id="stuffList" data-role="listview" data-filter="true" data-filter-placeholder="Search Stuffs..." data-filter-theme="d"data-theme="d" data-divider-theme="d">
-       </ul>
+      <form  id="stuffForm" data-role="listview" data-filter="true" data-filter-placeholder="Search Stuffs..." data-filter-theme="d"data-theme="d" data-divider-theme="d" >
+	   <select id="stuffList" >
+	   
+	   </select>
+       </form>
+	   
     </p>
+	<button data-theme="b" onClick="deleteStuff()">Delete Enrolled Users</button>
     </div>
     <div id="passPage" data-role="collapsible">
     <h3>Change Password</h3>
@@ -552,14 +656,14 @@ $(document).ready(function() {
           <input type="password" id="password" name="password" placeholder="New Password"/>
       <label class="ui-hidden-accessible">Confirm Password:</label>
           <input type="password" id="confirmpass" name="confirmpass" placeholder="Confirm Password"/>
-      <button data-theme="b" onclick="changePass()" onkeypress="changePass()">Change Password</button>
+      <button data-theme="b" onClick="changePass()" onKeyPress="changePass()">Change Password</button>
       </form>
     </p>
   </div>
     <div id="logoutPage" data-role="collapsible">
                  <h3>Log Out</h3>
                  <p>
-                 <a id="logout" data-rel="dialog" data-theme="a" onclick="logout()" onkeypress="logout()" data-role="button">
+                 <a id="logout" data-rel="dialog" data-theme="a" onClick="logout()" onKeyPress="logout()" data-role="button">
                  Confirm
                  </a>
                  </p>
@@ -570,7 +674,7 @@ $(document).ready(function() {
 Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div>
     <div id="errorWrapper" style="display:none;">
                   <center id="errorMsg"></center>
-                  <img src="css/images/close_icon.png" width="30px" title="close" onclick="hideError()" id="errorClose"/>
+                  <img src="css/images/close_icon.png" width="30px" title="close" onClick="hideError()" id="errorClose"/>
                 </div>
   </div><!-- /page -->
 </body>

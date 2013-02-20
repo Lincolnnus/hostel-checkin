@@ -196,6 +196,7 @@ function addSignature(){
 
     $('#checkinCanvas').mousedown(function(e) {
                         newpoly=[];//Clear the Stroke
+
                         started=true;
                         newpoly.push( {"x":e.offsetX,"y":e.offsetY});//The percentage will be saved
                         ctx.globalAlpha = 1;
@@ -279,14 +280,17 @@ function gotoAccount(){
     window.location="account.php";
 }
 function loadPhoto(){
+	$('#title').append("loadPhoto");
     var c=document.getElementById("checkinCanvas");
     var ctx=c.getContext("2d");
     ctx.drawImage(idPhoto,600,20,150,150);
 }
 function loadPassport(){
+	$('#title').append("loadPassport");
     var c=document.getElementById("checkinCanvas");
     var ctx=c.getContext("2d");
     ctx.drawImage(passportPhoto,300,500,500,500);
+loadPhoto();
 }
 function saveCanvas(){
     var c=document.getElementById("checkinCanvas");
@@ -304,26 +308,26 @@ if(checkCookie("email")==0)
 <div data-role="page">
 
 	<div data-role="header" data-theme="b">
-		<h1>Check In</h1>
+		<h1 id="title">Check-In:</h1>
 		<a data-icon="home" data-iconpos="notext" data-transition="slide" data-rel="back">Home</a>
-        <a onclick="window.location.reload()" data-icon="refresh" data-iconpos="notext">Refresh</a>
+        <a onClick="window.location.reload()" data-icon="refresh" data-iconpos="notext">Refresh</a>
 	</div><!-- /header -->
 
 	<div data-role="content">
 	<div data-role="collapsible-set">
-		<div data-role="collapsible" data-collapsed="false">
+		<div data-role="collapsible" >
 		<h3><img src="css/images/login.png"/>Checkin Information</h3>
 		<p>
-             <button onclick="loadPhoto()" data-theme="b" >Load ID Photo</button>
-             <button onclick="loadPassport()" data-theme="b" >Load Passport Photo</button>
+                        <button onClick="loadPassport()" data-theme="b" >Load ID Photo</button>
             <div id="checkinfo"></div>
-             <button onclick="saveCanvas()" data-theme="b" >Save it</button>
-            <button onclick="gotoAccount()" data-theme="c" >My Account</button>
+             <button onClick="saveCanvas()" data-theme="b" >Save it</button>
+            <button onClick="gotoAccount()" data-theme="c" >My Account</button>
                
         </p>
 	</div>
 	</div>
-	<div data-role="footer" data-theme="b"><h4>Copyright&copy;Asplan2012</h4></div> 
+	<div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
+Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div> 
 </div><!-- /page -->
 </body>
 </html>
