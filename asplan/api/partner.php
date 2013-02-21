@@ -30,8 +30,7 @@ if ( ($_REQUEST["txtCaptcha"] == $_SESSION["security_code"]) &&
         $emails=getEmails();
         $from=$emails[0]["from"].'<norepy@asplan.com>';
         $subject=$emails[0]["subject"];
-        $body2="Hotel Name:".$hotelname."\nHotel Address:".$hoteladdr."\nZip Code:".$hotelzip."\nPhone Number:".$hotelphone."\n\n";
-        $message="Dear ".$hotelmanager."\n\n".$emails[0]["body1"]."\n".$body2."\n".$emails[0]["body2"]."\n";
+        $message="Dear ".$hotelmanager.$emails[0]["message"];
         sendHTMLEmail($from,$email,$subject,$message);
   			echo "success";
         }

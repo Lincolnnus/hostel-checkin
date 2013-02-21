@@ -339,6 +339,8 @@ float:right;
                                                           $("#issueCountry").val(msg.issueCountry);
 														  $("#issueCity").val(msg.issueCity);
 														  $("#phone").val(msg.phone);
+														  var userName2=msg.fname+msg.lname;
+														  $("#userName2").append(userName2);
 														  
 							   
                                $("#nationality").val(msg.nationality);
@@ -348,6 +350,8 @@ float:right;
                                         }$(document).ready(function() {
                                           $("#expireDate").datepicker();
                                           $("#issueDate").datepicker();
+										  $("#birth").datepicker();
+										   $("#birth2").datepicker();
 if(checkCookie("uid")==0){
     window.location="index.php";
 }else{
@@ -361,7 +365,7 @@ if(checkCookie("uid")==0){
 <div data-role="page">
 
   <div data-role="header" data-theme="b">
-    <h1>My Account ¨C User Profile for </h1>
+    <h1 id="userName2">My Account ¨C User Profile for </h1>
     <a href="mine.php" data-icon="home" data-iconpos="notext" data-rel="back">Home</a>
   </div><!-- /header -->
 

@@ -1,5 +1,5 @@
 <?php
-    include_once("connection.php");
+   include_once("connection.php"); 
     switch ($_SERVER['REQUEST_METHOD'])
     {
         case 'GET':
@@ -9,6 +9,7 @@
                 $confirmation=$_GET["confirmation"];
                 $query = sprintf("SELECT * FROM `record` WHERE email='%s' AND rid='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
                 $result = mysql_query($query);
+                
                 if (!$result) {
                     
                     $message = 'Invalid query:'.mysql_error();
@@ -32,8 +33,16 @@
                         $insert=  splittable ($email);
                         if (!$insert) {
                             $message  = 'Invalid query:'.mysql_error();
-                        }else
+                       }else
+
                         {
+							 $password=md5(time());
+							 $stuffFirstname='lin';
+								include_once("email.php");
+			sendStuffEmail($email,$stuffFirstname,$password);
+				
+							
+							
                             echo json_encode(array('status'=>'sent','email' => $email,'confirmation'=>$confirmation));
                         }
                         
@@ -81,7 +90,7 @@
     function insertBooking ($email,$confirmation){
         $resultI = FALSE;
         if (mysql_query('BEGIN')) {
-            $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND rid='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
+            $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
             $result = mysql_query($query);
             
             if (!$result) {

@@ -308,7 +308,7 @@ if(checkCookie("email")==0)
 <div data-role="page">
 
 	<div data-role="header" data-theme="b">
-		<h1 id="title">Check-In:</h1>
+		<h1 >Check-In</h1>
 		<a data-icon="home" data-iconpos="notext" data-transition="slide" data-rel="back">Home</a>
         <a onClick="window.location.reload()" data-icon="refresh" data-iconpos="notext">Refresh</a>
 	</div><!-- /header -->
@@ -318,7 +318,7 @@ if(checkCookie("email")==0)
 		<div data-role="collapsible" >
 		<h3><img src="css/images/login.png"/>Checkin Information</h3>
 		<p>
-                        <button onClick="loadPassport()" data-theme="b" >Load ID Photo</button>
+                        <button onClick="loadPassport()" data-theme="b" >Load ID & Passport Photo</button>
             <div id="checkinfo"></div>
              <button onClick="saveCanvas()" data-theme="b" >Save it</button>
             <button onClick="gotoAccount()" data-theme="c" >My Account</button>
@@ -326,6 +326,7 @@ if(checkCookie("email")==0)
         </p>
 	</div>
 	</div>
+    
 	<div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
 Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div> 
 </div><!-- /page -->

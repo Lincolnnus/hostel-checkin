@@ -13,12 +13,22 @@
 .ui-collapsible .ui-collapsible-heading .ui-icon-minus,
 .ui-icon-arrow-d { background-position: -216px 0; }
 #errorWrapper{
+ border: 1px solid  #456f9a /*{b-bar-border}*/;
+  background:       #5e87b0 /*{b-bar-background-color}*/;
+  color:          #fff /*{b-bar-color}*/;
+  font-weight: bold;
+  text-shadow: 0 /*{b-bar-shadow-x}*/ 1px /*{b-bar-shadow-y}*/ 1px /*{b-bar-shadow-radius}*/ #3e6790 /*{b-bar-shadow-color}*/;
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #6facd5 /*{b-bar-background-start}*/), to( #497bae /*{b-bar-background-end}*/)); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/); /* Chrome 10+, Saf5.1+ */
+  background-image:    -moz-linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/); /* FF3.6 */
+  background-image:     -ms-linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/); /* IE10 */
+  background-image:      -o-linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/); /* Opera 11.10+ */
+  background-image:         linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/);
 position:absolute;
+z-index: 100;
 width:33%;
 left:33%;
 top:30%;
-border:1px solid grey;
-background-color:white;
 }
 #errorClose{
 float:right;
@@ -213,7 +223,7 @@ $(document).ready(function() {
 			    <input type="text" id="checkinemail" name="checkinemail" placeholder="Email"/>
                 <label class="ui-hidden-accessible">Code:</label>
 			    <input type="text" id="checkincode" name="checkincode" placeholder="Confirmation Code"/>
-                 <button data-theme="b" onclick="checkin()" onkeypress="checkin()">Checkin</button>
+                 <button data-theme="b" onClick="checkin()" onKeyPress="checkin()">Checkin</button>
             </p>
 		</div>
 		<div id="loginPage" data-role="collapsible">
@@ -221,8 +231,8 @@ $(document).ready(function() {
 		<p>
 			    <input type="text" id="loginemail" name="loginemail" placeholder="Email"/>
 			    <input type="password" id="loginpassword" name="loginpassword" placeholder="Password"/>
-                 <button data-theme="b" onclick="login()" onkeypress="login()">Login</button>
-                 <a onclick="gotoGuest()" style="float:right;">Guest Login</a>
+                 <button data-theme="b" onClick="login()" onKeyPress="login()">Login</button>
+                 <a onClick="gotoGuest()" style="float:right;">Guest Login</a>
 		</p>
 		</div>
      <div id="passPage" data-role="collapsible">
@@ -235,14 +245,14 @@ $(document).ready(function() {
           <input type="password" id="password" name="password" placeholder="New Password"/>
       <label class="ui-hidden-accessible">Confirm Password:</label>
           <input type="password" id="confirmpass" name="confirmpass" placeholder="Confirm Password"/>
-      <button data-theme="b" onclick="changePass()" onkeypress="changePass()">Change Password</button>
+      <button data-theme="b" onClick="changePass()" onKeyPress="changePass()">Change Password</button>
       </form>
     </p>
   </div>
     <div id="logoutPage" data-role="collapsible">
                  <h3> <img src="css/images/signup.png"/>Log Out</h3>
                  <p>
-                 <a id="logout" data-rel="dialog" data-theme="a" onclick="logout()" onkeypress="logout()" data-role="button">
+                 <a id="logout" data-rel="dialog" data-theme="a" onClick="logout()" onKeyPress="logout()" data-role="button">
                  Confirm
                  </a>
                  </p>
@@ -256,7 +266,7 @@ $(document).ready(function() {
 	<div data-role="footer" data-theme="b"><h4>Copyright&copy;Asplan2012</h4></div>
     <div id="errorWrapper" style="display:none;">
                   <center id="errorMsg"></center>
-                  <img src="css/images/close_icon.png" width="30px" title="close" onclick="hideError()" id="errorClose"/>
+                  <img src="css/images/close_icon.png" width="30px" title="close" onClick="hideError()" id="errorClose"/>
                 </div>
   </div><!-- /page -->
 </body>

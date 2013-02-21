@@ -46,10 +46,18 @@ function sendHTMLEmail($from,$to,$subject,$html1){
 	ini_set('include_path', PEAR_PATH);
 	require_once "Mail.php";
 	require_once "Mail/mime.php";
-    $crlf = "\n";
-    $message = new Mail_mime($crlf);
-    $message->setHTMLBody($html1);
-    $body=$message->get();
+
+ 
+  $text = 'This is a text message.';  
+	 
+
+  $crlf = "\n";
+ $message = new Mail_mime($crlf);
+$message->setHTMLBody($html1);
+
+ 
+     
+ $body=$message->get();
  	$headers = array ('From' => $from,
                   'To' => $to,
                   'Subject' => $subject,

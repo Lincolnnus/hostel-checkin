@@ -190,4 +190,28 @@ function verifyToken($uid,$token)
            return $row;
     }
 }
+function updateLogo($hid,$img)
+{
+                 $query = sprintf("UPDATE `hotel` SET hlogo='%s' WHERE hid='%s'",
+                                  mysql_real_escape_string($img),
+                                  mysql_real_escape_string($hid));
+                 $result = mysql_query($query);
+                 if (!$result) {
+                     return false;
+                 }
+                 else {
+                     return'<img width="100px" src="'.$img.'"/>';
+                 }
+}
+function base64_encode_image ($imagefile) {
+        $imgtype = array('jpg', 'gif', 'png');
+        $filename = file_exists($imagefile) ? htmlentities($imagefile) : die('Image file name does not exist');
+        $filetype = pathinfo($filename, PATHINFO_EXTENSION);
+        if (in_array($filetype, $imgtype)){
+            $imgbinary = fread(fopen($filename, "r"), filesize($filename));
+        } else {
+            die ('Invalid image type, jpg, gif, and png is only allowed');
+        }
+        return 'data:image/' . $filetype . ';base64,' . base64_encode($imgbinary);
+    }
 ?>

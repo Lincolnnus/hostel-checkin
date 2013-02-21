@@ -287,6 +287,7 @@ function loadPassport(){
     var c=document.getElementById("checkinCanvas");
     var ctx=c.getContext("2d");
     ctx.drawImage(passportPhoto,300,500,500,500);
+	loadPhoto();
 }
 function saveCanvas(){
     var c=document.getElementById("checkinCanvas");
@@ -306,7 +307,7 @@ if(checkCookie("email")==0)
 	<div data-role="header" data-theme="b">
 		<h1>Check In</h1>
 		<a data-icon="home" data-iconpos="notext" data-transition="slide" data-rel="back">Home</a>
-        <a onclick="window.location.reload()" data-icon="refresh" data-iconpos="notext">Refresh</a>
+        <a onClick="window.location.reload()" data-icon="refresh" data-iconpos="notext">Refresh</a>
 	</div><!-- /header -->
 
 	<div data-role="content">
@@ -314,12 +315,12 @@ if(checkCookie("email")==0)
 		<div data-role="collapsible" data-collapsed="false">
 		<h3><img src="css/images/login.png"/>Checkin Information</h3>
 		<p>
-             <button onclick="loadPhoto()" data-theme="b" >Load ID Photo</button>
-             <button onclick="loadPassport()" data-theme="b" >Load Passport Photo</button>
+                <button onClick="loadPassport()" data-theme="b" >Load ID & Passport Photo</button>
+          
             <div id="checkinfo"></div>
-             <button onclick="addSignature()" data-theme="b" >Add Signature</button>
-             <button onclick="saveCanvas()" data-theme="b" >Save it</button>
-            <button onclick="gotoAccount()" data-theme="c" >Fill in User Information</button>
+             <button onClick="addSignature()" data-theme="b" >Add Signature</button>
+             <button onClick="saveCanvas()" data-theme="b" >Save it</button>
+            <button onClick="gotoAccount()" data-theme="c" >Fill in User Information</button>
                
         </p>
 	</div>

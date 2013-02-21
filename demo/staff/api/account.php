@@ -27,27 +27,37 @@ switch ($_SERVER['REQUEST_METHOD'])
                  $fname=$row["fname"];
                  $lname=$row["lname"];
                  $title=$row["title"];
-                 $address=$row["uaddress"];
-                 $passport=$row["passport"];
-                 $issueDate=$row["issueDate"];
+				
+                 $uaddress=$row["uaddress"];
+				 $passport=$row["passport"];
+                 $birth=$row["birth"];
+				  $issueDate=$row["issueDate"];
                  $expireDate=$row["expireDate"];
-                 $issueCity=$row["issueCity"];
-                 $issueCountry=$row["issueCountry"];
-                 $passportPhoto=$row["passportPhoto"];
-                 $idPhoto=$row["idPhoto"];
+				    $issueCountry=$row["issueCountry"];
+					 $nationality=$row["nationality"];
+					$birthPlace=$row["birthPlace"];
+					 $issueCity=$row["issueCity"];
+					  $phone=$row["phone"];
+					  $sex=$row["sex"];
+					  
                  $user = array(
                                "uid" => $uid,
                                "fname"=>$fname,
                                "lname"=>$lname,
-                               "address"=>$address,
+							 
+                               "uaddress"=>$uaddress,
                                "title"=>$title,
-                               "passport"=>$passport,
-                               "issueDate"=>$issueDate,
+							   "passport"=>$passport,
+							   "birth"=>$birth,
+							   "issueDate"=>$issueDate,
                                "expireDate"=>$expireDate,
-                               "passportPhoto"=>$passportPhoto,
-                               "idPhoto"=>$idPhoto,
-                               "issueCountry"=>$issueCountry,
-                               "issueCity"=>$issueCity
+							   "issueCountry"=>$issueCountry,
+							     "nationality"=>$nationality,
+								  "issueCity"=>$issueCity,
+								     "birthPlace"=>$birthPlace,
+									 "phone"=>$phone,
+									 "sex"=>$sex
+									
                                );
                  echo json_encode($user);
           	}

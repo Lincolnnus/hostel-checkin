@@ -106,7 +106,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 			else echo "Invalid Access Token";
 		}else echo "parameters missing for changeprofile";
 	        break;
-			 case 'changePassport':uid: uid, token: token,email:email,issueCountry:issueCountry,issueCity:issueCity,passport:passport,expireDate:expireDate,issueDate:issueDate,sex:sex,address:address,birthPlace:birthPlace,nationality:nationality,birth:birth,
+			 case 'changePassport':
                 if((isset($_POST["email"]))&&(isset($_POST["passport"]))&&(isset($_POST["issueDate"]))&&(isset($_POST["expireDate"])))
                 {
                     $email=$_POST["email"];
@@ -114,12 +114,12 @@ switch ($_SERVER['REQUEST_METHOD'])
                     $issueDate=$_POST["issueDate"];
                     $expireDate=$_POST["expireDate"];
                     $issueCountry=$_POST["issueCountry"];
-                    $issueCity=$_POST["passport"];
-					$issueCity=$_POST["sex"];
-					$issueCity=$_POST["address"];
-					$issueCity=$_POST["issueCity"];
-					$issueCity=$_POST["issueCity"];
-					$issueCity=$_POST["issueCity"];
+					$issueCity=$_POST["issueCity"];                   
+					$sex=$_POST["sex"];
+					$address=$_POST["address"];
+					$birthPlace=$_POST["birthPlace"];
+					$birth=$_POST["birth"];
+					$nationality=$_POST["nationality"];
 
 
 
@@ -128,12 +128,17 @@ switch ($_SERVER['REQUEST_METHOD'])
 
                     if (authentication($uid,$token))
                     {
-                        $query = sprintf("UPDATE `user` SET passport='%s',issueDate='%s',expireDate='%s',issueCountry='%s',issueCity='%s' WHERE email='%s'",
+                        $query = sprintf("UPDATE `user` SET passport='%s',issueDate='%s',expireDate='%s',issueCountry='%s',issueCity='%s',sex='%s',uaddress='%s',birthPlace='%s',birth='%s',nationality='%s' WHERE email='%s'",
                                          mysql_real_escape_string($passport),
                                          mysql_real_escape_string($issueDate),
                                          mysql_real_escape_string($expireDate),
                                          mysql_real_escape_string($issueCountry),
                                          mysql_real_escape_string($issueCity),
+										 mysql_real_escape_string($sex),
+										  mysql_real_escape_string($address),
+										    mysql_real_escape_string($birthPlace),
+											 mysql_real_escape_string($birth),
+											 mysql_real_escape_string($nationality),
                                          mysql_real_escape_string($email)
                                          );
                         $result = mysql_query($query);
