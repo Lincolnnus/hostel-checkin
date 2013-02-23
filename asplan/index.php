@@ -150,7 +150,7 @@ $(document).ready(function() {
             </p>
     </div>
 		<div id="signup" data-role="collapsible">
-		<h3><img src="css/images/signup.png"/>Partner with us</h3>
+		<h3><img src="css/images/signup.png"/>Partner with us testing</h3>
 		<p>
       <form id="frmCaptcha" name="frmCaptcha">
     <table> 
