@@ -37,9 +37,23 @@
 
                         {
 							 $password=md5(time());
-							 $stuffFirstname='lin';
+							 $query = sprintf("SELECT * FROM `user` WHERE email='%s'",mysql_real_escape_string($email));
+                    $result = mysql_query($query);
+							if (!$result) {
+	                             $message  = 'Invalid query: ' . mysql_error() . "\n";
+                    $message .= 'Whole query: ' . $query;
+                    die($message);
+	               }else if(mysql_num_rows($result)<=0){echo "No Such Hotel";}
+	else { 
+		 $row=mysql_fetch_array($result);
+                    $CustomerName=array('fname'=>$row["fname"],'lname'=>$row["lname"]);
+		
+	}
+					$fname=$CustomerName['fname'];	
+					$lname=$CustomerName['lname'];	
+					$Customer=$fname.$lname;
 								include_once("email.php");
-			sendStuffEmail($email,$stuffFirstname,$password);
+			sendCustomer($email,$Customer,$password);
 				
 							
 							

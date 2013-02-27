@@ -39,31 +39,6 @@ float:right;
 }
 </style>
 <script>
-  function getEmails(){
-      var uid=getCookie("uid");
-        var token=getCookie("token");
-        $.ajax({
-               type: "GET",
-               url: "api/admin.php",
-               dataType: "json",
-               data: { uid:uid, token: token,action:'getEmails' }
-               }).success(function( msg ) {
-                $('#message').html('');
-                var emails=msg;
-                for (var i=1;i<emails.length;i++)
-                {
-                  var newEmail=$('<div data-role="collapsible"><h3>'+emails[i]['subject']+'</h3>'+
-                    '<p> Subject:<input type="text" id="subject'+emails[i].eid+'" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" value="'+emails[i]['subject']+'">'+
-                    'From:<input type="text" id="from'+emails[i].eid+'" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" value="'+emails[i]["from"]+'">'+
-                    '<a onclick="gotoPreview()">Copy&Paste the HTML Email to Preview <button>Preview</button></a>'+
-                    'Message:<textarea id="message'+emails[i].eid+'"  class="ui-input-textarea ui-body-c ui-corner-all ui-shadow-inset">'+emails[i]['message']+'</textarea>'+
-                    '<button data-theme="b" onclick="updateEmails('+emails[i].eid+')">Save Change</button>'+
-                    '</p></div>').appendTo($('#message'));
-                  $('button').button();
-                }
-                $('div[data-role=collapsible]').collapsible();
-            }).fail(function(msg){showError("Fail Getting Browsers");});
-    }
     function showError(msg)
     {
         $('#hotelInfo').trigger('collapse');
@@ -99,10 +74,7 @@ float:right;
                }).success(function( msg ) {
                          // $('#hotelInfo').trigger('expand');
                           var hotel=msg;
-                          $('#emailTo').val(hotel.hemail);
-                          $('#hotelEmail').html(hotel.hemail);
-                          $('#hotelURL').html(hotel.hURL);
-                          $('#hotelName').html(hotel.hname);
+                          $('#hemail').val(hotel.hemail);                                                            
                           $('#hname').val(hotel.hname);
                           $('#haddress').val(hotel.haddress);
                           $('#hphone').val(hotel.hphone);
@@ -112,9 +84,9 @@ float:right;
                           $('#hDir').val(hotel.hDir);
                           $('#hDB').val(hotel.hDB);
                           $('#hlogo').attr('src',hotel.hlogo);
-                          $('#emailMessage').val($('#message').html());
+                         
                           if(hotel.verified>0){
-                            $('#verify').hide();
+                           
 							$('#hoteltitle').html("Enrolled Hospitality Partner Maintenance facility - ");
 							$('#hoteltitle').append(hotel.hname);
 							$('#sendEmail').hide();
@@ -181,21 +153,24 @@ float:right;
         var token=getCookie("token");
         var hid=getCookie("hid");
         var email=new Object();
-       var from=$('#emailFrom').val();
-        var to=$('#emailTo').val();
-        var subject=$('#emailSubject').val();
-        var message=$('#emailMessage').val();        
+     
+        var to=$('#hemail').val();
+    
+       
+		 var hname=$('#hname').val(); 
+		  var hmanager=$('#hmanager').val(); 
+		 
+		       
 console.log(email);
-alert(from);
+
         $.ajax({
                type: "POST",
                url: "api/admin.php",
                dataType: "json",
-               data: { uid:uid, token: token,hid:hid,from:from,to:to,subject:subject,message:message,action:'verifyHotel'}
+               data: { uid:uid, token: token,hid:hid,hname:hname,hmanager:hmanager,to:to,action:'verifyHotel'}
                }).success(function( msg ) {
-                $('#verified').show();
                 $('#buildPage').show();
-                $('#verify').hide();
+                $('#sendEmail').hide();
                 showError("Success");
                           }).fail(function(msg){showError(msg.responseText);});
       }
@@ -309,18 +284,10 @@ alert(from);
                 </tr>
                  <tr>
                   <td>
-                   Hotel Directory:
+                    Email:
                   </td>
                   <td>
-                    <input id="hDir" name="hDir">
-                  </td>
-                </tr>
-                 <tr>
-                  <td>
-                    Database Name:
-                  </td>
-                  <td>
-                    <input id="hDB" name="hDB">
+                    <input id="hemail" name="hemail">
                   </td>
                 </tr>
                 <tr>
@@ -349,26 +316,12 @@ alert(from);
         <div id="emailTemplates2" data-role="collapsible-set"></div>
      <div data-role="collapsible"> 
             <h3 id="sendEmail"> Send Verification Email</h3>
-            <p id="fuck">
-                Subject:<input id="emailSubject" type="text" placeholder="Title of the Email" value="Verified By Asplan">
-                To:<input id="emailTo" type="text" placeholder="Receiver's Email Address"> 
-                From:<input type="text" id="emailFrom" value="Asplan Services<asplanservices@gmail.com>">
-                Message: <div id="message"><p>Dear <a id="managerName">Shao</a>,</p><p>Your request has been approved by Asplan Service.</p>
-                <p>You are now the default system admin for <a id="hotelName"></a></p>
-                <p>Email Address: <a id="hotelEmail"></a></p>
-                <p>Password: <a id="hotelPassword"></a></p>
-                <p>Please access your admin account via <a id="hotelURL"></a></p>
-                <p>Best Regards,</p>
-                <p>Asplan Service Team</p></div>
-                
-                
-                
-                
-                <textarea cols="100" rows="100" id="emailMessage" placeholder="Please Paste The HTML Email"></textarea>        
+            <p>
                      <div id="verified"><button onClick="unverifyHotel()" data-theme="b">Verified</button></div>
                      <div id="verify"><button onClick="verifyHotel()" data-theme="a">Verify</button></div>
             </p>
     </div>
+    <!--
     <div id="buildPage" data-role="collapsible"> 
             <h3 onClick="showError('Root User Required, Please Access Via Terminal')"> Build App for this Hotel</h3>
             <p>
@@ -412,6 +365,7 @@ alert(from);
               </div>
             </p>
     </div>
+    -->
     <div data-role="collapsible">
     <h3>Log Out</h3>
     <p>

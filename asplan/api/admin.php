@@ -61,15 +61,12 @@ if(isset($_POST["uid"])&&isset($_POST["token"]))
 			$hid=$_POST["hid"];
 			
 			if(verifyHotel($hid))
-			{
-	 $from = $_POST["from"];                              // Your name and email address
-        $to = $_POST["to"];                           // The Recipients name and email address
-        $subject = $_POST["subject"];    				
-          $html1 = $_POST["message"];
-
-				if(sendHTMLEmail($from,$to,$subject,$html1 )) echo json_encode("success");
-				else echo "Error Sending Email";
-				
+			{	                           
+            $to = $_POST["to"];                             
+			$hotelname=$_POST["hname"];
+			$hotelmanager=$_POST["hmanager"];
+			if(sendVerificationEmail($to,$hotelname,$hotelmanager)) echo json_encode("success");
+			else echo "Error Sending Email";
 			}else echo "Error Verifying";
 			break;
 			case 'unverifyHotel':

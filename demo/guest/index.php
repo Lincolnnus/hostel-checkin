@@ -98,6 +98,7 @@ function login()
 }
                  function checkin()
                  {
+				showError("Processing...");
                  var email=$("#checkinemail").val();
                  var confirmation=$("#checkincode").val();
                  if(validateEmail(email))

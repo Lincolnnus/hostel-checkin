@@ -1,4 +1,5 @@
 <?php
+require_once("includes/connection.php");
 function userLogin($email,$password)
 {
 	$query = sprintf("SELECT * FROM `admin` WHERE email='%s' AND password='%s'",

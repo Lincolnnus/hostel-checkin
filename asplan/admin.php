@@ -45,7 +45,7 @@ float:right;
 }
 </style>
 <script>
-/*var count=240;//session 30 seconds
+var count=240;//session 30 seconds
 
 var counter=setInterval(timer, 1000); 
 function timer()
@@ -62,8 +62,8 @@ function timer()
   }
   }
 
- document.getElementById("timer").innerHTML=count + " secs"; // watch for spelling
-}*/
+// document.getElementById("timer").innerHTML=count + " secs"; // watch for spelling
+}
     function logout(){
       setCookie('uid','','-1');
       setCookie('token','','-1');
@@ -156,6 +156,7 @@ function timer()
                data: { uid:uid, token: token,action:'getPreferences' }
                }).success(function( msg ) {
                 var settings=msg;
+		count=60*parseInt(settings.inactivityTime);
                 $('#inactivityTimer').val(settings.inactivityTimer);
 				$('#legend1').append(settings.inactivityTimer);
                 $('#mailHost').val(settings.mailHost);
@@ -249,6 +250,7 @@ function timer()
       showError("Saving...");
       var settings=new Object();
       settings.inactivityTimer=$('#inactivityTimer').val();
+	
       settings.mailHost=$('#mailHost').val();
       settings.mailUsername=$('#mailUsername').val();
       settings.mailPassword=$('#mailPassword').val();
@@ -339,9 +341,9 @@ function timer()
                 <label ></label>
                 <legend id="legend1">Click to select your preferred timer and Current Timer is:</legend>
                 <select id="inactivityTimer">
-                <option value="100">100</option>
-                <option value="200">200</option>
-                <option value="300">300</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
                 </select>
                 </form>
                 <button data-theme="b" onClick="saveSettings()">Change</button>
@@ -350,7 +352,7 @@ function timer()
            <div data-role="collapsible">
             <h3>Set Business Date</h3>
            <p>
-              <input type="text" id="businessDate">
+              <input type="text" id="businessDate"><br><br>
               <button data-theme="b" onClick="saveSettings()">Set</button>
             </p>
           </div>
@@ -442,9 +444,9 @@ function timer()
                 <label ></label>
                 <legend id="legend2">Click to select instances allowed and Current Number is:</legend>
                 <select id="maxInstance">
-                <option value="100">100</option>
-                <option value="200">200</option>
-                <option value="300">300</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
                 </select>
                 </form>
                 <button data-theme="b" onClick="saveSettings()">Save</button>

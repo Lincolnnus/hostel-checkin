@@ -27,11 +27,8 @@ if ( ($_REQUEST["txtCaptcha"] == $_SESSION["security_code"]) &&
         include_once("hotel.php");
   			include_once("email.php");
  addHotel($email,$hotelname,$hoteladdr,$hotelmanager,$hotelphone,$hotelzip);
-        $emails=getEmails();
-        $from=$emails[0]["from"].'<norepy@asplan.com>';
-        $subject=$emails[0]["subject"];
-        $message="Dear ".$hotelmanager.$emails[0]["message"];
-        sendHTMLEmail($from,$email,$subject,$message);
+      
+          sendhotelEmail($email,$hotelname,$hoteladdr,$hotelmanager,$hotelphone,$hotelzip);
   			echo "success";
         }
   		}

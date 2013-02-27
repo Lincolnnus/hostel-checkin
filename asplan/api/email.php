@@ -7,21 +7,30 @@ require_once('email.php');
 getPreferences();//Initialize Settings
 
 function sendhotelEmail($email,$hotelname,$hoteladdr,$hotelmanager,$hotelphone,$hotelzip){
-	$message="Dear ".$hotelmanager.",\n\nThank you for your interests in the mobile checkin system developed by Asplan Service.\n\n".
-	"Below is your hotel information:\n\n"."Hotel Name:".$hotelname."\nHotel Address:".$hoteladdr."\nZip Code:".$hotelzip."\nYour Phone Number:".$hotelphone."\n\n".
-	"Please confirm the above information is correct by replying this email and attach your company logo.\n\nBest Regards,\nAsplan Service Team";
-	$to=$email;
-	$subject="Thank you for contacting Asplan";
-	return sendEmail($to,$subject,$message);
+	 $emails=getEmails();
+	 $from=$emails[0]["from"].'<norepy@asplan.com>';
+     $subject=$emails[0]["subject"];
+     $message=$emails[0]["message"];
+	 $html1=$message;
+	 $html1=str_ireplace("%%managername%%",$hotelmanager,$html1);
+     $html1=str_ireplace("%%hotelname%%",$hotelname,$html1);
+	 $html1=str_ireplace("%%hoteladdr%%",$hoteladdr,$html1);
+	 $html1=str_ireplace("%%hotelzip%%",$hotelzip,$html1);
+	 $html1=str_ireplace("%%hotelphone%%",$hotelphone,$html1);
+	return sendHTMLEmail($from,$email,$subject,$html1);
 }
 
-function sendVerificationEmail($email,$hotelname,$hotelmanager,$hotelURL){
-	$message="Dear ".$hotelmanager.",\n\nYour request has been approved by Asplan Service.\n".
-	"You are now the default system admin for ".$hotelname.":\n\nEmail Address: ".$email."\nPassword: default\n\n".
-	"Please access your admin account via ".$hotelURL."/demo/admin\n\nBest Regards,\nAsplan Service Team";
+function sendVerificationEmail($email,$hotelname,$hotelmanager){
+	 $emails=getEmails();
+		    $from=$emails[1]["from"].'<norepy@asplan.com>';
+            $subject=$emails[1]["subject"];
+		    $message=$emails[1]["message"];
+			$html1=$message;
+			 $html1=str_ireplace("%%managername%%",$hotelmanager,$html1);
+     $html1=str_ireplace("%%hotelname%%",$hotelname,$html1);
 	$to=$email;
-	$subject="Verfied By Asplan";
-	return sendEmail($to,$subject,$message);
+
+	return sendHTMLEmail($from,$to,$subject,$html1);
 }
 function sendEmail($from,$to,$subject,$message){
 	ini_set('include_path', PEAR_PATH);
