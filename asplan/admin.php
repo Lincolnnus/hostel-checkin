@@ -45,17 +45,22 @@ float:right;
 }
 </style>
 <script>
-var count=240;//session 30 seconds
+
+
 
 var counter=setInterval(timer, 1000); 
+
 function timer()
 {
+ 
   count=count-1;
   if (count <= 0)
   {
      var answer = confirm("Session Expired, Do You Want To Continue?")
   if (answer){
-    count=240;
+    timeCount();
+	
+	
   }
   else{
     logout();
@@ -63,6 +68,25 @@ function timer()
   }
 
 // document.getElementById("timer").innerHTML=count + " secs"; // watch for spelling
+}
+function timeCount(){
+	
+	
+	    var uid=getCookie("uid");
+        var token=getCookie("token");
+        $.ajax({
+               type: "GET",
+               url: "api/admin.php",
+               dataType: "json",
+               data: { uid:uid, token: token,action:'getPreferences' }
+               }).success(function( msg ) {
+                var settings=msg;
+				count=60*parseInt(settings.inactivityTimer);     
+				
+				
+                          }).fail(function(msg){showError("Fail Getting Preferences");});
+	
+
 }
     function logout(){
       setCookie('uid','','-1');
@@ -92,6 +116,8 @@ function timer()
                       $("#businessDate").datepicker();
                       if(checkCookie("uid")){
                         var uid=getCookie("uid");
+						timeCount();
+					
                       }else{
                          window.location="index.php";
                       }
@@ -156,11 +182,11 @@ function timer()
                data: { uid:uid, token: token,action:'getPreferences' }
                }).success(function( msg ) {
                 var settings=msg;
-		count=60*parseInt(settings.inactivityTime);
+	
                 $('#inactivityTimer').val(settings.inactivityTimer);
 				$('#legend1').append(settings.inactivityTimer);
                 $('#mailHost').val(settings.mailHost);
-                $('#mailUsername').val(settings.mailUsername);
+                $('#mailUsername').val(settings.mailUsername);s
                 $('#mailPassword').val(settings.mailPassword);
                 $('#mailPort').val(settings.mailPort);
                 $('#maxInstance').val(settings.maxInstance);
@@ -341,6 +367,7 @@ function timer()
                 <label ></label>
                 <legend id="legend1">Click to select your preferred timer and Current Timer is:</legend>
                 <select id="inactivityTimer">
+                <option value="1">1</option>
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="20">20</option>
