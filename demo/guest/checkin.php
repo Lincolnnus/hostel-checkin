@@ -38,12 +38,14 @@ function getcheckinfo()
                           var email=getCookie("email");
                           var confirmation=getCookie("confirmation");
                           var token=getCookie("token");
+						
                           $.ajax({
                                  type: "GET",
                                  url: "api/check.php",
                                  dataType: "json",
                                  data: {uid:uid, email: email, confirmation:confirmation,token:token }
                                  }).success(function( msg ) {
+			console.log(msg);						
                                             if(msg.step=="0"){
                                             displayCanvas(hotel,msg.user,msg.booking);
                                             } else if(msg.step=="1"){

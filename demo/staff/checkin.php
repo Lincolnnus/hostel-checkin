@@ -290,8 +290,17 @@ function loadPassport(){
 	loadPhoto();
 }
 function saveCanvas(){
-    var c=document.getElementById("checkinCanvas");
-    document.location = c.toDataURL("image/png");
+    var img=document.getElementById("checkinCanvas");
+	var content=img.toDataURL("image/png");
+		
+	var uid=getCookie("uid");
+    var email=getCookie("email");
+	alert(content);
+ var ajax = new XMLHttpRequest();
+ ajax.open("POST",'api/pdf/sendpdf.php',false);
+ ajax.setRequestHeader('Content-Type', 'application/upload');
+ ajax.send(content);
+    
 }
 $(document).ready(function() {
 if(checkCookie("email")==0)
@@ -319,7 +328,7 @@ if(checkCookie("email")==0)
           
             <div id="checkinfo"></div>
              <button onClick="addSignature()" data-theme="b" >Add Signature</button>
-             <button onClick="saveCanvas()" data-theme="b" >Save it</button>
+             <button onClick="saveCanvas()" data-theme="b" >Send Check-in Confirmation PDF to Customer</button>
             <button onClick="gotoAccount()" data-theme="c" >Fill in User Information</button>
                
         </p>

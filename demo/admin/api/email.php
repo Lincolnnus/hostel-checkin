@@ -27,7 +27,7 @@ function sendConfirmation($email,$name,$confirmation){
 	$subject=$emails[2]["subject"];
     $message=$emails[2]["message"];	
 	$from=$emails[2]["from"].'<norepy@asplan.com>';
-	$to='vspenglin@gmail.com';
+	$to='lincolnnus@gmail.com';
 	$html1=$message;
 	 $html1=str_ireplace("%%customername%%",$name,$html1);
      $html1=str_ireplace("%%hURL%%",$hURL,$html1);

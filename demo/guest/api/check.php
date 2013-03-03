@@ -22,7 +22,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 	    {
             $user=mysql_fetch_array($result);
             $confirmation=$_GET["confirmation"];
-            $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND rid='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
+            $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
             $result = mysql_query($query);
             // var_dump($query);
             if (!$result) {
@@ -50,6 +50,7 @@ switch ($_SERVER['REQUEST_METHOD'])
                 else
                 { $hotel=mysql_fetch_array($result);  }//successfully get hotel information
                 echo json_encode(array('booking' => $booking,'step'=>$step,'user'=>$user,'hotel'=>$hotel));
+			//      echo json_encode("success");
             }//successfully get checkin information
         }
     }
@@ -60,7 +61,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 	    {
 		    $email=$_POST["email"];
 		    $confirmation=$_POST["confirmation"];
-		    $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND rid='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
+		    $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
 		    $result = mysql_query($query);
 		    if (!$result) {
 			    $message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -72,7 +73,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 		    }
 		    else 
 		    {
-			$query = sprintf("UPDATE `booking` SET step='1' WHERE email='%s' AND rid='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
+			$query = sprintf("UPDATE `booking` SET step='1' WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
 			$result = mysql_query($query);
 			    if (!$result) {
 				    $message  = 'Invalid query: ' . mysql_error() . "\n";

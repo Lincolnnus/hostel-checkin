@@ -37,6 +37,12 @@
 
                         {
 							 $password=md5(time());
+							  $query2 = sprintf("UPDATE `user` SET password='%s' WHERE email='%s'",mysql_real_escape_string($password),mysql_real_escape_string($email));
+							   $result2=mysql_query($query2);
+							  update_token($email);
+	
+							 
+							
 							 $query = sprintf("SELECT * FROM `user` WHERE email='%s'",mysql_real_escape_string($email));
                     $result = mysql_query($query);
 							if (!$result) {
@@ -100,11 +106,35 @@
         return $resultI;
         
     }
+	function update_token($email)
+{
+   $tokenLen = 16;
+   if (file_exists('/dev/urandom')) { // Get 100 bytes of random data
+		$randomData = file_get_contents('/dev/urandom', false, null, 0, 100) . uniqid(mt_rand(), true);
+   } else {
+		$randomData = mt_rand() . mt_rand() . mt_rand() . mt_rand() . microtime(true) . uniqid(mt_rand(), true);
+   }
+   $token= substr(hash('sha512', $randomData), 0, $tokenLen);
+   $query = sprintf("UPDATE user SET token='%s' WHERE email='%s'",
+		mysql_real_escape_string($token),
+		mysql_real_escape_string($email)
+	 );
+	$result = mysql_query($query);
+	if (!$result) {
+	    $message  = 'Invalid query: ' . mysql_error() . "\n";
+	    $message .= 'Whole query: ' . $query;
+	    return 0;
+	}
+        else
+        {
+           return $token;
+        }
+}
     
     function insertBooking ($email,$confirmation){
         $resultI = FALSE;
         if (mysql_query('BEGIN')) {
-            $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND rid='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
+            $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
             $result = mysql_query($query);
             
             if (!$result) {

@@ -74,6 +74,7 @@ function login()
 {
 	var email=$("#loginemail").val();
 	var password=$("#loginpassword").val();
+	
         if(validateEmail(email))
 	{
 		$.ajax({
@@ -86,6 +87,7 @@ function login()
 		  setCookie('token',msg.token,1);
 		  setCookie('fname',msg.fname,1);
 		  setCookie('email',msg.email,1);
+		  
           if(checkCookie('confirmation')){window.location="checkin.php";}
           else{window.location="index.php";}
 		}).fail(function(msg){
@@ -110,12 +112,15 @@ function login()
                         data: { email: email, confirmation: confirmation}
                         }).success(function( msg ) {
                                    if(msg.status=='sent'){
+									  
+									  setCookie('confirmation',msg.confirmation,1);
                                    showError("Please Check Your Email To Verify your email address and then Login");
                                    }
                                    else if (checkCookie('uid')){
                                     window.location="checkin.php";
                                    }
                                    else{
+									  
                                          showError("To Protect Your Personally Information,Please Login");
                                          setCookie('email',msg.email,1);
                                          setCookie('confirmation',msg.confirmation,1);
@@ -196,10 +201,10 @@ function checkUser()
                                                           switch(checkin[i].step)
                                                           {
                                                           case "0":
-                                                          $("#myConfirmation").append('<li><a onclick="showCheckin('+checkin[i].rid+')" >'+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'</a></li>');
+                                                          $("#myConfirmation").append('<li><a onclick="showCheckin('+checkin[i].confirmation+')" >'+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'</a></li>');
                                                           break;
                                                           case "1":
-                                                          $("#currentCheckin").append('<li><a onclick="showCheckin('+checkin[i].rid+')" >'+"Check-in Date:"+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'&nbsp;'+'&nbsp;'+'&nbsp;'+"Confirmation Code:"+checkin[i].confirmation+'</a></li>');
+                                                          $("#currentCheckin").append('<li><a onclick="showCheckin('+checkin[i].confirmation+')" >'+"Check-in Date:"+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'&nbsp;'+'&nbsp;'+'&nbsp;'+"Confirmation Code:"+checkin[i].confirmation+'</a></li>');
                                                           break;
                                                           case "2":
                                                           $("#myHistory").append('<li><a onclick="showCheckin('+checkin[i].confirmation+')">'+checkin[i].checkindate+'</a></li>');
@@ -258,7 +263,7 @@ $(document).ready(function() {
 			    <input type="text" id="loginemail" name="loginemail" placeholder="Email"/>
 			    <input type="password" id="loginpassword" name="loginpassword" placeholder="Password"/>
                  <button data-theme="b" onClick="login()" onKeyPress="login()">Login</button>
-                 <a style="float:right;" onClick="gotoStaff()">Staff Login</a>
+                
 		</p>
 		</div>
 		<!--<div id="signupPage" data-role="collapsible">

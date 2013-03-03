@@ -319,7 +319,7 @@ float:right;
                                                dataType: "json",
                                                data: { uid: uid, token: token,email:email}
                                                }).success(function( msg ) {
-										alert(msg);		
+											
 												   
 												
 												          $("#username").append(msg.fname);
@@ -365,7 +365,7 @@ if(checkCookie("uid")==0){
 <div data-role="page">
 
   <div data-role="header" data-theme="b">
-    <h1 id="userName2">My Account ¨C User Profile for </h1>
+    <h1 id="userName2">My Account - User Profile for </h1>
     <a href="mine.php" data-icon="home" data-iconpos="notext" data-rel="back">Home</a>
   </div><!-- /header -->
 

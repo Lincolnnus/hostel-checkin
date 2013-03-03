@@ -12,7 +12,8 @@ function getPreferences(){
 		define("GMAIL_UNAME",$row["mailUsername"]);
 		define("GMAIL_PASSWORD",$row["mailPassword"]);
 		define("GMAIL_PORT",$row["mailPort"]); 
-		define("COMPANY_NAME",$row["companyName"]);
+		define("HOTEL_NAME",$row["companyName"]);
+		define("HOTEL_URL","http://54.251.118.233/pl");
 		return $row;
 	}
 }

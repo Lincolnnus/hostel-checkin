@@ -7,7 +7,7 @@ if((isset($_POST["stuffEmail"]))&&(isset($_POST["stuffFirstname"]))&&(isset($_PO
 	include_once("connection.php"); 
 	 $password=md5(time());
 	 $token=md5(time());
-	 $query = sprintf("INSERT INTO `stuff`(email,fname,lname,password,token) VALUES('%s','%s','%s','%s','%s')",
+	 $query = sprintf("INSERT INTO `staff`(email,fname,lname,password,token) VALUES('%s','%s','%s','%s','%s')",
 			mysql_real_escape_string($stuffEmail),
 			mysql_real_escape_string($stuffFirstname),
 			mysql_real_escape_string($stuffLastname),
@@ -32,7 +32,7 @@ if((isset($_POST["stuffEmail"]))&&(isset($_POST["stuffFirstname"]))&&(isset($_PO
 else{
 	$stuffEmail=$_POST["stuffEmail"];
 	include_once("connection.php"); 
-	$query=sprintf("DELETE FROM  `stuff` WHERE email= '%s' ",
+	$query=sprintf("DELETE FROM  `staff` WHERE email= '%s' ",
 				mysql_real_escape_string($stuffEmail));
 	
 	$result=mysql_query($query);
