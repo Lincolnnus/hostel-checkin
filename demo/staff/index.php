@@ -70,6 +70,35 @@ function showError(msg)
         $("#errorMsg").html(msg);
         $("#errorWrapper").show();
 }
+function getBooking()
+{
+  var uid=getCookie('uid');
+  var token=getCookie('token');               
+  $.ajax({
+      type: "POST",
+      url: "api/getBooking.php",
+      dataType: "json",
+      data: {uid:uid,token:token}
+    }).success(function( msg ) {
+		alert(msg);
+       var booking=msg;
+                          var bookingList=$("#newBooking");
+                          bookingList.html('');
+                          for(var i=0;i<booking.length;i++)
+                          {
+                            var newli=$('<li><a onclick="showBooking('+booking[i].rid+')">'+booking[i].confirmation+'</a></li>').appendTo(bookingList);
+                          }
+                          bookingList.listview( "refresh" );
+    }).fail(function(msg){showError("Error Getting Stuffs");});
+}
+ 
+ function showBooking(msg){
+                                        var email=getCookie("email");
+                                        var code=setCookie('rid',msg,1);
+                                        window.location="checkin.php";
+    }
+	
+
 function login()
 {
 	var email=$("#loginemail").val();
@@ -194,6 +223,7 @@ function checkUser()
   }else{
     $('#passPage').hide();
     $('#logoutPage').hide();
+	$('#getbooking').hide();
   }
 }
 $(document).ready(function() {
@@ -216,6 +246,16 @@ $(document).ready(function() {
 	<br>
 	</div>
 	<div data-role="collapsible-set">
+	<div id="getbooking" data-role="collapsible">
+            <h3 onClick="getBooking()">Get Booking Customer</h3>
+            <p>
+            <ul id="newBooking" data-role="listview" data-filter="true" data-filter-placeholder="Search Booking..." data-filter-theme="d"data-theme="d" data-divider-theme="d">
+            </ul>
+            </p>
+		</div>
+   
+
+			
 	<div id="confirmapage" data-role="collapsible">
             <h3><img src="css/images/chekin.png"/>Guest Confirmation</h3>
             <p>

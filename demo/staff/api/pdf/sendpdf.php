@@ -2,7 +2,12 @@
 include_once("../connection.php"); 
 require_once("../settings2.php");
 getPreferences();
-$initialData = file_get_contents('php://input');
+
+if(isset($_POST["uid"])&&isset($_POST["email"])){
+	$content=$_POST["content"];
+	$to=$_POST["email"];
+	
+$initialData = file_get_contents($content);
 $GLOBALS['HTTP_RAW_POST_DATA']=$initialData;
 $filteredData=substr($GLOBALS['HTTP_RAW_POST_DATA'], strpos($GLOBALS['HTTP_RAW_POST_DATA'], ",")+1);
 
@@ -23,7 +28,7 @@ $content2=str_ireplace("%%img%%",$img,$content);
 file_put_contents('tmp.html',$content2);
 $destFile=md5(time()).'.pdf';
 exec('xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf tmp.html '.$destFile);
-echo $destFile;
+//echo $destFile;
             $hname=HOTEL_NAME;
             $emails=getEmails();
 		    $from=$emails[4]["from"].'<norepy@asplan.com>';
@@ -36,16 +41,27 @@ echo $destFile;
      $html1=str_ireplace("%%hotelname%%",$hotelname,$html1);
 	
 
-	$to='vspenglin@gmail.com';
 	
 
-sendHTMLEmail($from,$to,$subject,$html1,$destFile);
-unlink ($destFile);
-$email='vspenglin@gmail.com';
+
 $query = sprintf("UPDATE `booking` SET step='%s' WHERE email='%s'",
 	mysql_real_escape_string(1),
-	mysql_real_escape_string($email));
+	mysql_real_escape_string($to));
 	$result = mysql_query($query);
+		
+if (!$result) {
+		    $message  = 'Invalid query: ' . mysql_error() . "\n";
+		    $message .= 'Whole query: ' . $query;
+		    echo $message;
+		}else{
+			
+			echo json_encode(sendHTMLEmail($from,$to,$subject,$html1,$destFile));
+			unlink ($destFile);
+			
+			
+		}
+	   		
+}
 
 function sendHTMLEmail($from,$to,$subject,$html1,$destFile){
 	ini_set('include_path', PEAR_PATH);
@@ -118,16 +134,3 @@ return $text;
 
 
 ?>
-
-
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
-</head>
-
-<body>
-</body>
-</html>

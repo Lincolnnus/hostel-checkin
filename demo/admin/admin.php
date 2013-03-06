@@ -470,9 +470,10 @@ $(document).ready(function() {
                 <label ></label>
                 <legend id="legend1">Click to select your preferred timer and Current Timer is:</legend>
                 <select id="inactivityTimer">
-                <option value="100">100</option>
-                <option value="200">200</option>
-                <option value="300">300</option>
+                <option value="1">1</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
                 </select>
                 </form>
                 <button data-theme="b" onClick="saveSettings()">Change</button>

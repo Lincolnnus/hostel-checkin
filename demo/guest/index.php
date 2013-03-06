@@ -35,6 +35,58 @@ float:right;
 }
 </style>
 <script>
+var counter=setInterval(timer, 1000); 
+function timer()
+{
+ 
+  time=time-1;
+  if (time <= 0)
+  {
+     var answer = confirm("Session Expired, Do You Want To Continue?")
+  if (answer){
+     time=count;
+	
+				
+  }
+  else{
+    logout();
+  }
+  }
+
+// document.getElementById("timer").innerHTML=count + " secs"; // watch for spelling
+}
+
+function countValue(){
+	
+	
+    time=count;
+	
+	
+	
+	
+	}
+function timeCount(){
+	
+	
+	    var uid=getCookie("uid");
+        var token=getCookie("token");
+        $.ajax({
+               type: "GET",
+               url: "api/getPreferences.php",
+               dataType: "json",
+               data: { uid:uid, token: token,action:'getPreferences' }
+               }).success(function( msg ) {
+                var settings=msg;
+				count=60*parseInt(settings.inactivityTimer); 
+				countValue(); 
+				 
+				
+				
+                          }).fail(function(msg){showError("Fail Getting Preferences");});
+	
+
+}
+
 function validateEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
@@ -172,6 +224,7 @@ function checkUser()
       $('#loginPage').hide();
      // $('#signupPage').hide();
       $('#checkinemail').val(getCookie('email'));
+	  timeCount();
      }else{
       $('#myPage').hide();
       $('#logoutPage').hide();
@@ -196,18 +249,22 @@ function checkUser()
                                                           $("#myConfirmation").html("");
                                                           $("#currentCheckin").html("");
                                                           $("#myHistory").html("");
+													
+														
                                                           for(var i=0;i<checkin.length;i++)
                                                           {
                                                           switch(checkin[i].step)
                                                           {
-                                                          case "0":
-                                                          $("#myConfirmation").append('<li><a onclick="showCheckin('+checkin[i].confirmation+')" >'+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'</a></li>');
+                                                         case "0":
+													
+													
+                                                         $("#myConfirmation").append('<li><a onclick="showCheckin('+checkin[i].rid+')" >'+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'</a></li>');
                                                           break;
                                                           case "1":
-                                                          $("#currentCheckin").append('<li><a onclick="showCheckin('+checkin[i].confirmation+')" >'+"Check-in Date:"+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'&nbsp;'+'&nbsp;'+'&nbsp;'+"Confirmation Code:"+checkin[i].confirmation+'</a></li>');
+                                                          $("#currentCheckin").append('<li><a onclick="showCheckin('+checkin[i].rid+')" >'+"Check-in Date:"+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'&nbsp;'+'&nbsp;'+'&nbsp;'+"Confirmation Code:"+checkin[i].rid+'</a></li>');
                                                           break;
                                                           case "2":
-                                                          $("#myHistory").append('<li><a onclick="showCheckin('+checkin[i].confirmation+')">'+checkin[i].checkindate+'</a></li>');
+                                                          $("#myHistory").append('<li><a onclick="showCheckin('+checkin[i].rid+')">'+checkin[i].checkindate+'</a></li>');
                                                           break;
                                                           }
                                                           }
@@ -220,15 +277,18 @@ function checkUser()
                                         { alert("Invalid Email Address");window.location="index.php";}
      
     }
-    function showCheckin(confirmation){
+    function showCheckin(msg){
+		                             
                                         var email=getCookie("email");
-                                        var code=setCookie('confirmation',confirmation,1);
+                                        var code=setCookie('rid',msg,1);
+							
                                         window.location="checkin.php";
     }
 $(document).ready(function() {
                   var hotel=getHotel();
                   showHotel(hotel);
                   checkUser();
+				
 });
 </script>
 </head>

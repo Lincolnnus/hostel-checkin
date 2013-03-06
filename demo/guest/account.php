@@ -52,6 +52,63 @@ float:right;
 </style>
 
 <script>
+var counter=setInterval(timer, 1000); 
+function timer()
+{
+ 
+  time=time-1;
+  if (time <= 0)
+  {
+     var answer = confirm("Session Expired, Do You Want To Continue?")
+  if (answer){
+     time=count;
+	
+				
+  }
+  else{
+    logout();
+  }
+  }
+
+// document.getElementById("timer").innerHTML=count + " secs"; // watch for spelling
+}
+
+function countValue(){
+	
+	
+    time=count;
+    
+	
+	
+	
+	}
+function timeCount(){
+	
+	
+	    var uid=getCookie("uid");
+        var token=getCookie("token");
+        $.ajax({
+               type: "GET",
+               url: "api/getPreferences.php",
+               dataType: "json",
+               data: { uid:uid, token: token,action:'getPreferences' }
+               }).success(function( msg ) {
+                var settings=msg;
+				count=60*parseInt(settings.inactivityTimer); 
+				countValue(); 
+				 
+				
+				
+                          }).fail(function(msg){showError("Fail Getting Preferences");});
+	
+
+}
+ function logout(){
+      setCookie('uid','','-1');
+      setCookie('token','','-1');
+      window.location="index.php";
+    }
+
   function gotoHome(){
     window.location='index.php';
   }
@@ -357,6 +414,7 @@ if(checkCookie("uid")==0){
 }else{
   var uid=getCookie("uid");
   getProfile();
+  timeCount();
 }
 });
 </script>
@@ -365,7 +423,7 @@ if(checkCookie("uid")==0){
 <div data-role="page">
 
   <div data-role="header" data-theme="b">
-    <h1 id="userName2">My Account ¨C User Profile for </h1>
+    <h1 id="userName2">My Account-User Profile for </h1>
     <a href="mine.php" data-icon="home" data-iconpos="notext" data-rel="back">Home</a>
   </div><!-- /header -->
 
@@ -513,6 +571,8 @@ if(checkCookie("uid")==0){
                 <label for="checkbox5"> Bed &amp; Breakfast inn </label>
                 <input id="checkbox6" name='checkbox6[]' type="checkbox" value="Independent Boutique Hotel">
                 <input name='checkbox6[]' type="checkbox" hidden="hidden" value='' checked >
+
+
                 <label for="checkbox6"> Independent Boutique Hotel </label>
                 <input id="checkbox7" name='checkbox7[]'
                                 type="checkbox" value="Standardized hotel affiliated/operated by recognized chain">

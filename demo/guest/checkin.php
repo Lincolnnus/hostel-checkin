@@ -30,24 +30,59 @@ function getHotel()
                  hotel.contact=hotelxml.getElementsByTagName("contact")[0].childNodes[0].nodeValue;
                  return hotel;
 }
+	function checkOut(){
+					
+					 var hotel=getHotel();
+                          var uid=getCookie("uid");
+                          var email=getCookie("email");
+                          var confirmation=getCookie("confirmation");
+                          var token=getCookie("token");
+						alert(uid+email+confirmation);
+                          $.ajax({
+                                 type: "POST",
+                                 url: "api/check.php",
+                                 dataType: "json",
+                                 data: {uid:uid, email: email, confirmation:confirmation,token:token }
+                                 }).success(function( msg ) {
+			console.log(msg);						
+                                            alert("successfully checkout");
+											    window.location="index.php";
+                                            }).fail(function(msg){alert("Invalid Checkin Email and Checkin Code");});
+                          
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					}
 function getcheckinfo()
                           {
 
                           var hotel=getHotel();
                           var uid=getCookie("uid");
                           var email=getCookie("email");
-                          var confirmation=getCookie("confirmation");
+                          var rid=getCookie("rid");
                           var token=getCookie("token");
 						
                           $.ajax({
                                  type: "GET",
                                  url: "api/check.php",
                                  dataType: "json",
-                                 data: {uid:uid, email: email, confirmation:confirmation,token:token }
+                                 data: {uid:uid, email: email, rid:rid,token:token }
                                  }).success(function( msg ) {
 			console.log(msg);						
                                             if(msg.step=="0"){
                                             displayCanvas(hotel,msg.user,msg.booking);
+											var confirmation=setCookie('confirmation',msg.booking.confirmation,1);
                                             } else if(msg.step=="1"){
                                             displayCanvas(hotel,msg.user,msg.booking);
                                             }
@@ -199,6 +234,7 @@ function addSignature(){
     $('#checkinCanvas').mousedown(function(e) {
                         newpoly=[];//Clear the Stroke
 
+
                         started=true;
                         newpoly.push( {"x":e.offsetX,"y":e.offsetY});//The percentage will be saved
                         ctx.globalAlpha = 1;
@@ -324,6 +360,7 @@ if(checkCookie("email")==0)
             <div id="checkinfo"></div>
              <button onClick="saveCanvas()" data-theme="b" >Save it</button>
             <button onClick="gotoAccount()" data-theme="c" >My Account</button>
+            <button onClick="checkOut()" data-theme="c" >Check Out</button>
                
         </p>
 	</div>

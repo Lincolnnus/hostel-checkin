@@ -36,13 +36,14 @@ function getcheckinfo()
                           var hotel=getHotel();
                           var uid=getCookie("uid");
                           var email=getCookie("email");
-                          var confirmation=getCookie("confirmation");
+                          var rid=getCookie("rid");
                           var token=getCookie("token");
+						  alert(email+uid+rid+token);
                           $.ajax({
                                  type: "GET",
                                  url: "api/adminCheck.php",
                                  dataType: "json",
-                                 data: {uid:uid, email: email, confirmation:confirmation,token:token }
+                                 data: {uid:uid, email: email, rid:rid,token:token }
                                  }).success(function( msg ) {
                                             if(msg.step=="0"){
                                             displayCanvas(hotel,msg.user,msg.booking);
@@ -303,7 +304,7 @@ function saveCanvas(){
     
 }
 $(document).ready(function() {
-if(checkCookie("email")==0)
+if(checkCookie("uid")==0)
 {
    	window.location="index.php";
 }else{getcheckinfo();}
