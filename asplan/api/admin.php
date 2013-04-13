@@ -144,6 +144,7 @@ if(isset($_POST["uid"])&&isset($_POST["token"]))
 	$password=$_POST["password"];
 	$user=userLogin($email,$password);
 	if($user){
+
 		$uid=$user["uid"];
 		$email=$user["email"];
 		$uname=$user["uname"];

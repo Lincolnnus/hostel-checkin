@@ -189,6 +189,7 @@ function timeCount(){
 										
 											
 										$.ajax({
+										
 											   type: "POST",
                                                url: "api/account.php",
                                                dataType: "json",
@@ -244,6 +245,9 @@ function timeCount(){
                dataType: "json",
                data: { uid:uid, token: token,task:'getPreference' }
                }).success(function( msg ) {
+				 $.each(msg, function(key, val) {
+    $('<tr><td>ID: '+key+'</td><td id="'+key+'">'+val+'</td><tr>').appendTo('#show');
+});
 				 
                           var hotels=msg;
                           var hotel1=$("#economyHotel");
@@ -283,73 +287,169 @@ function timeCount(){
 							  for(var j=1;j<24;j++){
 							  switch(j){
 								  case 1 :
-                            var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(hotel1);							
+								 
+								  var check=hotels[i][j];
+								  if(check){
+								 
+							    $("[name='checkbox1[]']").attr("checked",true).checkboxradio("refresh");
+						
+								  }
+                         						
 							break;
 							      case 2:
-								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(hotel1);	
+								  	  var check=hotels[i][j];
+								   if(check){
+								 
+							    $("[name='checkbox2[]']").attr("checked",true).checkboxradio("refresh");
+						
+								  }
 								  break;
 								  
 								     case 3:
-								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(hotel1);	
+									  var check=hotels[i][j];
+								  if(check){
+								 
+							    $("[name='checkbox3[]']").attr("checked",true).checkboxradio("refresh");
+						
+								  }
+								  
 								  break;
 								    case 4:
-								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(hotel1);	
+								   	  var check=hotels[i][j];
+									   if(check){
+								 
+							    $("[name='checkbox4[]']").attr("checked",true).checkboxradio("refresh");
+						
+								  }
 								  break;
 								  case 5:
-								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(hotel2);	
+								  var check=hotels[i][j];
+									   if(check){
+								 
+							    $("[name='checkbox5[]']").attr("checked",true).checkboxradio("refresh");
+						
+								  }
 								  break;
 								   case 6:
-								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(hotel2);	
+								    var check=hotels[i][j];
+									   if(check){
+								 
+							    $("[name='checkbox6[]']").attr("checked",true).checkboxradio("refresh");
+						
+								  }
 								  break;
 								   case 7:
-								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(hotel2);	
+								   var check=hotels[i][j];
+									   if(check){
+								 
+							    $("[name='checkbox7[]']").attr("checked",true).checkboxradio("refresh");
+						
+								  }
 								  break;
 								    case 8:
-								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(hotel2);	
+								     var check=hotels[i][j];
+									   if(check){
+								 
+							    $("[name='checkbox8[]']").attr("checked",true).checkboxradio("refresh");
+						
+								  }
 								  break;
 								     case 9:
-								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(hotel3);	
+								   var check=hotels[i][j];
+									   if(check){
+								 
+							    $("[name='checkbox9[]']").attr("checked",true).checkboxradio("refresh");
+						
+								  }
 								  break;
 								     case 10:
-								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(hotel3);	
+								    var check=hotels[i][j];
+									   if(check){
+								 
+							    $("[name='checkbox10[]']").attr("checked",true).checkboxradio("refresh");
+						
+								  }
 								  break;
 								     case 11:
-								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(hotel3);	
+								  var check=hotels[i][j];
+									   if(check){
+								 
+							    $("[name='checkbox11[]']").attr("checked",true).checkboxradio("refresh");
+						
+								  }
 								  break;
 								     case 12:
-								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(hotel3);	
+								   var check=hotels[i][j];
+									   if(check){
+								 
+							    $("[name='checkbox12[]']").attr("checked",true).checkboxradio("refresh");
+						
+								  }
 								  break;
 								    case 13:
-								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(list1);	
+									var check=hotels[i][j];									
+									$("#select1 option[value='"+ check + "']").attr("selected", true);
+									$("#select1").selectmenu('refresh', true);									
+								   var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(list1);	
 								  break;
 								   case 14:
+								   var check=hotels[i][j];									
+									$("#select2 option[value='"+ check + "']").attr("selected", true);
+									$("#select2").selectmenu('refresh', true);		
 								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(list2);	
 								  break;
 								   case 15:
+								   var check=hotels[i][j];									
+									$("#select3 option[value='"+ check + "']").attr("selected", true);
+									$("#select3").selectmenu('refresh', true);		
 								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(list3);	
 								  break;
 								   case 16:
+								   var check=hotels[i][j];									
+									$("#select4 option[value='"+ check + "']").attr("selected", true);
+									$("#select4").selectmenu('refresh', true);		
 								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(list4);	
 								  break;
 								   case 17:
+								   var check=hotels[i][j];									
+									$("#select5 option[value='"+ check + "']").attr("selected", true);
+									$("#select5").selectmenu('refresh', true);		
 								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(list5);	
 								  break;
 								   case 18:
+								   var check=hotels[i][j];									
+									$("#select6 option[value='"+ check + "']").attr("selected", true);
+									$("#select6").selectmenu('refresh', true);		
 								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(list6);	
 								  break;
 								   case 19:
+								   var check=hotels[i][j];									
+									$("#select7 option[value='"+ check + "']").attr("selected", true);
+									$("#select7").selectmenu('refresh', true);		
 								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(list7);	
 								  break;
 								   case 20:
+								   var check=hotels[i][j];									
+									$("#select8 option[value='"+ check + "']").attr("selected", true);
+									$("#select8").selectmenu('refresh', true);		
 								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(list8);	
 								  break;
 								   case 21:
+								   var check=hotels[i][j];									
+									$("#select9 option[value='"+ check + "']").attr("selected", true);
+									$("#select9").selectmenu('refresh', true);		
 								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(list9);	
 								  break;
 								   case 22:
+								   var check=hotels[i][j];									
+									$("#select10 option[value='"+ check + "']").attr("selected", true);
+									$("#select10").selectmenu('refresh', true);		
 								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(list10);	
 								  break;
 								     case 23:
+									 var check=hotels[i][j];									
+									$("#select11 option[value='"+ check + "']").attr("selected", true);
+									$("#select11").selectmenu('refresh', true);		
 								    var newli=$('<li>'+hotels[i][j]+'</li>').appendTo(list11);	
 								  break;
 							
@@ -369,6 +469,7 @@ function timeCount(){
                                         var uid=getCookie("uid");
 										var token=getCookie("token");
                                         var email=getCookie("email");
+										var hname=getCookie("hname");
 									
                                         $.ajax({
                                                type: "GET",
@@ -378,7 +479,7 @@ function timeCount(){
                                                }).success(function( msg ) {
 												
 												   
-												
+												          $("#welcome").append(hname);
 												          $("#username").append(msg.fname);
                                                           $("#fname").val(msg.fname);
                                                           $("#lname").val(msg.lname);
@@ -409,6 +510,7 @@ function timeCount(){
                                           $("#issueDate").datepicker();
 										  $("#birth").datepicker();
 										   $("#birth2").datepicker();
+										   getPreference();
 if(checkCookie("uid")==0){
     window.location="index.php";
 }else{
@@ -423,11 +525,15 @@ if(checkCookie("uid")==0){
 <div data-role="page">
 
   <div data-role="header" data-theme="b">
-    <h1 id="userName2">My Account-User Profile for </h1>
+<h1 >Enterprise Guest Engagement System - </h1>
+		<h1>Customer Instance Guest Interface Module - </h1>
+		<h1 id="welcome"></h1>
     <a href="mine.php" data-icon="home" data-iconpos="notext" data-rel="back">Home</a>
   </div><!-- /header -->
 
   <div data-role="content">
+   <div><h3 id="userName2">My Account-User Profile for </h3></div>
+
   <div data-role="collapsible-set">
     <div id="changeprofile" data-role="collapsible">
     <h3><img src="css/images/login.png"/>Basic Information</h3>
@@ -548,7 +654,7 @@ if(checkCookie("uid")==0){
             <div id="checkboxes1" data-role="fieldcontain">
               <fieldset data-role="controlgroup" data-type="vertical">
                 <legend> Economy Hotel </legend>
-                 <input id="checkbox1" name='checkbox1[]' type="checkbox" value="Motel" >
+                 <input id="checkbox1" name='checkbox1[]' type="checkbox" value="Motel">
                 <input name='checkbox1[]' type="checkbox" hidden="hidden" value='' checked >
                 <label for="checkbox1"> Motel </label>
                 <input id="checkbox2" name='checkbox2[]' type="checkbox" value="Bed &amp; Breakfast inn">
@@ -618,7 +724,7 @@ if(checkCookie("uid")==0){
               </select>
             </div>
             <div data-role="fieldcontain">
-              <label for="selectmenu3"> Business Center </label>
+              <label for="selectmenu3" style="margin-right:53px;"> Business Center </label>
               <select id="select2" name=" Business Center">
                 <option value="Not Available"> Not Available </option>
                 <option value="A centrally Located Business Center"> A centrally Located Business Center </option>
@@ -627,21 +733,21 @@ if(checkCookie("uid")==0){
               </select>
             </div>
             <div data-role="fieldcontain">
-              <label for="selectmenu4"> Internet Reservation </label>
+              <label for="selectmenu4" style="margin-right:25px;"> Internet Reservation </label>
               <select id="select3" name=" Internet Reservation">
                 <option value="No"> No </option>
                 <option value="Yes"> Yes </option>
               </select>
             </div>
             <div data-role="fieldcontain">
-              <label for="selectmenu5"> Internet Check-in </label>
+              <label for="selectmenu5" style="margin-right:45px;"> Internet Check-in </label>
               <select id="select4" name=" Internet Check-in">
-                <option value="Yes"> No </option>
+                <option value="No"> No </option>	
                 <option value="Yes"> Yes </option>
               </select>
             </div>
             <div data-role="fieldcontain">
-              <label for="selectmenu6"> Mobile Check-In </label>
+              <label for="selectmenu6" style="margin-right:45px;"> Mobile Check-In </label>
               <select id="select5" name="  Mobile Check-In">
                 <option value="No"> No </option>
                 <option value="Yes"> Yes </option>
@@ -653,14 +759,14 @@ if(checkCookie("uid")==0){
           <div data-role="collapsible">
             <h3> Customization </h3>
             <div data-role="fieldcontain">
-              <label for="selectmenu7"> Pet Policy </label>
+              <label for="selectmenu7" style="margin-right:75px;"> Pet Policy </label>
               <select id="select6" name="Pet Policy">
                 <option value="No Pets"> No Pets </option>
                 <option value="Small Pets"> Small Pets </option>
               </select>
             </div>
             <div data-role="fieldcontain">
-              <label for="selectmenu8"> Flexible Check-In </label>
+              <label for="selectmenu8" style="margin-right:28px;"> Flexible Check-In </label>
               <select id="select7" name="Flexible Check-In">
                 <option value="No"> No </option>
                 <option value="Yes"> Yes </option>
@@ -674,17 +780,18 @@ if(checkCookie("uid")==0){
               </select>
             </div>
             <div data-role="fieldcontain">
-              <label for="selectmenu9"> Childcare </label>
+              <label for="selectmenu9" style="margin-right:78px;"> Childcare </label>
               <select id="select9" name="Childcare">
                 <option value="Not Available"> Not Available </option>
                 <option value="In room nanny facility at extra charge"> In room nanny facility at extra charge </option>
                 <option value="In room nanny facility  + kids club(6-12yrs) at extra charge"> In room nanny facility + kids club(6-12yrs) at extra charge </option>
+
                 <option value="In room nanny facility  + kids club(6-12yrs) +day care(6 mo older) at extra charge"> In room nanny facility + kids club(6-12yrs) +day care(6 mo older) at extra
                 charge </option>
               </select>
             </div>
             <div data-role="fieldcontain">
-              <label for="selectmenu10"> Kitchen </label>
+              <label for="selectmenu10" style="margin-right:88px;"> Kitchen </label>
               <select id="select10" name="  Kitchen">
                 <option value="Available"> Available </option>
                 <option value="Coffee-maker available at no extra cost"> Coffee-maker available at no extra cost </option>
@@ -692,7 +799,7 @@ if(checkCookie("uid")==0){
               </select>
             </div>
             <div data-role="fieldcontain">
-              <label for="selectmenu11"> Laundry </label>
+              <label for="selectmenu11" style="margin-right:87px;"> Laundry </label>
               <select id="select11" name=" Laundry">
                 <option value="In Room Washer at no extra cost"> In Room Washer at no extra cost </option>
                 <option value="Iron with Iron Table"> Iron with Iron Table </option>
@@ -709,37 +816,11 @@ if(checkCookie("uid")==0){
        
       </div>
     </div>
-    <div data-role="collapsible-set">
-    <div data-role="collapsible">
-            <h3 onClick="getNewHotels()"><img src="css/images/login.png"/>See Your Preference</h3>
-            <p>
-
-            <label>Economy Hotel</label> <ul id="economyHotel"></ul>
-          
-            <label>Midrange Hotel</label><ul id="midrangeHotel"></ul>
-            
-             <label>UpscaleHotel</label><ul id="upscaleHotel"></ul>
-             <label> Internet Access in Room</label><ul id="list1"></ul>
-             <label> Business Center</label><ul id="list2"></ul>
-              <label> Internet Reservation </label><ul id="list3"></ul>
-               <label>Internet Check-in </label><ul id="list4"></ul>
-                <label>Mobile Check-In </label><ul id="list5"></ul>
-                 <label> Pet Policy </label><ul id="list6"></ul>
-                  <label> Flexible Check-In  </label><ul id="list7"></ul>
-                   <label>  Room Customization </label><ul id="list8"></ul>
-                    <label>  Childcare  </label><ul id="list9"></ul>
-                     <label> Kitchen </label><ul id="list10"></ul>
-                      <label> Laundry </label><ul id="list11"></ul>
-                      
-             
-  
-            </p>
-             <button data-theme="b" onClick="getPreference()" onKeyPress="getPreference()">Get Preference</button>
-		</div> 
-        </div>
+    
     
 </div>
-  <div data-role="footer" data-theme="b"><h4>Copyright&copy;Asplan2012</h4></div> 
+  <div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
+Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div> 
 </div><!-- /page -->
 
 </body>

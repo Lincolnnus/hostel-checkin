@@ -3,29 +3,29 @@ include_once("connection.php");
 switch ($_SERVER['REQUEST_METHOD']) 
 {
     case 'GET':
-        if((isset($_GET["uid"]))&&(isset($_GET["token"]))&&(isset($_GET["rid"])))
+        if((isset($_GET["uid"]))&&(isset($_GET["email"]))&&(isset($_GET["token"])))
     {
-        //$email=$_GET["email"];
+        $email=$_GET["email"];
         $uid=$_GET["uid"];
         $token=$_GET["token"];
-       // if(authentication($uid,$token))
-        //{
+        if(authentication($uid,$token))
+        {
        // $uid=$_GET["uid"];
-       // $query = sprintf("SELECT * FROM `user` WHERE email='%s'",mysql_real_escape_string($email));
-	   // $result = mysql_query($query);
-	   // if (!$result) {
-		  // $message  = 'Invalid query: ' . mysql_error() . "\n";
-		   // $message .= 'Whole query: ' . $query;
-		  //  echo($message);
-	   // }else if(mysql_num_rows($result)<=0)
-	    //{
-           // echo "Not Authorized";
-	   // }
-	   // else
-	   // {
-            //$user=mysql_fetch_array($result);
-            $rid=$_GET["rid"];
-            $query = sprintf("SELECT * FROM `booking` WHERE rid='%s'",mysql_real_escape_string($rid));
+        $query = sprintf("SELECT * FROM `user` WHERE email='%s'",mysql_real_escape_string($email));
+	    $result = mysql_query($query);
+	    if (!$result) {
+		    $message  = 'Invalid query: ' . mysql_error() . "\n";
+		    $message .= 'Whole query: ' . $query;
+		    echo($message);
+	    }else if(mysql_num_rows($result)<=0)
+	    {
+            echo "No Such User";
+	    }
+	    else
+	    {
+            $user=mysql_fetch_array($result);
+            $confirmation=$_GET["confirmation"];
+            $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
             $result = mysql_query($query);
             if (!$result) {
                 $message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -41,17 +41,17 @@ switch ($_SERVER['REQUEST_METHOD'])
                 $step=$booking["step"];
                 echo json_encode(array('booking' => $booking,'step'=>$step,'user'=>$user));
             }//successfully get checkin information
-        //}
-    //}else echo "Not Authorized";
+        }
+    }else echo "Not Authorized";
     }
     else echo "Invalid user or booking";
     break;
     case 'POST':
-	if((isset($_POST["email"]))&&(isset($_POST["rid"])))
+	if((isset($_POST["email"]))&&(isset($_POST["confirmation"])))
 	    {
 		    $email=$_POST["email"];
-		    $rid=$_POST["rid"];
-		    $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND rid='%s'",mysql_real_escape_string($email),mysql_real_escape_string($rid));
+		    $confirmation=$_POST["confirmation"];
+		    $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
 		    $result = mysql_query($query);
 		    if (!$result) {
 			    $message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -63,7 +63,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 		    }
 		    else 
 		    {
-			$query = sprintf("UPDATE `booking` SET step='1' WHERE email='%s' AND rid='%s'",mysql_real_escape_string($email),mysql_real_escape_string($rid));
+			$query = sprintf("UPDATE `booking` SET step='1' WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
 			$result = mysql_query($query);
 			    if (!$result) {
 				    $message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -72,12 +72,12 @@ switch ($_SERVER['REQUEST_METHOD'])
 			    }else {echo json_encode("successful");}
 		    }//successfully get checkin information
 	    }
-	    else echo "Invalid Email or confirmation Code";
+	    else echo "Invalid Email or Confirmation Code";
     break;
 }
 function authentication($uid,$token)
 {
-	$query = sprintf("SELECT * FROM `admin` WHERE uid='%s' AND token='%s'",
+	$query = sprintf("SELECT * FROM `staff` WHERE uid='%s' AND token='%s'",
 		mysql_real_escape_string($uid),
 		mysql_real_escape_string($token)
 	 );

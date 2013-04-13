@@ -55,6 +55,9 @@ function timer()
 
 // document.getElementById("timer").innerHTML=count + " secs"; // watch for spelling
 }
+function gotoAccount(){
+    window.location="account.php";
+}
 
 function countValue(){
 	
@@ -113,6 +116,9 @@ function getHotel()
                  hotel.logo=hotelxml.getElementsByTagName("logo")[0].childNodes[0].nodeValue;
                  hotel.zip=hotelxml.getElementsByTagName("zip")[0].childNodes[0].nodeValue;
                  hotel.contact=hotelxml.getElementsByTagName("contact")[0].childNodes[0].nodeValue;
+				 hotel.email=hotelxml.getElementsByTagName("email")[0].childNodes[0].nodeValue;
+				 hotel.url=hotelxml.getElementsByTagName("url")[0].childNodes[0].nodeValue;
+				 hotel.manager=hotelxml.getElementsByTagName("manager")[0].childNodes[0].nodeValue;
 				
                  return hotel;
 }
@@ -139,9 +145,7 @@ function login()
 		  setCookie('token',msg.token,1);
 		  setCookie('fname',msg.fname,1);
 		  setCookie('email',msg.email,1);
-		  
-          if(checkCookie('confirmation')){window.location="checkin.php";}
-          else{window.location="index.php";}
+		  window.location="index.php";
 		}).fail(function(msg){
                 showError("Error Login");
 		});
@@ -153,8 +157,8 @@ function login()
                  function checkin()
                  {
 				showError("Processing...");
-                 var email=$("#checkinemail").val();
-                 var confirmation=$("#checkincode").val();
+                 var email=$("#checkinemail2").val();
+                 var confirmation=$("#checkincode2").val();
                  if(validateEmail(email))
                  {
                  $.ajax({
@@ -167,17 +171,13 @@ function login()
 									  
 									  setCookie('confirmation',msg.confirmation,1);
                                    showError("Please Check Your Email To Verify your email address and then Login");
-                                   }
-                                   else if (checkCookie('uid')){
-                                    window.location="checkin.php";
-                                   }
+                                   }                                 
                                    else{
 									  
-                                         showError("To Protect Your Personally Information,Please Login");
-                                         setCookie('email',msg.email,1);
-                                         setCookie('confirmation',msg.confirmation,1);
+                                         showError("Submit successfully! Go to My Check'in -> New Confirmation to see your status");                                      
+                                         setCookie('confirmation',msg.confirmation,1);										 
                                          $('#confirmPage').trigger('collapse');
-                                         $('#loginPage').trigger('expand');
+                                         $('#loginPage').trigger('expand');									
                                       }
                                    }).fail(function(msg){showError("Invalid Checkin Email and Checkin Code");});
                  }
@@ -186,6 +186,43 @@ function login()
                     showError("Invalid Email Address");}
                  
                  }
+				 
+                 function registration()
+                 {
+				showError("Processing...");
+                 var email=$("#checkinemail").val();
+                 var confirmation=$("#checkincode").val();
+                 if(validateEmail(email))
+                 {
+                 $.ajax({
+                        type: "GET",
+                        url: "api/registration.php",
+                        dataType: "json",
+                        data: { email: email, confirmation: confirmation}
+                        }).success(function( msg ) {
+                                   if(msg.status=='sent'){
+									  
+									
+                                   showError("We have sent password to your email address.Please,check your email to login");
+                                   }
+                                   else if (checkCookie('uid')){
+                                    window.location="index.php";
+                                   }
+                                   else{
+									  
+                                         showError("You are already the user.Do not need to registration!");                                                                                
+                                      }
+                                   }).fail(function(msg){showError("Invalid Checkin Email and Checkin Code");});
+                 }
+                 else
+                 {
+                    showError("Invalid Email Address");}
+                 
+                 }
+
+				 
+				 
+				 
                  function gotoStaff()
                  {window.open("../staff/");}
 function signup()
@@ -211,28 +248,39 @@ function hideError()
 function showHotel(hotel)
 {
                   $("#logo").html('<center><img src="'+hotel.logo+'" title="'+hotel.name+'" width="150px"></center>');
+				  setCookie('hname',hotel.name,1);
                   $("#welcome").append(hotel.name);
-                  $("#aboutUs").append('<h3>'+hotel.name+'</3>');
-                  $("#aboutUs").append('<a> Address:'+hotel.address+'</a><br>');
-                  $("#aboutUs").append('<a> Zip Code:'+hotel.zip+'</a><br>');
-				
-                  $("#aboutUs").append('<a> Contact No:'+hotel.contact+'</a><br>');
+                                                                           
+                          $('#hname').val(hotel.name);
+                          $('#haddress').val(hotel.address);
+                          $('#hphone').val(hotel.contact);
+                          $('#hzip').val(hotel.zip);
+                          $('#hmanager').val(hotel.manager);
+                          $('#hURL').val(hotel.url);
+						  $('#hemail').val(hotel.email);   
 }
 function checkUser()
 {
     if(checkCookie('uid')){
       $('#loginPage').hide();
+	  $('#regPage').hide();
      // $('#signupPage').hide();
       $('#checkinemail').val(getCookie('email'));
 	  timeCount();
      }else{
       $('#myPage').hide();
       $('#logoutPage').hide();
+	  $('#confirmPage').hide();
+	  $('#account').hide();
      }
 }
     function logout(){
       setCookie('uid','','-1');
       setCookie('token','','-1');
+	  setCookie('hname','','-1');
+	  setCookie('confirmation','','-1');
+      setCookie('email','','-1');
+	  setCookie('fname','','-1');
       window.location="index.php";
     }
     function myCheckin(){
@@ -248,9 +296,7 @@ function checkUser()
                                                }).success(function(checkin) {
                                                           $("#myConfirmation").html("");
                                                           $("#currentCheckin").html("");
-                                                          $("#myHistory").html("");
-													
-														
+                                                          $("#myHistory").html("");																											
                                                           for(var i=0;i<checkin.length;i++)
                                                           {
                                                           switch(checkin[i].step)
@@ -258,13 +304,13 @@ function checkUser()
                                                          case "0":
 													
 													
-                                                         $("#myConfirmation").append('<li><a onclick="showCheckin('+checkin[i].rid+')" >'+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'</a></li>');
+                                                         $("#myConfirmation").append('<li><a onclick="showCheckin(\''+checkin[i].confirmation+'\')" >'+"Check-in Date:"+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'&nbsp;'+'&nbsp;'+'&nbsp;'+"Confirmation Code:"+checkin[i].confirmation+'</a></li>');
                                                           break;
                                                           case "1":
-                                                          $("#currentCheckin").append('<li><a onclick="showCheckin('+checkin[i].rid+')" >'+"Check-in Date:"+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'&nbsp;'+'&nbsp;'+'&nbsp;'+"Confirmation Code:"+checkin[i].rid+'</a></li>');
+                                                          $("#currentCheckin").append('<li><a onclick="showCheckin(\''+checkin[i].confirmation+'\')" >'+"Check-in Date:"+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'&nbsp;'+'&nbsp;'+'&nbsp;'+"Confirmation Code:"+checkin[i].confirmation+'</a></li>');
                                                           break;
                                                           case "2":
-                                                          $("#myHistory").append('<li><a onclick="showCheckin('+checkin[i].rid+')">'+checkin[i].checkindate+'</a></li>');
+                                                          $("#myHistory").append('<li><a onclick="showCheckin(\''+checkin[i].confirmation+'\')" >'+"Check-in Date:"+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'&nbsp;'+'&nbsp;'+'&nbsp;'+"Confirmation Code:"+checkin[i].confirmation+'</a></li>');
                                                           break;
                                                           }
                                                           }
@@ -280,12 +326,12 @@ function checkUser()
     function showCheckin(msg){
 		                             
                                         var email=getCookie("email");
-                                        var code=setCookie('rid',msg,1);
+                                        var code=setCookie('confirmation',msg,1);
 							
                                         window.location="checkin.php";
     }
 $(document).ready(function() {
-                  var hotel=getHotel();
+	           var hotel=getHotel();
                   showHotel(hotel);
                   checkUser();
 				
@@ -307,13 +353,23 @@ $(document).ready(function() {
 	<br>
 	</div>
 	<div data-role="collapsible-set">
-		<div id="confirmPage" data-role="collapsible">
-            <h3><img src="css/images/chekin.png"/>Confirmation</h3>
+    <div id="regPage" data-role="collapsible">
+            <h3><img src="css/images/chekin.png"/>Registration</h3>
             <p>
                 <label class="ui-hidden-accessible">Email:</label>
 			    <input type="text" id="checkinemail" name="checkinemail" placeholder="Email"/>
                 <label class="ui-hidden-accessible">Code:</label>
 			    <input type="text" id="checkincode" name="checkincode" placeholder="Confirmation Code"/>
+                 <button data-theme="b" onClick="registration()" onKeyPress="checkin()">Check-in</button>
+            </p>
+		</div>
+		<div id="confirmPage" data-role="collapsible">
+            <h3><img src="css/images/chekin.png"/>Confirmation</h3>
+            <p>
+                <label class="ui-hidden-accessible">Email:</label>
+			    <input type="text" id="checkinemail2" name="checkinemail2" placeholder="Email"/>
+                <label class="ui-hidden-accessible">Code:</label>
+			    <input type="text" id="checkincode2" name="checkincode2" placeholder="Confirmation Code"/>
                  <button data-theme="b" onClick="checkin()" onKeyPress="checkin()">Check-in</button>
             </p>
 		</div>
@@ -359,6 +415,14 @@ $(document).ready(function() {
       </div>
     </p>
     </div>
+      <div id="account" data-role="collapsible">
+                 <h3> <img src="css/images/signup.png"/>My Account</h3>
+                 <p>
+                 <a id="account" data-rel="dialog" data-theme="a" onClick="gotoAccount()" onKeyPress="gotoAccount()" data-role="button">
+                 Go to My Account
+                 </a>
+                 </p>
+        </div>
         <div id="logoutPage" data-role="collapsible">
                  <h3> <img src="css/images/signup.png"/>Log Out</h3>
                  <p>
@@ -369,7 +433,69 @@ $(document).ready(function() {
         </div>
 		<div data-role="collapsible">
 		<h3><img src="css/images/about.png"/>Contact Us</h3>
-		<p id="aboutUs"></p>
+				            <p>
+              <table>
+                <tr>
+                  <td>
+                    Hotel Name:
+                  </td>
+                  <td>
+                    <input id="hname" name="hname" disabled>
+                  </td>
+                </tr>
+                <tr>
+                   <td>
+                    Hotel Address:
+                  </td>
+                  <td>
+                    <input id="haddress" name="haddress" disabled>
+                  </td>
+                </tr>
+                <tr>
+                   <td>
+                    Hotel Zip Code:
+                  </td>
+                  <td>
+
+                    <input id="hzip" name="hzip" disabled>
+                  </td>
+                </tr>
+                <tr>
+                   <td>
+                    Manager Name:
+                  </td>
+                  <td>
+                    <input id="hmanager" name="hmanager" disabled>
+                  </td>
+                </tr>
+                <tr>
+                   <td>
+                    Phone Number:
+                  </td>
+                  <td>
+                    <input id="hphone" name="hphone" disabled>
+                  </td>
+                </tr>
+                 <tr>
+                  <td>
+                    Hotel URL:
+                  </td>
+                  <td>
+                    <input id="hURL" name="hURL" disabled>
+                  </td>
+                </tr>
+                 <tr>
+                  <td>
+                    Email:
+                  </td>
+                  <td>
+                    <input id="hemail" name="hemail" disabled>
+                  </td>
+                </tr>
+               
+              </table>
+            </p>
+
 		</div>
 	</div>
 	</div><!-- /content -->

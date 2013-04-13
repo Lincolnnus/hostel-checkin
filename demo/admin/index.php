@@ -63,6 +63,11 @@ function getHotel()
                  hotel.logo=hotelxml.getElementsByTagName("logo")[0].childNodes[0].nodeValue;
                  hotel.zip=hotelxml.getElementsByTagName("zip")[0].childNodes[0].nodeValue;
                  hotel.contact=hotelxml.getElementsByTagName("contact")[0].childNodes[0].nodeValue;
+				 hotel.email=hotelxml.getElementsByTagName("email")[0].childNodes[0].nodeValue;
+				 hotel.url=hotelxml.getElementsByTagName("url")[0].childNodes[0].nodeValue;
+				 hotel.manager=hotelxml.getElementsByTagName("manager")[0].childNodes[0].nodeValue;
+				
+				 
                  return hotel;
 }
 function changePass()
@@ -185,10 +190,15 @@ function showHotel(hotel)
                   $("#welcome").html("Enterprise Guest Engagement System - Customer Instance System Administration Modulel"+'<br />');
 		    $("#welcome").append(hotel.name);
 
-                  $("#aboutUs").append('<h3>'+hotel.name+'</3>');
-                  $("#aboutUs").append('<a> Address:'+hotel.address+'</a><br>');
-                  $("#aboutUs").append('<a> Zip Code:'+hotel.zip+'</a><br>');
-                  $("#aboutUs").append('<a> Contact No:'+hotel.contact+'</a><br>');
+                 console.log(hotel);
+                                                                                   
+                          $('#hname').val(hotel.name);
+                          $('#haddress').val(hotel.address);
+                          $('#hphone').val(hotel.contact);
+                          $('#hzip').val(hotel.zip);
+                          $('#hmanager').val(hotel.manager);
+                          $('#hURL').val(hotel.url);
+						  $('#hemail').val(hotel.email);   
 }
 function checkUser()
 {
@@ -259,7 +269,69 @@ $(document).ready(function() {
 		</div>
 		<div data-role="collapsible">
 		<h3><img src="css/images/about.png"/>Contact Us</h3>
-		<p id="aboutUs"></p>
+		            <p>
+              <table>
+                <tr>
+                  <td>
+                    Hotel Name:
+                  </td>
+                  <td>
+                    <input id="hname" name="hname" disabled>
+                  </td>
+                </tr>
+                <tr>
+                   <td>
+                    Hotel Address:
+                  </td>
+                  <td>
+                    <input id="haddress" name="haddress" disabled>
+                  </td>
+                </tr>
+                <tr>
+                   <td>
+                    Hotel Zip Code:
+                  </td>
+                  <td>
+
+                    <input id="hzip" name="hzip" disabled>
+                  </td>
+                </tr>
+                <tr>
+                   <td>
+                    Manager Name:
+                  </td>
+                  <td>
+                    <input id="hmanager" name="hmanager" disabled>
+                  </td>
+                </tr>
+                <tr>
+                   <td>
+                    Phone Number:
+                  </td>
+                  <td>
+                    <input id="hphone" name="hphone" disabled>
+                  </td>
+                </tr>
+                 <tr>
+                  <td>
+                    Hotel URL:
+                  </td>
+                  <td>
+                    <input id="hURL" name="hURL" disabled>
+                  </td>
+                </tr>
+                 <tr>
+                  <td>
+                    Email:
+                  </td>
+                  <td>
+                    <input id="hemail" name="hemail" disabled>
+                  </td>
+                </tr>
+               
+              </table>
+            </p>
+
 		</div>
 	</div>
 	</div><!-- /content -->

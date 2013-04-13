@@ -92,4 +92,75 @@
             }
             break;
     }
+	
+function saveHotel($hotel)
+{
+	$hid=$hotel["hid"];
+	$hname=$hotel["hname"];
+	$haddress=$hotel["haddress"];
+	$hzip=$hotel["hzip"];
+	$hmanager=$hotel["hmanager"];
+	$hphone=$hotel["hphone"];
+	$hURL=$hotel["hURL"];
+
+	$query = sprintf("UPDATE `hotel` SET hname='%s',haddress='%s',zip='%s',contact='%s',hmanager='%s',hURL='%s' WHERE hid='%s'",
+		mysql_real_escape_string($hname),
+		mysql_real_escape_string($haddress),
+		mysql_real_escape_string($hzip),
+		mysql_real_escape_string($hphone),
+		mysql_real_escape_string($hmanager),
+		mysql_real_escape_string($hURL),
+		mysql_real_escape_string(1));
+	$result = mysql_query($query);
+	if (!$result) {
+	    return false;
+	}
+	else { 
+		return true;
+	}
+}
+function verifyHotel($hid)
+{
+	$query = sprintf("UPDATE `hotel` SET verified='%s' WHERE hid='%s'",
+		mysql_real_escape_string(1),
+		mysql_real_escape_string($hid));
+	$result = mysql_query($query);
+	if (!$result) {
+	    return false;
+	}
+	else { 
+		$hotel=getHotel($hid);
+		return true;
+	}
+}
+function updateLogo($hid,$img)
+{
+                 $query = sprintf("UPDATE `hotel` SET hlogo='%s' WHERE hid='%s'",
+                                  mysql_real_escape_string($img),
+                                  mysql_real_escape_string($hid));
+                 $result = mysql_query($query);
+                 if (!$result) {
+                     return false;
+                 }
+                 else {
+                     return'<img width="100px" src="'.$img.'"/>';
+                 }
+}
+function buildApp($hotel)
+{
+	 $hotel='<?xml version="1.0" encoding="utf-8"?><hotel>'.
+	 '<name>'.$hotel["hname"].'</name><address>'.$hotel["haddress"].'</address><logo>'.
+     $hotel["hlogo"].'</logo><zip>'.$hotel["hzip"].'</zip>
+     <contact>'.$hotel["hphone"].'</contact><tac>Terms and Conditions</tac></hotel>';
+     $file="../app/hotel.xml";
+     if(!file_exists($file)){
+  		return "File not found";
+     }else{
+ 	 $fh = fopen($file, 'w+');
+     fwrite($fh, $hotel);
+     fclose($fh);
+     return true;
+  	 }
+}
+
 ?>

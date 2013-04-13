@@ -87,7 +87,7 @@ float:right;
                          
                           if(hotel.verified>0){
                            
-							$('#hoteltitle').html("Enrolled Hospitality Partner Maintenance facility - ");
+							$('#hoteltitle').html("Enrolled Hospitality Partner Maintenance facility -"+'<br />');
 							$('#hoteltitle').append(hotel.hname);
 							$('#sendEmail').hide();
                           }else{

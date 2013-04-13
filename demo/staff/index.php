@@ -63,6 +63,9 @@ function getHotel()
                  hotel.logo=hotelxml.getElementsByTagName("logo")[0].childNodes[0].nodeValue;
                  hotel.zip=hotelxml.getElementsByTagName("zip")[0].childNodes[0].nodeValue;
                  hotel.contact=hotelxml.getElementsByTagName("contact")[0].childNodes[0].nodeValue;
+				 hotel.email=hotelxml.getElementsByTagName("email")[0].childNodes[0].nodeValue;
+				 hotel.url=hotelxml.getElementsByTagName("url")[0].childNodes[0].nodeValue;
+				 hotel.manager=hotelxml.getElementsByTagName("manager")[0].childNodes[0].nodeValue;
                  return hotel;
 }
 function showError(msg)
@@ -80,21 +83,24 @@ function getBooking()
       dataType: "json",
       data: {uid:uid,token:token}
     }).success(function( msg ) {
-		alert(msg);
+//		alert(msg);
        var booking=msg;
                           var bookingList=$("#newBooking");
                           bookingList.html('');
                           for(var i=0;i<booking.length;i++)
                           {
-                            var newli=$('<li><a onclick="showBooking('+booking[i].rid+')">'+booking[i].confirmation+'</a></li>').appendTo(bookingList);
+                            var newli=$('<li><a onclick="showBooking(\''+booking[i].confirmation+'\',\''+booking[i].email+'\')">'+booking[i].confirmation+'</a></li>').appendTo(bookingList);
                           }
                           bookingList.listview( "refresh" );
     }).fail(function(msg){showError("Error Getting Stuffs");});
 }
  
- function showBooking(msg){
-                                        var email=getCookie("email");
-                                        var code=setCookie('rid',msg,1);
+ function showBooking(msg1,msg2){
+	                                    var code=setCookie('confirmation',msg1,1);
+                                        var email=setCookie('email',msg2,1);
+                                       
+									
+
                                         window.location="checkin.php";
     }
 	
@@ -205,16 +211,25 @@ function logout(){
       setCookie('uid','','-1');
       setCookie('token','','-1');
       setCookie('confirmation','','-1');
+	  setCookie('hname','','-1');
+	  setCookie('fname','','-1');
+	  setCookie('email','','-1');
       window.location="index.php";
     }
 function showHotel(hotel)
 {
+	setCookie('hname',hotel.name,1);
   $("#logo").html('<center><img src="'+hotel.logo+'" title="'+hotel.name+'" width="150px"></center>');
-                  $("#welcome").html("Admin Panel");
-                  $("#aboutUs").append('<h3>'+hotel.name+'</3>');
-                  $("#aboutUs").append('<a> Address:'+hotel.address+'</a><br>');
-                  $("#aboutUs").append('<a> Zip Code:'+hotel.zip+'</a><br>');
-                  $("#aboutUs").append('<a> Contact No:'+hotel.contact+'</a><br>');
+   $("#welcome").html("Enterprise Guest Engagement System - Customer Instance System "+'<br />'+"Checkin Modulel-");
+		    $("#welcome").append(hotel.name);
+                
+                  $('#hname').val(hotel.name);
+                          $('#haddress').val(hotel.address);
+                          $('#hphone').val(hotel.contact);
+                          $('#hzip').val(hotel.zip);
+                          $('#hmanager').val(hotel.manager);
+                          $('#hURL').val(hotel.url);
+						  $('#hemail').val(hotel.email);   
 }
 function checkUser()
 {
@@ -299,11 +314,74 @@ $(document).ready(function() {
     </div>
 		<div data-role="collapsible">
 		<h3><img src="css/images/about.png"/>Contact Us</h3>
-		<p id="aboutUs"></p>
+						            <p>
+              <table>
+                <tr>
+                  <td>
+                    Hotel Name:
+                  </td>
+                  <td>
+                    <input id="hname" name="hname" disabled>
+                  </td>
+                </tr>
+                <tr>
+                   <td>
+                    Hotel Address:
+                  </td>
+                  <td>
+                    <input id="haddress" name="haddress" disabled>
+                  </td>
+                </tr>
+                <tr>
+                   <td>
+                    Hotel Zip Code:
+                  </td>
+                  <td>
+
+                    <input id="hzip" name="hzip" disabled>
+                  </td>
+                </tr>
+                <tr>
+                   <td>
+                    Manager Name:
+                  </td>
+                  <td>
+                    <input id="hmanager" name="hmanager" disabled>
+                  </td>
+                </tr>
+                <tr>
+                   <td>
+                    Phone Number:
+                  </td>
+                  <td>
+                    <input id="hphone" name="hphone" disabled>
+                  </td>
+                </tr>
+                 <tr>
+                  <td>
+                    Hotel URL:
+                  </td>
+                  <td>
+                    <input id="hURL" name="hURL" disabled>
+                  </td>
+                </tr>
+                 <tr>
+                  <td>
+                    Email:
+                  </td>
+                  <td>
+                    <input id="hemail" name="hemail" disabled>
+                  </td>
+                </tr>
+               
+              </table>
+            </p>
+
 		</div>
 	</div>
 	</div><!-- /content -->
-	<div data-role="footer" data-theme="b"><h4>Copyright&copy;Asplan2012</h4></div>
+	<div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
+Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div>
     <div id="errorWrapper" style="display:none;">
                   <center id="errorMsg"></center>
                   <img src="css/images/close_icon.png" width="30px" title="close" onClick="hideError()" id="errorClose"/>

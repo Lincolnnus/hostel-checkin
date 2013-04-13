@@ -37,7 +37,7 @@ function getHotel()
                           var email=getCookie("email");
                           var confirmation=getCookie("confirmation");
                           var token=getCookie("token");
-						alert(uid+email+confirmation);
+					
                           $.ajax({
                                  type: "POST",
                                  url: "api/check.php",
@@ -70,23 +70,37 @@ function getcheckinfo()
                           var hotel=getHotel();
                           var uid=getCookie("uid");
                           var email=getCookie("email");
-                          var rid=getCookie("rid");
+                          var confirmation=getCookie("confirmation");
                           var token=getCookie("token");
 						
                           $.ajax({
                                  type: "GET",
                                  url: "api/check.php",
                                  dataType: "json",
-                                 data: {uid:uid, email: email, rid:rid,token:token }
+                                 data: {uid:uid, email: email, confirmation:confirmation,token:token }
                                  }).success(function( msg ) {
+									   $("#welcome").append(hotel.name);
 			console.log(msg);						
                                             if(msg.step=="0"){
                                             displayCanvas(hotel,msg.user,msg.booking);
-											var confirmation=setCookie('confirmation',msg.booking.confirmation,1);
+											loadPassport();
+											
+					    $('#checkout').hide();
+						var confirmation=setCookie('confirmation',msg.booking.confirmation,1);
                                             } else if(msg.step=="1"){
-                                            displayCanvas(hotel,msg.user,msg.booking);
-                                            }
-                                            }).fail(function(msg){alert("Invalid Checkin Email and Checkin Code");});
+					   
+                                            displayCanvasCurrent(hotel,msg.user,msg.booking);
+											loadPhoto();
+                                            }else if(msg.step == "2"){
+displayCanvasCheckOut(hotel,msg.user,msg.booking);
+loadPhoto();
+$('#checkout').hide();}
+                                            }).fail(function(msg){
+												alert("Invalid Checkin Email and Checkin Code");
+												 	window.location="index.php";
+												
+												
+												});
                           
                           }
 function handleStart(evt) {
@@ -184,7 +198,7 @@ function displayCanvas(hotel,user,check)
     ctx.fillText("Email Address: "+check.email,50,120);
     ctx.fillText("Phone Number: "+user.phone,50,150);
     ctx.font="30px Arial";
-    ctx.fillText("Booking Reference ID: "+check.rid,50,250);
+    ctx.fillText("Booking Confirmation: "+check.confirmation,50,250);
     ctx.font="20px Arial";
     ctx.fillText("Chechin Date(yyyy/mm/dd): "+check.arrivalyear1+'/'+check.arrivalmonth1+'/'+check.arrivalday1,50,300);
     ctx.fillText("Nights Stay: "+check.numberofdays1,500,300);
@@ -221,6 +235,118 @@ function displayCanvas(hotel,user,check)
     $('#checkinCanvas').height(height);
 
 }
+function displayCanvasCheckOut(hotel,user,check)
+{
+    $('#checkinfo').html('<canvas style="border:1px solid #000000;" id="checkinCanvas" width="800" height="1000"></canvas>');
+    var c=document.getElementById("checkinCanvas");
+    var ctx=c.getContext("2d");
+    /*c.addEventListener("touchstart", handleStart, false);
+    c.addEventListener("touchend", handleEnd, false);
+    c.addEventListener("touchcancel", handleCancel, false);
+    //c.addEventListener("touchleave", handleLeave, false);
+    c.addEventListener("touchmove", handleMove, false);*/
+    ctx.font="30px Arial";
+    ctx.fillText(user.title,50,80);
+    ctx.fillText(user.fname,120,80);
+    ctx.fillText(user.lname,280,80);
+    ctx.font="20px Arial";
+    ctx.fillText("Email Address: "+check.email,50,120);
+    ctx.fillText("Phone Number: "+user.phone,50,150);
+    ctx.font="30px Arial";
+    ctx.fillText("Booking Confirmation: "+check.confirmation,50,250);
+    ctx.font="20px Arial";
+    ctx.fillText("Checkin Date(yyyy/mm/dd): "+check.arrivalyear1+'/'+check.arrivalmonth1+'/'+check.arrivalday1,50,300);
+    ctx.fillText("Nights Stay: "+check.numberofdays1,500,300);
+    ctx.fillText("Total Rooms: "+check.totalRoom,50,330);
+    ctx.fillText("Total People: "+check.numberofadults1+' Adults '+check.numberofchildren1+' Children',200,330);
+    ctx.fillText("Room Type: "+check.room1,500,330);
+    ctx.font="30px Arial";
+    ctx.fillText("Hotel Consume Information",50,400);
+    ctx.font="20px Arial";
+    ctx.fillText("Food: ",50,430);
+    ctx.fillText("Drinks: ",50,460);
+    ctx.fillText("Wine: ",450,460);
+    ctx.fillText("Others: ",50,490);
+    ctx.fillText("Total Consume: ",450,490);
+   // var idPhoto=new Image();
+    idPhoto.src=user.idPhoto;
+   // ctx.drawImage(idPhoto,600,20,150,150);
+   // var passportPhoto=new Image();
+    passportPhoto.src=user.passportPhoto;
+   // ctx.drawImage(passportPhoto,50,500,500,500);
+   
+    var width=document.body.offsetWidth*0.8;
+    var height=1.4142*width;
+    $('#checkinCanvas').width(width);
+    $('#checkinCanvas').height(height);
+    //Draw Pencil
+    var color='blue';
+    var started=false;
+    var pencil=[];//The Pencil Object
+    var newpoly=[];//Every Stroke is treated as a Continous Polyline
+    var width=document.body.offsetWidth*0.8;
+    var height=1.4142*width;
+    $('#checkinCanvas').width(width);
+    $('#checkinCanvas').height(height);
+
+}
+function displayCanvasCurrent(hotel,user,check)
+{
+    $('#checkinfo').html('<canvas style="border:1px solid #000000;" id="checkinCanvas" width="800" height="1000"></canvas>');
+    var c=document.getElementById("checkinCanvas");
+    var ctx=c.getContext("2d");
+    /*c.addEventListener("touchstart", handleStart, false);
+    c.addEventListener("touchend", handleEnd, false);
+    c.addEventListener("touchcancel", handleCancel, false);
+    //c.addEventListener("touchleave", handleLeave, false);
+    c.addEventListener("touchmove", handleMove, false);*/
+    ctx.font="30px Arial";
+    ctx.fillText(user.title,50,80);
+    ctx.fillText(user.fname,120,80);
+    ctx.fillText(user.lname,280,80);
+    ctx.font="20px Arial";
+    ctx.fillText("Email Address: "+check.email,50,120);
+    ctx.fillText("Phone Number: "+user.phone,50,150);
+    ctx.font="30px Arial";
+    ctx.fillText("Booking Confirmation: "+check.confirmation,50,250);
+    ctx.font="20px Arial";
+    ctx.fillText("Chechin Date(yyyy/mm/dd): "+check.arrivalyear1+'/'+check.arrivalmonth1+'/'+check.arrivalday1,50,300);
+    ctx.fillText("Nights Stay: "+check.numberofdays1,500,300);
+    ctx.fillText("Total Rooms: "+check.totalRoom,50,330);
+    ctx.fillText("Total People: "+check.numberofadults1+' Adults '+check.numberofchildren1+' Children',200,330);
+    ctx.fillText("Room Type: "+check.room1,500,330);
+    ctx.font="30px Arial";
+     ctx.fillText("Hotel Consume Information",50,400);
+    ctx.font="20px Arial";
+    ctx.fillText("Food: ",50,430);
+    ctx.fillText("Drinks: ",50,460);
+    ctx.fillText("Wine: ",450,460);
+    ctx.fillText("Others: ",50,490);
+    ctx.fillText("Total Consume: ",450,490);
+   // var idPhoto=new Image();
+    idPhoto.src=user.idPhoto;
+   // ctx.drawImage(idPhoto,600,20,150,150);
+   // var passportPhoto=new Image();
+    passportPhoto.src=user.passportPhoto;
+   // ctx.drawImage(passportPhoto,50,500,500,500);
+   
+    var width=document.body.offsetWidth*0.8;
+    var height=1.4142*width;
+    $('#checkinCanvas').width(width);
+    $('#checkinCanvas').height(height);
+    //Draw Pencil
+    var color='blue';
+    var started=false;
+    var pencil=[];//The Pencil Object
+    var newpoly=[];//Every Stroke is treated as a Continous Polyline
+    var width=document.body.offsetWidth*0.8;
+    var height=1.4142*width;
+    $('#checkinCanvas').width(width);
+    $('#checkinCanvas').height(height);
+
+}
+
+
 function addSignature(){
       var c=document.getElementById("checkinCanvas");
     var ctx=c.getContext("2d");
@@ -330,10 +456,7 @@ function loadPassport(){
     ctx.drawImage(passportPhoto,300,500,500,500);
 loadPhoto();
 }
-function saveCanvas(){
-    var c=document.getElementById("checkinCanvas");
-    document.location = c.toDataURL("image/png");
-}
+
 $(document).ready(function() {
 if(checkCookie("email")==0)
 {
@@ -346,7 +469,10 @@ if(checkCookie("email")==0)
 <div data-role="page">
 
 	<div data-role="header" data-theme="b">
-		<h1 >Check-In</h1>
+    <h1 >Enterprise Guest Engagement System - </h1>
+	<h1>Customer Instance Guest Interface Module - </h1>
+	<h1 id="welcome"></h1>
+	
 		<a data-icon="home" data-iconpos="notext" data-transition="slide" data-rel="back">Home</a>
         <a onClick="window.location.reload()" data-icon="refresh" data-iconpos="notext">Refresh</a>
 	</div><!-- /header -->
@@ -355,14 +481,16 @@ if(checkCookie("email")==0)
 	<div data-role="collapsible-set">
 		<div data-role="collapsible" >
 		<h3><img src="css/images/login.png"/>Checkin Information</h3>
-		<p>
-                        <button onClick="loadPassport()" data-theme="b" >Load ID & Passport Photo</button>
-            <div id="checkinfo"></div>
-             <button onClick="saveCanvas()" data-theme="b" >Save it</button>
-            <button onClick="gotoAccount()" data-theme="c" >My Account</button>
-            <button onClick="checkOut()" data-theme="c" >Check Out</button>
-               
-        </p>
+	
+        	<div data-role="collapsible" >	
+            <h3 onClick="loadPassport()"><img src="css/images/login.png"/>Load Checkin Information</h3>
+            <div id="checkinfo"></div>   
+            </div>     
+            <div data-role="collapsible" >	
+            <div id="checkout"><button onClick="checkOut()" data-theme="c" >Check Out</button>
+             </div>   
+               </div>
+     
 	</div>
 	</div>
     

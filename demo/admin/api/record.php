@@ -10,7 +10,24 @@ function getRecord($rid)
 	    $row=mysql_fetch_array($result);
 	    return $row;//successfully get record information*/
 }
+function checkRecord($booking){
+	$bid=$booking[0];
+	$confirmation=$booking[1];
+	 $query = sprintf("SELECT * FROM `record` WHERE rid='%s'",mysql_real_escape_string($bid));
+	    $result = mysql_query($query);
+	    if (!$result) {
+		    $message  = 'Invalid query: ' . mysql_error() . "\n";
+		    $message .= 'Whole query: ' . $query;
+		    echo($message);
+	    }else if(mysql_num_rows($result)<=0)
+	    {
+            return false;
+	    }
+		return $bid;
 
+	
+	
+	}
 function saveRecord($booking)
 {
 	$bid=$booking[0];
@@ -116,6 +133,6 @@ function saveRecord($booking)
 	    die($message);
 	}else {
 		$name=$b[7]."".$b[9]." ".$b[8];
-		return sendConfirmation($b[16],$name,$b[0]);
+		return sendConfirmation($b[16],$name,$b[1]);
 	}
 }

@@ -478,6 +478,7 @@ class Spreadsheet_Excel_Reader {
 	}
 	function formatIndex($row,$col,$sheet=0) {
 		return $this->info($row,$col,'formatIndex',$sheet);
+
 	}
 	function formatColor($row,$col,$sheet=0) {
 		return $this->info($row,$col,'formatColor',$sheet);

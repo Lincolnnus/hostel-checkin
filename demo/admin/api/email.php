@@ -27,8 +27,8 @@ function sendConfirmation($email,$name,$confirmation){
 	$subject=$emails[2]["subject"];
     $message=$emails[2]["message"];	
 	$from=$emails[2]["from"].'<norepy@asplan.com>';
-	$to='lincolnnus@gmail.com';
-	$html1=$message;
+        $to=$email;
+        $html1=$message;
 	 $html1=str_ireplace("%%customername%%",$name,$html1);
      $html1=str_ireplace("%%hURL%%",$hURL,$html1);
 	$html1=str_ireplace("%%hname%%",$hname,$html1);
@@ -38,12 +38,22 @@ function sendConfirmation($email,$name,$confirmation){
 	
 }
 function sendStuffEmail($email,$name,$password){
-	$message="Dear ".$name.",\n\nYou are assigned as a staff of ".HOTEL_NAME."\n\nEmail Address: ".$email."\nPassword: ".$password."\n\n".
-	"Please login your stuff account via ".HOTEL_URL."/staff\n\nBest Regards,\n".HOTEL_NAME." Team";
-	$to=$email;
-	$from=HOTEL_NAME."<noreply@gmail.com>";
-	$subject="Please Verify Your Stuff Email";
-	return sendEmail($from,$to,$subject,$message);
+	
+	$hURL=HOTEL_URL;
+	$hname=HOTEL_NAME;
+
+	$emails=getEmails();
+	$subject=$emails[5]["subject"];
+    $message=$emails[5]["message"];	
+	$from=$emails[5]["from"].'<norepy@asplan.com>';
+        $to=$email;
+        $html1=$message;
+	 $html1=str_ireplace("%%staffname%%",$name,$html1);
+     $html1=str_ireplace("%%hURL%%",$hURL,$html1);
+	$html1=str_ireplace("%%hname%%",$hname,$html1);
+	 $html1=str_ireplace("%%hemail%%",$email,$html1);
+	 $html1=str_ireplace("%%password%%",$password,$html1);
+	return sendHTMLEmail($from,$to,$subject,$html1);
 }
 function sendEmail($from,$to,$subject,$message){
 	ini_set('include_path', PEAR_PATH);
@@ -102,6 +112,7 @@ $message->setHTMLBody($html1);
     return true;
 	}
 }
+
 function getEmails(){
 	$query = sprintf("SELECT * FROM `email`");
 	$result = mysql_query($query);

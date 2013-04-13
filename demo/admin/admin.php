@@ -8,6 +8,11 @@
 <link rel="stylesheet" href="css/datepicker.css" /> 
 <script src="js/jQuery.ui.datepicker.js"></script>
 <style>
+.ui-widget-header {
+
+font-family:Arial, Helvetica, sans-serif;\
+
+}
 .ui-collapsible.ui-collapsible-collapsed .ui-collapsible-heading .ui-icon-plus,
 .ui-icon-arrow-r { background-position: -108px 0; }
 .ui-icon-arrow-l { background-position: -144px 0; }
@@ -32,6 +37,13 @@ width:33%;
 left:33%;
 top:30%;
 }
+.ui-input-textarea{
+  height:500px;
+  width:100%;
+}
+#message{
+   border:1px solid black;
+}
 #errorClose{
 float:right;
 }
@@ -43,30 +55,38 @@ function validateEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
-function getHotel()
-{
-                 if (window.XMLHttpRequest)
-                 {// code for IE7+, Firefox, Chrome, Opera, Safari
-                 xmlhttp=new XMLHttpRequest();
-                 }
-                 else
-                 {// code for IE6, IE5
-                 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-                 }
-                 xmlhttp.open("GET","../hotel.xml",false);
-                 xmlhttp.send();
-                 xmlDoc=xmlhttp.responseXML;
-                 var x=xmlDoc.getElementsByTagName("hotel");
-                 var hotelxml=x[0];
+    function getHotel() {
+        var uid=getCookie("uid");
+        var token=getCookie("token");
+        var hid=1;
+		var rtn="";
+        $.ajax({
+			   async: false,
+               type: "GET",
+               url: "api/admin.php",
+               dataType: "json",
+               data: { uid:uid, token: token,hid:hid,action:'getHotel'}
+               }).success(function( msg ) {
+                         // $('#hotelInfo').trigger('expand');
+                          var hotelInfo=msg;
+                                       
                  var hotel=new Object();
-                 hotel.name=hotelxml.getElementsByTagName("name")[0].childNodes[0].nodeValue;
-                 hotel.address=hotelxml.getElementsByTagName("address")[0].childNodes[0].nodeValue;
-                 hotel.tac=hotelxml.getElementsByTagName("tac")[0].childNodes[0].nodeValue;
-                 hotel.logo=hotelxml.getElementsByTagName("logo")[0].childNodes[0].nodeValue;
-                 hotel.zip=hotelxml.getElementsByTagName("zip")[0].childNodes[0].nodeValue;
-                 hotel.contact=hotelxml.getElementsByTagName("contact")[0].childNodes[0].nodeValue;
-                 return hotel;
-}
+                 hotel.name=hotelInfo.hname;	
+				
+                 hotel.address=hotelInfo.haddress
+                 hotel.manager=hotelInfo.hmanager;
+                 hotel.logo=hotelInfo.hlogo;
+                 hotel.zip=hotelInfo.zip;
+                 hotel.contact=hotelInfo.contact;
+				 hotel.url=hotelInfo.hURL;
+				 hotel.email=hotelInfo.hemail;
+				 rtn=hotel
+                        
+                          }).fail(function(msg){showError(msg);});
+		
+		return rtn;
+    }
+
 function getCheckData(){
 	
 	 var uid=getCookie('uid');
@@ -98,6 +118,31 @@ function getCheckData(){
     });
 	
 	}
+	
+     function saveHotel() {
+        showError("Saving...");
+        var uid=getCookie("uid");
+        var token=getCookie("token");
+        var hotel=new Object();
+        hotel.hid=getCookie("hid");
+        hotel.hname=$('#hname').val();
+        hotel.haddress=$('#haddress').val();
+        hotel.hzip=$('#hzip').val();
+        hotel.hmanager=$('#hmanager').val();
+        hotel.hphone=$('#hphone').val();
+		hotel.hemail=$('#hemail').val();
+        hotel.hURL=$('#hURL').val();
+      
+		alert(hotel.hid+hotel.address+hotel.zip);
+        $.ajax({
+               type: "POST",
+               url: "api/admin.php",
+               dataType: "json",
+               data: { uid:uid, token: token,hotel:hotel,action:'saveHotel'}
+               }).success(function( msg ) {
+                          showError("Saved");
+                          }).fail(function(msg){showError(msg);});
+    }
 
 function buildApp(){
         showError("Building...");
@@ -136,8 +181,9 @@ function changePass()
                                         }else alert("Please Enter the password correctly");
                                         }
 function showError(msg)
-{
+{       $('#preferencePage').trigger('collapse');
         $('#adminPage').trigger('collapse');
+		$('#stuffPage').trigger('collapse');
         $("#errorMsg").html(msg);
         $("#errorWrapper").show();
 }
@@ -173,6 +219,7 @@ function login()
                  if(validateEmail(email))
                  {
                  $.ajax({
+
                         type: "GET",
                         url: IP+"/confirm.php",
                         dataType: "json",
@@ -234,8 +281,10 @@ function signup()
                }).success(function( msg ) {
                 var settings=msg;
                 console.log(settings);
-                $('#inactivityTimer').val(settings.inactivityTimer);
-				$('#legend1').append(settings.inactivityTimer);
+				$("#inactivityTimer option[value='"+ settings.inactivityTimer + "']").attr("selected", true);
+				$("#inactivityTimer").selectmenu('refresh', true);		
+              
+			
                 $('#mailHost').val(settings.mailHost);
                 $('#mailUsername').val(settings.mailUsername);
                 $('#mailPassword').val(settings.mailPassword);
@@ -290,6 +339,7 @@ function signup()
                data: { uid:uid, token: token,action:'updatePreferences',settings:settings}
                }).success(function( msg ) {
                 showError("Saved");
+				
                           }).fail(function(msg){showError("Fail Updating");});
     }
     function updateBrowsers(bid,supported){
@@ -320,7 +370,7 @@ function signup()
                   var newEmail=$('<div data-role="collapsible"><h3>'+emails[i]['subject']+'</h3>'+
                     '<p> Subject:<input type="text" id="subject'+emails[i].eid+'" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" value="'+emails[i]['subject']+'">'+
                     'From:<input type="text" id="from'+emails[i].eid+'" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" value="'+emails[i]["from"]+'">'+
-                    '<a onclick="gotoPreview()">Copy&Paste the HTML Email to Preview <button>Preview</button></a>'+
+                   
                     'Message:<textarea id="message'+emails[i].eid+'"  class="ui-input-textarea ui-body-c ui-corner-all ui-shadow-inset">'+emails[i]['message']+'</textarea>'+
                     '<button data-theme="b" onclick="updateEmails('+emails[i].eid+')">Save Change</button>'+
                     '</p></div>').appendTo($('#emailTemplates'));
@@ -353,13 +403,17 @@ function logout(){
 function showHotel(hotel)
 {
   $("#logo").html('<center><img src="'+hotel.logo+'" title="'+hotel.name+'" width="150px"></center>');
-                   $("#welcome").html("Admin Panel");
+  $("#welcome").html("Enterprise Guest Engagement System - Customer Instance System "+'<br />'+"Administration Modulel-");
+  $("#welcome").append(hotel.name);
                    console.log(hotel);
+                         $('#hemail').val(hotel.email);                                                            
                           $('#hname').val(hotel.name);
                           $('#haddress').val(hotel.address);
                           $('#hphone').val(hotel.contact);
                           $('#hzip').val(hotel.zip);
-                          $('#hmanager').val(hotel.hmanager);
+                          $('#hmanager').val(hotel.manager);
+                          $('#hURL').val(hotel.url);
+						  $('#hemail').val(hotel.email);   
 }
 function checkUser()
 {
@@ -369,6 +423,7 @@ function assignStuff()
   var stuffEmail=$('#stuffEmail').val();
   var stuffFirstname=$('#stuffFirstname').val();
   var stuffLastname=$('#stuffLastname').val();
+  if(validateEmail(stuffEmail)){
   showError("Processing");
   $.ajax({
       type: "POST",
@@ -376,7 +431,7 @@ function assignStuff()
       dataType: "json",
       data: { stuffEmail: stuffEmail,stuffFirstname:stuffFirstname,stuffLastname:stuffLastname}
     }).success(function( msg ) {
-                   showError("Email Sent to "+stuffEmail+", Please Verify the Email Address");
+                   showError("Verification Email Has been Sent to "+stuffEmail+" ");
     }).fail(function(msg){showError("Error Assigning User");
 	
 	$('#stuffEmail').val("");
@@ -385,6 +440,7 @@ function assignStuff()
 	
 	
 	});
+  }else{showError("Invalid Email");}
 }
 
 function deleteStuff(){
@@ -398,9 +454,11 @@ function deleteStuff(){
 		   data:{stuffEmail:stuffEmail}		   		   	   
 		   
 		   }).success(function(msg){
-			   showError("Delete Successfully");
-															  
-	
+			   showError("Delete Successfully");													  
+			   getStuff();
+			   $("#stuffList option[value='"+ stuffEmail + "']").remove();
+			   $("#stuffList").selectmenu('refresh', true);		
+		
 			   }).fail(function(msg){showError("error");
 			   	showError(stuffEmail);
 											   
@@ -431,16 +489,29 @@ function getStuff()
                           stuffList.html('');
                           for(var i=0;i<stuffs.length;i++)
                           {
-                            var newli=$('<option><a>'+stuffs[i].email+'</a></li>').appendTo(stuffList);
+							  
+                            var newli=$('<option value='+stuffs[i].email+'>'+stuffs[i].email+'</option>').appendTo(stuffList);
+							
                           }
                           stuffList.listview( "refresh" );
     }).fail(function(msg){showError("Error Getting Stuffs");});
 }
 $(document).ready(function() {
-				  $("#businessDate").datepicker();
-                  var hotel=getHotel();
-                  showHotel(hotel);
-                  checkUser();
+	               
+				   $("#businessDate").datepicker({
+		                   prevText: ' ', 
+                           nextText: ' ',						
+						   showButtonPanel:true,						 
+						   flat: true                         
+    });
+	 var hotel=getHotel();
+	 
+     showHotel(hotel);
+
+	
+	
+		
+				  
 });
 </script>
 </head>
@@ -458,7 +529,7 @@ $(document).ready(function() {
 	</div>
 
 	<div data-role="collapsible-set">
-    <div data-role="collapsible-set">
+   
     <div data-role="collapsible">
       <h3 id="preferencePage" onClick="getPreferences()">System Preferences</h3>
       <p>
@@ -468,7 +539,7 @@ $(document).ready(function() {
               <p>
                  <form>
                 <label ></label>
-                <legend id="legend1">Click to select your preferred timer and Current Timer is:</legend>
+                <legend id="legend1">Click to select your preferred timer:</legend>
                 <select id="inactivityTimer">
                 <option value="1">1</option>
                 <option value="5">5</option>
@@ -482,7 +553,7 @@ $(document).ready(function() {
            <div data-role="collapsible">
             <h3>Set Business Date</h3>
            <p>
-              <input type="text" id="businessDate">
+              <input type="text" id="businessDate"><br><br>
               <button data-theme="b" onClick="saveSettings()">Set</button>
             </p>
           </div>
@@ -516,7 +587,7 @@ $(document).ready(function() {
                <li>Language:PHP,JavaScript,HTML</li>
              </p>
            </div>
-                <input id="maxInstance" type="hidden" value="100">
+               
             <div data-role="collapsible">
              <h3 onClick="getBrowsers()">Browser Type Support</h3>
               <p>
@@ -593,10 +664,34 @@ $(document).ready(function() {
                 </tr>
                 <tr>
                    <td>
+                    Manager Name:
+                  </td>
+                  <td>
+                    <input id="hmanager" name="hmanager">
+                  </td>
+                </tr>
+                <tr>
+                   <td>
                     Phone Number:
                   </td>
                   <td>
                     <input id="hphone" name="hphone">
+                  </td>
+                </tr>
+                 <tr>
+                  <td>
+                    Hotel URL:
+                  </td>
+                  <td>
+                    <input id="hURL" name="hURL">
+                  </td>
+                </tr>
+                 <tr>
+                  <td>
+                    Email:
+                  </td>
+                  <td>
+                    <input id="hemail" name="hemail">
                   </td>
                 </tr>
                 <tr>
@@ -619,12 +714,10 @@ $(document).ready(function() {
                    </iframe>
             </p>
     </div>
-	
-    
-	 
   </div>
   </p>
   </div>
+
     <div id="importPage" data-role="collapsible">
     <h3>Import Checkin Data</h3>
     <p>
@@ -650,13 +743,13 @@ $(document).ready(function() {
     <div id="stuffPage" data-role="collapsible">
     <h3 onClick="getStuff()">Enrolled Users</h3>
     <p>
-      <form  id="stuffForm" data-role="listview" data-filter="true" data-filter-placeholder="Search Stuffs..." data-filter-theme="d"data-theme="d" data-divider-theme="d" >
+      <form  id="stuffForm" data-role="listview" data-filter="true" data-filter-placeholder="Search Enrolled Users..." data-filter-theme="d"data-theme="d" data-divider-theme="d" >
 	   <select id="stuffList" >
 	   
 	   </select>
        </form>
 	   
-    </p>
+    </p><br><br>
 	<button data-theme="b" onClick="deleteStuff()">Delete Enrolled Users</button>
     </div>
     <div id="passPage" data-role="collapsible">
@@ -681,7 +774,9 @@ $(document).ready(function() {
                  </a>
                  </p>
     </div>
-	</div>
+	
+  </div>
+    
 	</div><!-- /content -->
 	<div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
 Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div>
@@ -690,5 +785,6 @@ Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapor
                   <img src="css/images/close_icon.png" width="30px" title="close" onClick="hideError()" id="errorClose"/>
                 </div>
   </div><!-- /page -->
+  
 </body>
 </html>

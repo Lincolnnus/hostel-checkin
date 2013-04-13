@@ -6,8 +6,9 @@ getPreferences();
 if(isset($_POST["uid"])&&isset($_POST["email"])){
 	$content=$_POST["content"];
 	$to=$_POST["email"];
+	$username=$_POST["username"];
 	
-$initialData = file_get_contents($content);
+$initialData = $content;
 $GLOBALS['HTTP_RAW_POST_DATA']=$initialData;
 $filteredData=substr($GLOBALS['HTTP_RAW_POST_DATA'], strpos($GLOBALS['HTTP_RAW_POST_DATA'], ",")+1);
 
@@ -35,7 +36,7 @@ exec('xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf tmp.html '.$destFile);
             $subject=$emails[4]["subject"];
 		    $message=$emails[4]["message"];
 			$html1=$message;
-			$name="Peng Lin";
+			$name=$username;
 	 $html1=str_ireplace("%%customername%%",$name,$html1);
 	 $html1=str_ireplace("%%hname%%",$hname,$html1);
      $html1=str_ireplace("%%hotelname%%",$hotelname,$html1);

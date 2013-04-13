@@ -8,7 +8,12 @@
 <script src="js/cookie.js"></script>
 <link rel="stylesheet" href="css/datepicker.css" /> 
 <script src="js/jQuery.ui.datepicker.js"></script>
-<style>
+<style type="text/css">
+.ui-widget-header {
+
+font-family:Arial, Helvetica, sans-serif;\
+
+}
 .ui-collapsible.ui-collapsible-collapsed .ui-collapsible-heading .ui-icon-plus,
 .ui-icon-arrow-r { background-position: -108px 0; }
 .ui-icon-arrow-l { background-position: -144px 0; }
@@ -46,48 +51,6 @@ float:right;
 </style>
 <script>
 
-
-
-var counter=setInterval(timer, 1000); 
-
-function timer()
-{
- 
-  count=count-1;
-  if (count <= 0)
-  {
-     var answer = confirm("Session Expired, Do You Want To Continue?")
-  if (answer){
-    timeCount();
-	
-	
-  }
-  else{
-    logout();
-  }
-  }
-
-// document.getElementById("timer").innerHTML=count + " secs"; // watch for spelling
-}
-function timeCount(){
-	
-	
-	    var uid=getCookie("uid");
-        var token=getCookie("token");
-        $.ajax({
-               type: "GET",
-               url: "api/admin.php",
-               dataType: "json",
-               data: { uid:uid, token: token,action:'getPreferences' }
-               }).success(function( msg ) {
-                var settings=msg;
-				count=60*parseInt(settings.inactivityTimer);     
-				
-				
-                          }).fail(function(msg){showError("Fail Getting Preferences");});
-	
-
-}
     function logout(){
       setCookie('uid','','-1');
       setCookie('token','','-1');
@@ -109,15 +72,21 @@ function timeCount(){
       setCookie('hid',hid,'1');
       window.location="hotel.php";
     }
+  
     function gotoHome(){
       window.open("index.php");
     }
-    $(document).ready(function() {
-                      $("#businessDate").datepicker();
+    $(document).ready(function() {				
+       $("#businessDate").datepicker({
+		                   prevText: ' ', 
+                           nextText: ' ',						
+						   showButtonPanel:true,						 
+						   flat: true    
+                     
+    });
+	
                       if(checkCookie("uid")){
-                        var uid=getCookie("uid");
-						timeCount();
-					
+                        var uid=getCookie("uid");									
                       }else{
                          window.location="index.php";
                       }
@@ -248,7 +217,7 @@ function timeCount(){
                   var newEmail=$('<div data-role="collapsible"><h3>'+emails[i]['subject']+'</h3>'+
                     '<p> Subject:<input type="text" id="subject'+emails[i].eid+'" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" value="'+emails[i]['subject']+'">'+
                     'From:<input type="text" id="from'+emails[i].eid+'" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" value="'+emails[i]["from"]+'">'+
-                    '<a onclick="gotoPreview()">Copy&Paste the HTML Email to Preview <button>Preview</button></a>'+
+                  
                     'Message:<textarea id="message'+emails[i].eid+'"  class="ui-input-textarea ui-body-c ui-corner-all ui-shadow-inset">'+emails[i]['message']+'</textarea>'+
                     '<button data-theme="b" onclick="updateEmails('+emails[i].eid+')">Save Change</button>'+
                     '</p></div>').appendTo($('#emailTemplates'));
@@ -349,7 +318,7 @@ function timeCount(){
 <div data-role="page">
 
 	<div data-role="header" data-theme="b" data-add-back-btn="true">
-		<h1>Enterprise Guest Engagement System</h1>
+		<h1>Enterprise Guest Engagement System - System Administration Module</h1>
         <a onClick="gotoHome()" data-icon="home" data-iconpos="notext" data-direction="reverse">Home</a>
 	</div><!-- /header -->
 
@@ -379,6 +348,7 @@ function timeCount(){
            <div data-role="collapsible">
             <h3>Set Business Date</h3>
            <p>
+             
               <input type="text" id="businessDate"><br><br>
               <button data-theme="b" onClick="saveSettings()">Set</button>
             </p>

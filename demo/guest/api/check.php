@@ -3,11 +3,11 @@ include_once("connection.php");
 switch ($_SERVER['REQUEST_METHOD']) 
 {
     case 'GET':
-        if((isset($_GET["email"]))&&(isset($_GET["token"]))&&(isset($_GET["rid"])))
+        if((isset($_GET["email"]))&&(isset($_GET["token"]))&&(isset($_GET["confirmation"])))
     {
         $email=$_GET["email"];
         $token=$_GET["token"];
-		$rid=$_GET["rid"];
+	//	$confirmation=$_GET["confirmation"];
 		
        // $uid=$_GET["uid"];
         $query = sprintf("SELECT * FROM `user` WHERE email='%s' AND token='%s'",mysql_real_escape_string($email),mysql_real_escape_string($token));
@@ -24,7 +24,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 	    {
             $user=mysql_fetch_array($result);
             $confirmation=$_GET["confirmation"];
-            $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND rid='%s'",mysql_real_escape_string($email),mysql_real_escape_string($rid));
+            $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
             $result = mysql_query($query);
             // var_dump($query);
             if (!$result) {
@@ -63,7 +63,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 	    {
 		    $email=$_POST["email"];
 		    $confirmation=$_POST["confirmation"];
-		    $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
+		    $query = sprintf("SELECT * FROM `booking` WHERE email='%s' AND confirmation='%s' AND step = '1'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
 		    $result = mysql_query($query);
 		    if (!$result) {
 			    $message  = 'Invalid query: ' . mysql_error() . "\n";

@@ -2,6 +2,7 @@
 require_once("includes/connection.php");//Connect to the Database
 require_once("settings.php");//Input Settings
 //getPreferences();//Initialize Settings
+//include_once("hotel.php");
 require_once("record.php");
 require_once("email.php");
 switch ($_SERVER['REQUEST_METHOD']) 
@@ -64,6 +65,8 @@ if(isset($_POST["uid"])&&isset($_POST["token"]))
 			case 'saveHotel':
 			$hotel=$_POST["hotel"];
 			echo json_encode(saveHotel($hotel));
+			buildApp();
+			
 			break;
             case 'deleteHotel':
             $hid=$_POST["hid"];
@@ -143,10 +146,19 @@ if(isset($_POST["uid"])&&isset($_POST["token"]))
 			break;
 			case 'updateEmails':
 			$eid=$_POST["eid"];
+
+
+
 			$from=$_POST["from"];
 			$subject=$_POST["subject"];
 			$message=trim($_POST["message"]);
 			echo json_encode(updateEmails($eid,$subject,$from,$message));
+			break;
+			case 'checkRecord':
+			$booking=$_POST["booking"];
+			if(checkRecord($booking))
+				echo json_encode("Have record in table");
+			else echo "Fail";
 			break;
 			case 'saveRecord':
 			$booking=$_POST["booking"];
@@ -194,7 +206,7 @@ function updateLogo($hid,$img)
 {
                  $query = sprintf("UPDATE `hotel` SET hlogo='%s' WHERE hid='%s'",
                                   mysql_real_escape_string($img),
-                                  mysql_real_escape_string($hid));
+                                  mysql_real_escape_string(1));
                  $result = mysql_query($query);
                  if (!$result) {
                      return false;
@@ -202,6 +214,36 @@ function updateLogo($hid,$img)
                  else {
                      return'<img width="100px" src="'.$img.'"/>';
                  }
+}
+	
+
+function saveHotel($hotel)
+{
+	$hid=$hotel["hid"];
+	$hname=$hotel["hname"];
+	$haddress=$hotel["haddress"];
+	$hzip=$hotel["hzip"];
+	$hmanager=$hotel["hmanager"];
+	$hphone=$hotel["hphone"];
+	$hURL=$hotel["hURL"];
+	$hemail=$hotel["hemail"];
+
+	$query = sprintf("UPDATE `hotel` SET hname='%s',hemail='%s',haddress='%s',zip='%s',contact='%s',hmanager='%s',hURL='%s' WHERE hid='%s'",
+		mysql_real_escape_string($hname),
+		mysql_real_escape_string($hemail),
+		mysql_real_escape_string($haddress),
+		mysql_real_escape_string($hzip),
+		mysql_real_escape_string($hphone),
+		mysql_real_escape_string($hmanager),
+		mysql_real_escape_string($hURL),
+		mysql_real_escape_string(1));
+	$result = mysql_query($query);
+	if (!$result) {
+	    return false;
+	}
+	else { 
+		return true;
+	}
 }
 function base64_encode_image ($imagefile) {
         $imgtype = array('jpg', 'gif', 'png');
@@ -214,4 +256,53 @@ function base64_encode_image ($imagefile) {
         }
         return 'data:image/' . $filetype . ';base64,' . base64_encode($imgbinary);
     }
+	
+	function buildApp()
+{
+	                        $hid=1;
+                        $query = sprintf("SELECT * FROM `hotel` WHERE hid='%s'",mysql_real_escape_string($hid));
+                        $result = mysql_query($query);
+                        if (!$result) {
+                            $message  = 'Invalid query: ' . mysql_error() . "\n";
+                            $message .= 'Whole query: ' . $query;
+                            die($message);
+                        }else if(mysql_num_rows($result)<=0){echo "No Such Hotel";}
+                        else
+                        {
+                            $row=mysql_fetch_array($result);
+							$hotel=$row;
+                           $hotel='<?xml version="1.0" encoding="utf-8"?><hotel>'.
+	 '<name>'.$hotel["hname"].'</name><address>'.$hotel["haddress"].'</address><manager>'.$hotel["hmanager"].'</manager><email>'.$hotel["hemail"].'</email><url>'.$hotel["hURL"].'</url><logo>'.
+     $hotel["hlogo"].'</logo><zip>'.$hotel["zip"].'</zip>
+     <contact>'.$hotel["contact"].'</contact><tac>Terms and Conditions</tac></hotel>';
+                            $file="../../hotel.xml";
+                            // Open file to write
+                             if(!file_exists($file)){
+  		return "File not found";
+     }else{
+ 	  $fh = fopen($file, 'r+');
+                            fwrite($fh, $hotel);
+                            fclose($fh);
+
+    
+  	 }
+                            
+                            
+                        }
+
+}
+function getHotel($hid)
+{
+		$query = sprintf("SELECT * FROM `hotel` WHERE hid='%s'",
+		mysql_real_escape_string($hid));
+	$result = mysql_query($query);
+	if (!$result) {
+	    return false;
+	}
+	else { 
+		$hotel=mysql_fetch_array($result);
+		return $hotel;
+	}
+}
 ?>
+

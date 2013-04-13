@@ -512,7 +512,8 @@ if(checkCookie("uid")==0){
         </div>
     
 </div>
-  <div data-role="footer" data-theme="b"><h4>Copyright&copy;Asplan2012</h4></div> 
+  <div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
+Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div> 
 </div><!-- /page -->
 
 </body>

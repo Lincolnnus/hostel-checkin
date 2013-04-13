@@ -5,6 +5,27 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.mobile-1.1.1.js"></script>
 <script src="js/cookie.js"></script>
+<style>
+#errorWrapper{
+  border: 1px solid  #456f9a /*{b-bar-border}*/;
+  background:       #5e87b0 /*{b-bar-background-color}*/;
+  color:          #fff /*{b-bar-color}*/;
+  font-weight: bold;
+  text-shadow: 0 /*{b-bar-shadow-x}*/ 1px /*{b-bar-shadow-y}*/ 1px /*{b-bar-shadow-radius}*/ #3e6790 /*{b-bar-shadow-color}*/;
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #6facd5 /*{b-bar-background-start}*/), to( #497bae /*{b-bar-background-end}*/)); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/); /* Chrome 10+, Saf5.1+ */
+  background-image:    -moz-linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/); /* FF3.6 */
+  background-image:     -ms-linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/); /* IE10 */
+  background-image:      -o-linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/); /* Opera 11.10+ */
+  background-image:         linear-gradient( #6facd5 /*{b-bar-background-start}*/, #497bae /*{b-bar-background-end}*/);
+position:absolute;
+z-index: 100;
+width:33%;
+left:33%;
+top:30%;
+}
+
+</style>
 <script>
 function getHotel()
 {
@@ -30,25 +51,49 @@ function getHotel()
                  hotel.contact=hotelxml.getElementsByTagName("contact")[0].childNodes[0].nodeValue;
                  return hotel;
 }
+ function showError(msg)
+    {
+        $('#preferencePage').trigger('collapse');
+        $("#errorMsg").html(msg);
+        $("#errorWrapper").show();
+    }
+
+    function hideError()
+  {
+    $("#errorWrapper").hide(); 
+    window.location.reload();
+  }
 function getcheckinfo()
                           {
 
                           var hotel=getHotel();
                           var uid=getCookie("uid");
-                          var email=getCookie("email");
-                          var rid=getCookie("rid");
+                          var email=getCookie("email");                        
                           var token=getCookie("token");
-						  alert(email+uid+rid+token);
+						  var confirmation=getCookie("confirmation");
+						 // alert(email);
+						 //   alert(rid);
+						//	alert(uid+token);
                           $.ajax({
                                  type: "GET",
                                  url: "api/adminCheck.php",
                                  dataType: "json",
-                                 data: {uid:uid, email: email, rid:rid,token:token }
+                                 data: {uid:uid, email: email,token:token, confirmation:confirmation }
+								 
                                  }).success(function( msg ) {
+									 var hname=getCookie('hname');
+									  $("#welcome").html("Enterprise Guest Engagement System - Customer Instance System "+'<br />'+"Checkin Modulel-");
+		                              $("#welcome").append(hname);
                                             if(msg.step=="0"){
                                             displayCanvas(hotel,msg.user,msg.booking);
-                                            } else if(msg.step=="1"){
+											fname=msg.user.fname;
+											lname=msg.user.lname;
+											
+                                            } else if(msg.step=="1"){																								
                                             displayCanvas(hotel,msg.user,msg.booking);
+											fname=msg.user.fname;
+											lname=msg.user.lname;
+											
                                             }
                                             }).fail(function(msg){alert("Invalid Checkin Email and Checkin Code");});
                           
@@ -148,7 +193,7 @@ function displayCanvas(hotel,user,check)
     ctx.fillText("Email Address: "+check.email,50,120);
     ctx.fillText("Phone Number: "+user.phone,50,150);
     ctx.font="30px Arial";
-    ctx.fillText("Booking Reference ID: "+check.rid,50,250);
+    ctx.fillText("Booking Confirmation: "+check.confirmation,50,250);
     ctx.font="20px Arial";
     ctx.fillText("Chechin Date(yyyy/mm/dd): "+check.arrivalyear1+'/'+check.arrivalmonth1+'/'+check.arrivalday1,50,300);
     ctx.fillText("Nights Stay: "+check.numberofdays1,500,300);
@@ -291,16 +336,29 @@ function loadPassport(){
 	loadPhoto();
 }
 function saveCanvas(){
-    var img=document.getElementById("checkinCanvas");
+	alert("Processing...");
+   var img=document.getElementById("checkinCanvas");
 	var content=img.toDataURL("image/png");
 		
 	var uid=getCookie("uid");
     var email=getCookie("email");
-	alert(content);
- var ajax = new XMLHttpRequest();
- ajax.open("POST",'api/pdf/sendpdf.php',false);
- ajax.setRequestHeader('Content-Type', 'application/upload');
- ajax.send(content);
+
+	var username=fname+lname;
+
+	
+	  $.ajax({
+		      
+               type: "POST",
+               url: "api/pdf/sendpdf.php",
+               dataType: "json",
+               data: { uid:uid,email:email,content:content,username:username}
+               }).success(function( msg ) {
+				 
+                alert("Send Successfully");
+         }).fail(function(msg){
+			 alert("Fail to Send PDF");
+			 alert(msg);});
+ 
     
 }
 $(document).ready(function() {
@@ -315,7 +373,7 @@ if(checkCookie("uid")==0)
 <div data-role="page">
 
 	<div data-role="header" data-theme="b">
-		<h1>Check In</h1>
+		<h1 id="welcome"></h1>
 		<a data-icon="home" data-iconpos="notext" data-transition="slide" data-rel="back">Home</a>
         <a onClick="window.location.reload()" data-icon="refresh" data-iconpos="notext">Refresh</a>
 	</div><!-- /header -->
@@ -335,7 +393,12 @@ if(checkCookie("uid")==0)
         </p>
 	</div>
 	</div>
-	<div data-role="footer" data-theme="b"><h4>Copyright&copy;Asplan2012</h4></div> 
+	<div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
+Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div> 
+     <div id="errorWrapper" style="display:none;">
+                  <center id="errorMsg"></center>
+                  <img src="css/images/close_icon.png" width="30px" title="close" onClick="hideError()" id="errorClose"/>
+   </div>
 </div><!-- /page -->
 </body>
 </html>

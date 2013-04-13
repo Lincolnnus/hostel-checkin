@@ -155,7 +155,7 @@ switch ($_SERVER['REQUEST_METHOD'])
                 }else echo "parameters missing for changeprofile";
                 break;
 			case 'changePreference':
-		if((isset($_POST["eMotel"])))
+		if((isset($_POST["select1"])))
 		{
 			$eMotel=$_POST["eMotel"];$eBinn=$_POST["eBinn"];$eBhotel=$_POST["eBhotel"];$eSchain=$_POST["eSchain"];
 			$mBinn=$_POST["mBinn"];$mIbhotel=$_POST["mIbhotel"];$mSchain=$_POST["mSchain"];$mBchain=$_POST["mBchain"];
@@ -193,7 +193,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 					mysql_real_escape_string($select9),
 						mysql_real_escape_string($select10),
 						mysql_real_escape_string($select11),
-				mysql_real_escape_string($uid)
+				mysql_real_escape_string(1)
 				 );
 				$result = mysql_query($query);
 				if (!$result) {
