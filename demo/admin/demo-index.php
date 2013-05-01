@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Hotel Admin - Index</title>
+<title>System Demo Index</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
 <link rel="stylesheet" href="css/jquery.mobile-1.1.1.css">
 <script src="js/jquery.min.js"></script>
@@ -188,9 +188,9 @@ function logout(){
 function showHotel(hotel)
 { 
  
-  $("#logo").html('<center><img src="'+hotel.logo+'" title="'+hotel.name+'" width="150px"></center>');
-                  $("#welcome").html("Enterprise Guest Engagement System - Customer Instance System"+'<br />'+"Administration Modulel-");
-		    $("#welcome").append(hotel.name);
+ 
+            $("#welcome").html("System Demo Index"+'<br />');
+		
 
                  console.log(hotel);
                                                                                    
@@ -261,84 +261,63 @@ $(document).ready(function() {
 	<div id="logo">
 	<br>
 	</div>
-	<div data-role="collapsible-set">
-		<div id="loginPage" data-role="collapsible">
-		<h3><img src="css/images/login.png"/>Login</h3>
-		<p>
-			    <input type="text" id="loginemail" name="loginemail" placeholder="Email"/>
-			    <input type="password" id="loginpassword" name="loginpassword" placeholder="Password"/>
-                 <button data-theme="b" onClick="login()" onKeyPress="login()">Login</button>
-                 <a onClick="gotoGuest()" style="float:right;">Guest Login</a>
-		</p>
+    
+	 <div>
+            <a href="http://54.251.118.233/pl/asplan/" target="_blank" data-transition="pop">
+                Asplan Home Page
+            </a>
+        </div>
+        <div>
+            <a href="http://54.251.118.233/pl/demo/admin/" target="_blank" data-transition="pop">
+                Hotel Administration
+            </a>
+        </div>
+        <div>
+            <a href="http://54.251.118.233/pl/demo/guest/" target="_blank" data-transition="pop">
+                Guest Page
+            </a>
+        </div>
+        <div>
+            <a href="http://54.251.118.233/pl/demo/staff/" target="_blank" data-transition="pop">
+                Hotel Staff Page
+            </a> 
+        </div>        
+         <div>
+            <a href="http://www.gmail.com" target="_blank" data-transition="pop">
+                Demo Email Account
+            </a>
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        <div  data-role="collapsible">
+            <h3><img src="css/images/chekin.png"/>Account Inormation</h3>
+            <p> <label><strong>Hotel Administration Account</strong>:</label> admin@hilton.com &nbsp;&nbsp; <label><strong>Password</strong>:</label>123 </p>
+                       
 		</div>
-		<div data-role="collapsible">
-		<h3><img src="css/images/about.png"/>Contact Us</h3>
-		            <p>
-              <table>
-                <tr>
-                  <td>
-                    Hotel Name:
-                  </td>
-                  <td>
-                    <input id="hname" name="hname" disabled>
-                  </td>
-                </tr>
-                <tr>
-                   <td>
-                    Hotel Address:
-                  </td>
-                  <td>
-                    <input id="haddress" name="haddress" disabled>
-                  </td>
-                </tr>
-                <tr>
-                   <td>
-                    Hotel Zip Code:
-                  </td>
-                  <td>
-
-                    <input id="hzip" name="hzip" disabled>
-                  </td>
-                </tr>
-                <tr>
-                   <td>
-                    Manager Name:
-                  </td>
-                  <td>
-                    <input id="hmanager" name="hmanager" disabled>
-                  </td>
-                </tr>
-                <tr>
-                   <td>
-                    Phone Number:
-                  </td>
-                  <td>
-                    <input id="hphone" name="hphone" disabled>
-                  </td>
-                </tr>
-                 <tr>
-                  <td>
-                    Hotel URL:
-                  </td>
-                  <td>
-                    <input id="hURL" name="hURL" disabled>
-                  </td>
-                </tr>
-                 <tr>
-                  <td>
-                    Email:
-                  </td>
-                  <td>
-                    <input id="hemail" name="hemail" disabled>
-                  </td>
-                </tr>
-               
-              </table>
-            </p>
-
+          <div  data-role="collapsible">
+            <h3><img src="css/images/chekin.png"/>Links</h3>
+             <div>
+            <a href="http://54.251.118.233/phpmyadmin/" target="_blank" data-transition="pop">
+                Database
+            </a>
+        </div>
+                       
 		</div>
-	</div>
+        
+        
+        
 	</div><!-- /content -->
+    
+   
+    
+    
+    
 	<div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
 Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div>
     <div id="errorWrapper" style="display:none;">

@@ -117,6 +117,7 @@ if(isset($_POST["uid"])&&isset($_POST["token"]))
 					$fname=BUILD_DIR . $_FILES["file"]["name"];
                		$img=base64_encode_image($fname);
 					$logo=updateLogo($hid,$img);
+					buildApp();
 					if($logo) echo $logo;
 					else echo "Error";
 					unlink($fname);
@@ -280,7 +281,7 @@ function base64_encode_image ($imagefile) {
                              if(!file_exists($file)){
   		return "File not found";
      }else{
- 	  $fh = fopen($file, 'r+');
+ 	  $fh = fopen($file, 'w+');
                             fwrite($fh, $hotel);
                             fclose($fh);
 

@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>Hotel Staff-Index</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
 <link rel="stylesheet" href="css/jquery.mobile-1.1.1.css">
 <script src="js/jquery.min.js"></script>
@@ -89,7 +90,7 @@ function getBooking()
                           bookingList.html('');
                           for(var i=0;i<booking.length;i++)
                           {
-                            var newli=$('<li><a onclick="showBooking(\''+booking[i].confirmation+'\',\''+booking[i].email+'\')">'+booking[i].confirmation+'</a></li>').appendTo(bookingList);
+                            var newli=$('<li><a onclick="showBooking(\''+booking[i].confirmation+'\',\''+booking[i].email+'\')">'+"Check-in Date:"+booking[i].arrivalday1+'/'+booking[i].arrivalmonth1+'/'+booking[i].arrivalyear1+'&nbsp;'+'&nbsp;'+'&nbsp;'+"Confirmation Code:"+booking[i].confirmation+'</a></li>').appendTo(bookingList);
                           }
                           bookingList.listview( "refresh" );
     }).fail(function(msg){showError("Error Getting Stuffs");});
@@ -239,6 +240,7 @@ function checkUser()
     $('#passPage').hide();
     $('#logoutPage').hide();
 	$('#getbooking').hide();
+	$('#confirmapage').hide();
   }
 }
 $(document).ready(function() {
@@ -262,7 +264,7 @@ $(document).ready(function() {
 	</div>
 	<div data-role="collapsible-set">
 	<div id="getbooking" data-role="collapsible">
-            <h3 onClick="getBooking()">Get Booking Customer</h3>
+            <h3 onClick="getBooking()"><img src="css/images/chekin.png"/>Get Booking Customer</h3>
             <p>
             <ul id="newBooking" data-role="listview" data-filter="true" data-filter-placeholder="Search Booking..." data-filter-theme="d"data-theme="d" data-divider-theme="d">
             </ul>

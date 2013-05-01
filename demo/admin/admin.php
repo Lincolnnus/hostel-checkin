@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>Hotel Admin - Admin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
 <link rel="stylesheet" href="css/jquery.mobile-1.1.1.css">
 <script src="js/jquery.min.js"></script>
@@ -113,7 +114,7 @@ function getCheckData(){
 		
 		}) .fail(function(msg){
 			
-			alert("nimei");
+			
 			showError("Error Getting Stuffs");
     });
 	
@@ -133,7 +134,7 @@ function getCheckData(){
 		hotel.hemail=$('#hemail').val();
         hotel.hURL=$('#hURL').val();
       
-		alert(hotel.hid+hotel.address+hotel.zip);
+		
         $.ajax({
                type: "POST",
                url: "api/admin.php",
@@ -141,6 +142,7 @@ function getCheckData(){
                data: { uid:uid, token: token,hotel:hotel,action:'saveHotel'}
                }).success(function( msg ) {
                           showError("Saved");
+						   window.location="admin.php";
                           }).fail(function(msg){showError(msg);});
     }
 

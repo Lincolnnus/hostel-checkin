@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>Guest-Index</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
 <link rel="stylesheet" href="css/jquery.mobile-1.1.1.css">
 <script src="js/jquery.min.js"></script>
@@ -40,9 +41,11 @@ function timer()
 {
  
   time=time-1;
+ 
   if (time <= 0)
+  
   {
-     var answer = confirm("Session Expired, Do You Want To Continue?")
+  var answer = confirm("Session Expired, Do You Want To Continue?")
   if (answer){
      time=count;
 	
@@ -51,10 +54,18 @@ function timer()
   else{
     logout();
   }
+  
   }
+ 
 
 // document.getElementById("timer").innerHTML=count + " secs"; // watch for spelling
 }
+function checklogout(){
+	
+	if(time<-30){logout();}
+	else{return ture;}
+		
+	}
 function gotoAccount(){
     window.location="account.php";
 }
@@ -81,6 +92,7 @@ function timeCount(){
                }).success(function( msg ) {
                 var settings=msg;
 				count=60*parseInt(settings.inactivityTimer); 
+				
 				countValue(); 
 				 
 				
@@ -192,7 +204,9 @@ function login()
 				showError("Processing...");
                  var email=$("#checkinemail").val();
                  var confirmation=$("#checkincode").val();
+				 
                  if(validateEmail(email))
+				 
                  {
                  $.ajax({
                         type: "GET",
@@ -360,7 +374,7 @@ $(document).ready(function() {
 			    <input type="text" id="checkinemail" name="checkinemail" placeholder="Email"/>
                 <label class="ui-hidden-accessible">Code:</label>
 			    <input type="text" id="checkincode" name="checkincode" placeholder="Confirmation Code"/>
-                 <button data-theme="b" onClick="registration()" onKeyPress="checkin()">Check-in</button>
+                 <button data-theme="b" onClick="registration()" onKeyPress="registration()">Check-in</button>
             </p>
 		</div>
 		<div id="confirmPage" data-role="collapsible">
@@ -497,6 +511,8 @@ $(document).ready(function() {
             </p>
 
 		</div>
+
+
 	</div>
 	</div><!-- /content -->
 	<div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.

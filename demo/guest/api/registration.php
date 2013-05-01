@@ -30,7 +30,7 @@
                         
                         //No Such User,create one
                         
-                        $insert=  splittable ($email);
+                        $insert=  splittable ($email,$confirmation);
                         if (!$insert) {
                             $message  = 'Invalid query:'.mysql_error();
                        }else
@@ -40,6 +40,7 @@
 							  $query2 = sprintf("UPDATE `user` SET password='%s' WHERE email='%s'",mysql_real_escape_string($password),mysql_real_escape_string($email));
 							   $result2=mysql_query($query2);
 							  update_token($email);
+							 
 	
 							 
 							
@@ -52,6 +53,8 @@
 	               }else if(mysql_num_rows($result)<=0){echo "No Such Hotel";}
 	else { 
 		 $row=mysql_fetch_array($result);
+		 $userId=$row["uid"];
+		 setPre($userId);
                     $CustomerName=array('fname'=>$row["fname"],'lname'=>$row["lname"]);
 		
 	}
@@ -85,12 +88,13 @@
             if (isset($message)) { echo $message;}
             break;
     }
-    function splittable ($email){
+    function splittable ($email,$confirmation){
         $resultI = FALSE;
         if (mysql_query('BEGIN')) {
-            $queryInsertUser = sprintf("INSERT user (title, fname, lname, uaddress, email, phone)SELECT title, firstName, name, address,  email, tel  FROM `record` WHERE email='%s'",mysql_real_escape_string($email));
+            $queryInsertUser = sprintf("INSERT user (title, fname, lname, uaddress, email, phone)SELECT title, firstName, name, address,  email, tel  FROM `record` WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
             $resultI1= mysql_query($queryInsertUser);
             //$cid = mysql_insert_id();
+            
             /* $bid = mysql_insert_id();
              $queryUpdateBooking= sprintf("UPDATE booking SET cid='%s' WHERE id='%s'", mysql_real_escape_string($cid),mysql_real_escape_string($bid));
              $resultI3= mysql_query($queryUpdateBooking);*/
@@ -154,5 +158,22 @@
         return $resultI;
         
     }
+		function setPre($uid){
+			
+    $query = sprintf("INSERT INTO `preference`(uid) VALUES('%s')",
+	mysql_real_escape_string($uid)
+ );
+	$result = mysql_query($query);
+	if (!$result) {
+	    $message  = 'Invalid query: ' . mysql_error() . "\n";
+	    $message .= 'Whole query: ' . $query;
+	      return 0;
+	}
+        else
+        {
+          return true;
+        }
+}
+
     
     ?>

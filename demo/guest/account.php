@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>Guest-Account</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
 <link rel="stylesheet" href="css/jquery.mobile-1.1.1.css">
 <script src="js/jquery.min.js"></script>
@@ -238,6 +239,7 @@ function timeCount(){
                                         }
        function getPreference() {
         var uid=getCookie("uid");
+	
         var token=getCookie("token");
         $.ajax({
                type: "POST",
@@ -506,11 +508,32 @@ function timeCount(){
                                                           }).fail(function(msg){alert("Unauthorized");//window.location="index.php";
                                                         });
                                         }$(document).ready(function() {
-                                          $("#expireDate").datepicker();
-                                          $("#issueDate").datepicker();
-										  $("#birth").datepicker();
-										   $("#birth2").datepicker();
+                                          $("#expireDate").datepicker({
+		                   prevText: ' ', 
+                           nextText: ' ',						
+						   showButtonPanel:true,						 
+						   flat: true                         
+    });
+                                          $("#issueDate").datepicker({
+		                   prevText: ' ', 
+                           nextText: ' ',						
+						   showButtonPanel:true,						 
+						   flat: true                         
+    });
+										  $("#birth").datepicker({
+		                   prevText: ' ', 
+                           nextText: ' ',						
+						   showButtonPanel:true,						 
+						   flat: true                         
+    });
+										   $("#birth2").datepicker({
+		                   prevText: ' ', 
+                           nextText: ' ',						
+						   showButtonPanel:true,						 
+						   flat: true                         
+    });
 										   getPreference();
+										  
 if(checkCookie("uid")==0){
     window.location="index.php";
 }else{

@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>Hotel Staff-Customer Account</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
 <link rel="stylesheet" href="css/jquery.mobile-1.1.1.css">
 <script src="js/jquery.min.js"></script>

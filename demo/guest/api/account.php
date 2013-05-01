@@ -193,7 +193,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 					mysql_real_escape_string($select9),
 						mysql_real_escape_string($select10),
 						mysql_real_escape_string($select11),
-				mysql_real_escape_string(1)
+				mysql_real_escape_string($uid)
 				 );
 				$result = mysql_query($query);
 				if (!$result) {
@@ -211,7 +211,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 
 
 	case 'getPreference':
-			echo json_encode(getPre());
+			echo json_encode(getPre($uid));
 			break;
 			
 
@@ -282,10 +282,10 @@ function validateoldpass($uid,$oldpass)
 	return true;
 }
 
-function getPre( )
+function getPre($uid)
 {
 					$query = sprintf("SELECT * FROM `preference` WHERE uid='%s'",
-		mysql_real_escape_string(1));
+		mysql_real_escape_string($uid));
 	$result = mysql_query($query);
 				
 				

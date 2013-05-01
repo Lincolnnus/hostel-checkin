@@ -329,6 +329,7 @@ float:right;
       <h3 id="preferencePage" onClick="getPreferences()">System Preferences</h3>
       <p>
         <div data-role="collapsible-set">
+        <!--
            <div data-role="collapsible">
              <h3>Session Inactivity Timer(minutes)</h3>
               <p>
@@ -353,6 +354,7 @@ float:right;
               <button data-theme="b" onClick="saveSettings()">Set</button>
             </p>
           </div>
+          -->
            <div data-role="collapsible">
              <h3 onClick="getEmails()">Email Templates</h3>
               <p>
@@ -433,6 +435,7 @@ float:right;
                <li>Language:PHP,JavaScript,HTML</li>
              </p>
            </div>
+           <!--
            <div data-role="collapsible">
              <h3 onClick="">Maximum Instances Allowed</h3>
               <p>
@@ -449,6 +452,7 @@ float:right;
                 <button data-theme="b" onClick="saveSettings()">Save</button>
              </p>
            </div>
+           -->
             <div data-role="collapsible">
              <h3 onClick="getBrowsers()">Browser Type Support</h3>
               <p>

@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>Guest - Customer Status</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
 <link rel="stylesheet" href="css/jquery.mobile-1.1.1.css">
 <script src="js/jquery.min.js"></script>
@@ -82,19 +83,26 @@ function getcheckinfo()
 									   $("#welcome").append(hotel.name);
 			console.log(msg);						
                                             if(msg.step=="0"){
+												
                                             displayCanvas(hotel,msg.user,msg.booking);
+											
 											loadPassport();
 											
-					    $('#checkout').hide();
+											
+					    
 						var confirmation=setCookie('confirmation',msg.booking.confirmation,1);
                                             } else if(msg.step=="1"){
-					   
+					                       
                                             displayCanvasCurrent(hotel,msg.user,msg.booking);
-											loadPhoto();
+											$('#checkout').show();
+											
+											 
+										
                                             }else if(msg.step == "2"){
+										
 displayCanvasCheckOut(hotel,msg.user,msg.booking);
-loadPhoto();
-$('#checkout').hide();}
+
+}
                                             }).fail(function(msg){
 												alert("Invalid Checkin Email and Checkin Code");
 												 	window.location="index.php";
@@ -205,6 +213,7 @@ function displayCanvas(hotel,user,check)
     ctx.fillText("Total Rooms: "+check.totalRoom,50,330);
     ctx.fillText("Total People: "+check.numberofadults1+' Adults '+check.numberofchildren1+' Children',200,330);
     ctx.fillText("Room Type: "+check.room1,500,330);
+
     ctx.font="30px Arial";
     ctx.fillText("Passport Information",50,400);
     ctx.font="20px Arial";
@@ -397,6 +406,7 @@ function addSignature(){
                         points+=';';
                         }
                         });
+
     $('#checkinCanvas').touchstart(function(e) {
                         e.preventDefault();
                         newpoly=[];//Clear the Stroke
@@ -444,13 +454,13 @@ function gotoAccount(){
     window.location="account.php";
 }
 function loadPhoto(){
-	$('#title').append("loadPhoto");
+	
     var c=document.getElementById("checkinCanvas");
     var ctx=c.getContext("2d");
     ctx.drawImage(idPhoto,600,20,150,150);
 }
 function loadPassport(){
-	$('#title').append("loadPassport");
+	
     var c=document.getElementById("checkinCanvas");
     var ctx=c.getContext("2d");
     ctx.drawImage(passportPhoto,300,500,500,500);
@@ -480,20 +490,18 @@ if(checkCookie("email")==0)
 	<div data-role="content">
 	<div data-role="collapsible-set">
 		<div data-role="collapsible" >
-		<h3><img src="css/images/login.png"/>Checkin Information</h3>
-	
+		<h3><img src="css/images/login.png"/>Hotel Status Information</h3>
+	      
         	<div data-role="collapsible" >	
-            <h3 onClick="loadPassport()"><img src="css/images/login.png"/>Load Checkin Information</h3>
+            <h3 onClick="loadPassport()" ><img src="css/images/login.png"/>Load Information</h3>
             <div id="checkinfo"></div>   
+            <div id="checkout" hidden="true" ><button onClick="checkOut()" data-theme="c" >Check Out</button>
             </div>     
-            <div data-role="collapsible" >	
-            <div id="checkout"><button onClick="checkOut()" data-theme="c" >Check Out</button>
-             </div>   
-               </div>
+           
      
 	</div>
 	</div>
-    
+    </div>
 	<div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
 Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div> 
 </div><!-- /page -->

@@ -51,7 +51,7 @@ function updatePage() {
  if (receiveReq.readyState == 4) {
    //Set the content of the DIV element with the response text
      if(receiveReq.responseText=='success'){
-         showError("Thank you for submitting your details. We will be in touch shortly.");
+         showError("Thank you for submitting your details. We will contact with you shortly.");
      }
      else{
          showError(receiveReq.responseText);
