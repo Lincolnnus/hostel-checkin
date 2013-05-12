@@ -73,7 +73,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 		    }
 		    else 
 		    {
-			$query = sprintf("UPDATE `booking` SET step='1' WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
+			$query = sprintf("UPDATE `booking` SET step='3' WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
 			$result = mysql_query($query);
 			    if (!$result) {
 				    $message  = 'Invalid query: ' . mysql_error() . "\n";

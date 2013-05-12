@@ -52,6 +52,28 @@ function getHotel()
                  hotel.contact=hotelxml.getElementsByTagName("contact")[0].childNodes[0].nodeValue;
                  return hotel;
 }
+	function confirmCheckout(){
+					
+					 var hotel=getHotel();
+                          var uid=getCookie("uid");
+                          var email=getCookie("email");
+                          var confirmation=getCookie("confirmation");
+                          var token=getCookie("token");
+					
+                          $.ajax({
+                                 type: "POST",
+                                 url: "api/check.php",
+                                 dataType: "json",
+                                 data: {uid:uid, email: email, confirmation:confirmation,token:token }
+                                 }).success(function( msg ) {
+			console.log(msg);						
+                                            alert("successfully checkout");
+											    window.location="index.php";
+                                            }).fail(function(msg){alert("Invalid Checkin Email and Checkin Code");});
+                          	
+					
+					}
+
  function showError(msg)
     {
         $('#preferencePage').trigger('collapse');
@@ -89,18 +111,24 @@ function getcheckinfo()
                                             displayCanvas(hotel,msg.user,msg.booking);
 											fname=msg.user.fname;
 											lname=msg.user.lname;
-											loadPassport();
+											
 											$('#checkPdf').show();
+										
 											
 											
                                             } else if(msg.step=="1"){																								
                                             displayCanvasCurrent(hotel,msg.user,msg.booking);
 											fname=msg.user.fname;
 											lname=msg.user.lname;
-											displayCanvasCurrent(hotel,msg.user,msg.booking);
+											
 											
                                             }
 											else if(msg.step == "2"){
+										
+displayCanvasCheckOut(hotel,msg.user,msg.booking);
+$('#checkout').show();
+}
+	else if(msg.step == "3"){
 										
 displayCanvasCheckOut(hotel,msg.user,msg.booking);
 
@@ -199,6 +227,7 @@ function displayCanvas(hotel,user,check)
     ctx.fillText(user.title,50,80);
     ctx.fillText(user.fname,120,80);
     ctx.fillText(user.lname,280,80);
+
     ctx.font="20px Arial";
     ctx.fillText("Email Address: "+check.email,50,120);
     ctx.fillText("Phone Number: "+user.phone,50,150);
@@ -334,58 +363,8 @@ function addSignature(){
 
 function displayCanvasCurrent(hotel,user,check)
 {
-    $('#checkinfo').html('<canvas style="border:1px solid #000000;" id="checkinCanvas" width="800" height="1000"></canvas>');
-    var c=document.getElementById("checkinCanvas");
-    var ctx=c.getContext("2d");
-    /*c.addEventListener("touchstart", handleStart, false);
-    c.addEventListener("touchend", handleEnd, false);
-    c.addEventListener("touchcancel", handleCancel, false);
-    //c.addEventListener("touchleave", handleLeave, false);
-    c.addEventListener("touchmove", handleMove, false);*/
-    ctx.font="30px Arial";
-    ctx.fillText(user.title,50,80);
-    ctx.fillText(user.fname,120,80);
-    ctx.fillText(user.lname,280,80);
-    ctx.font="20px Arial";
-    ctx.fillText("Email Address: "+check.email,50,120);
-    ctx.fillText("Phone Number: "+user.phone,50,150);
-    ctx.font="30px Arial";
-    ctx.fillText("Booking Confirmation: "+check.confirmation,50,250);
-    ctx.font="20px Arial";
-    ctx.fillText("Chechin Date(yyyy/mm/dd): "+check.arrivalyear1+'/'+check.arrivalmonth1+'/'+check.arrivalday1,50,300);
-    ctx.fillText("Nights Stay: "+check.numberofdays1,500,300);
-    ctx.fillText("Total Rooms: "+check.totalRoom,50,330);
-    ctx.fillText("Total People: "+check.numberofadults1+' Adults '+check.numberofchildren1+' Children',200,330);
-    ctx.fillText("Room Type: "+check.room1,500,330);
-    ctx.font="30px Arial";
-     ctx.fillText("Hotel Consume Information",50,400);
-    ctx.font="20px Arial";
-    ctx.fillText("Food: ",50,430);
-    ctx.fillText("Drinks: ",50,460);
-    ctx.fillText("Wine: ",450,460);
-    ctx.fillText("Others: ",50,490);
-    ctx.fillText("Total Consume: ",450,490);
-   // var idPhoto=new Image();
-    idPhoto.src=user.idPhoto;
-   // ctx.drawImage(idPhoto,600,20,150,150);
-   // var passportPhoto=new Image();
-    passportPhoto.src=user.passportPhoto;
-   // ctx.drawImage(passportPhoto,50,500,500,500);
-   
-    var width=document.body.offsetWidth*0.8;
-    var height=1.4142*width;
-    $('#checkinCanvas').width(width);
-    $('#checkinCanvas').height(height);
-    //Draw Pencil
-    var color='blue';
-    var started=false;
-    var pencil=[];//The Pencil Object
-    var newpoly=[];//Every Stroke is treated as a Continous Polyline
-    var width=document.body.offsetWidth*0.8;
-    var height=1.4142*width;
-    $('#checkinCanvas').width(width);
-    $('#checkinCanvas').height(height);
-
+ var newBrowser=$('<p>Consume Information</p><table cellspacing="55px"><tr><td>No.</td><td>Date</td><td>Transaction Code</td><td>Description</td><td>Amount</td></tr><tr><td>1</td><td>29/04/2013</td><td>GF</td><td>Gift from Gift Shop</td><td>15</td></tr><tr><td>2</td><td>29/04/2013</td><td>GF</td><td>Gift from Gift Shop</td><td>55</td></tr><tr><td>3</td><td>29/04/2013</td><td>GF</td><td>Gift from Gift Shop</td><td>45</td></tr></table><p>Total Amount:115</p>').appendTo(
+                  $("#checkinfo"));
 }
 function displayCanvasCheckOut(hotel,user,check)
 {
@@ -413,13 +392,6 @@ function displayCanvasCheckOut(hotel,user,check)
     ctx.fillText("Total People: "+check.numberofadults1+' Adults '+check.numberofchildren1+' Children',200,330);
     ctx.fillText("Room Type: "+check.room1,500,330);
     ctx.font="30px Arial";
-    ctx.fillText("Hotel Consume Information",50,400);
-    ctx.font="20px Arial";
-    ctx.fillText("Food: ",50,430);
-    ctx.fillText("Drinks: ",50,460);
-    ctx.fillText("Wine: ",450,460);
-    ctx.fillText("Others: ",50,490);
-    ctx.fillText("Total Consume: ",450,490);
    // var idPhoto=new Image();
     idPhoto.src=user.idPhoto;
    // ctx.drawImage(idPhoto,600,20,150,150);
@@ -440,6 +412,8 @@ function displayCanvasCheckOut(hotel,user,check)
     var height=1.4142*width;
     $('#checkinCanvas').width(width);
     $('#checkinCanvas').height(height);
+	 var newBrowser=$('<p>Total Consume Information</p><table cellspacing="55px"><tr><td>No.</td><td>Date</td><td>Transaction Code</td><td>Description</td><td>Amount</td></tr><tr><td>1</td><td>29/04/2013</td><td>GF</td><td>Gift from Gift Shop</td><td>15</td></tr><tr><td>2</td><td>29/04/2013</td><td>GF</td><td>Gift from Gift Shop</td><td>55</td></tr><tr><td>3</td><td>29/04/2013</td><td>GF</td><td>Gift from Gift Shop</td><td>45</td></tr></table><p>Total Amount:115</p>').appendTo(
+                  $("#checkinfo"));
 
 }
 
@@ -514,7 +488,9 @@ if(checkCookie("uid")==0)
              <button  onClick="saveCanvas()" data-theme="b" >Send Check-in Confirmation PDF to Customer</button>
              </div>
             <button onClick="gotoAccount()" data-theme="c" >Fill in User Information</button>
-               
+            <div id="checkout" hidden="true">
+            <button onClick="confirmCheckout()" data-theme="c" >Confirm Check-out</button>  
+            </div>          
         </p>
 	</div>
 	</div>

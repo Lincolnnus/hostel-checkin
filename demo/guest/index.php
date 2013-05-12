@@ -6,6 +6,7 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.mobile-1.1.1.js"></script>
 <script src="js/cookie.js"></script>
+<script src="js/jquery.blockUI.js"></script>
 <style>
 .ui-collapsible.ui-collapsible-collapsed .ui-collapsible-heading .ui-icon-plus,
 .ui-icon-arrow-r { background-position: -108px 0; }
@@ -30,10 +31,14 @@ z-index: 100;
 width:33%;
 left:33%;
 top:30%;
+
+border-style:none
 }
 #errorClose{
 float:right;
 }
+
+
 </style>
 <script>
 var counter=setInterval(timer, 1000); 
@@ -179,6 +184,7 @@ function login()
                         dataType: "json",
                         data: { email: email, confirmation: confirmation}
                         }).success(function( msg ) {
+							       
                                    if(msg.status=='sent'){
 									  
 									  setCookie('confirmation',msg.confirmation,1);
@@ -191,7 +197,9 @@ function login()
                                          $('#confirmPage').trigger('collapse');
                                          $('#loginPage').trigger('expand');									
                                       }
-                                   }).fail(function(msg){showError("Invalid Checkin Email and Checkin Code");});
+                                   }).fail(function(msg){
+									   
+								        showError("Invalid Checkin Email and Checkin Code");});
                  }
                  else
                  {
@@ -275,12 +283,24 @@ function showHotel(hotel)
 }
 function checkUser()
 {
-    if(checkCookie('uid')){
+    if(checkCookie('uid')&&!checkCookie('confirmation')){
+	
       $('#loginPage').hide();
 	  $('#regPage').hide();
      // $('#signupPage').hide();
       $('#checkinemail').val(getCookie('email'));
 	  timeCount();
+	  }
+	  else if (checkCookie('uid')&&checkCookie('confirmation')){
+      $('#loginPage').hide();
+	  $('#regPage').hide();
+     // $('#signupPage').hide();
+      $('#checkinemail').val(getCookie('email'));
+	  $('#confirmPage').trigger('expand');
+	 // $('#confirmPage').trigger('expand');	
+	   //$('#loginPage').trigger('expand');	
+	  timeCount();
+                                   
      }else{
       $('#myPage').hide();
       $('#logoutPage').hide();
@@ -323,7 +343,7 @@ function checkUser()
                                                           case "1":
                                                           $("#currentCheckin").append('<li><a onclick="showCheckin(\''+checkin[i].confirmation+'\')" >'+"Check-in Date:"+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'&nbsp;'+'&nbsp;'+'&nbsp;'+"Confirmation Code:"+checkin[i].confirmation+'</a></li>');
                                                           break;
-                                                          case "2":
+                                                          case "3":
                                                           $("#myHistory").append('<li><a onclick="showCheckin(\''+checkin[i].confirmation+'\')" >'+"Check-in Date:"+checkin[i].arrivalday1+'/'+checkin[i].arrivalmonth1+'/'+checkin[i].arrivalyear1+'&nbsp;'+'&nbsp;'+'&nbsp;'+"Confirmation Code:"+checkin[i].confirmation+'</a></li>');
                                                           break;
                                                           }
@@ -348,6 +368,23 @@ $(document).ready(function() {
 	           var hotel=getHotel();
                   showHotel(hotel);
                   checkUser();
+			$(function(){
+				
+				//$.blockUI({ message: $('#confirmPage'), css: { border-style:'none';}});
+				$.blockUI({ message: $('#confirmPage'), css: { border:'none',backgroundColor: 'transparent'} }); 
+				
+				
+				});
+           
+				 
+				  
+				//$('#checkInCon').tipsy({fade: true});
+				 $(function() {
+    $( document ).tooltip({
+      track: true
+    });
+  });
+				 
 				
 });
 </script>
@@ -367,6 +404,7 @@ $(document).ready(function() {
 	<br>
 	</div>
 	<div data-role="collapsible-set">
+	<!--
     <div id="regPage" data-role="collapsible">
             <h3><img src="css/images/chekin.png"/>Registration</h3>
             <p>
@@ -374,17 +412,19 @@ $(document).ready(function() {
 			    <input type="text" id="checkinemail" name="checkinemail" placeholder="Email"/>
                 <label class="ui-hidden-accessible">Code:</label>
 			    <input type="text" id="checkincode" name="checkincode" placeholder="Confirmation Code"/>
-                 <button data-theme="b" onClick="registration()" onKeyPress="registration()">Check-in</button>
+                 <button data-theme="b" onClick="registration()" onKeyPress="registration()">Register</button>
             </p>
 		</div>
+		-->
 		<div id="confirmPage" data-role="collapsible">
-            <h3><img src="css/images/chekin.png"/>Confirmation</h3>
+            <h3 title='Type in Email & Confirmation Code to make check-in'><img src="css/images/chekin.png"/>Request Check-in Confirmation</h3>
             <p>
                 <label class="ui-hidden-accessible">Email:</label>
 			    <input type="text" id="checkinemail2" name="checkinemail2" placeholder="Email"/>
                 <label class="ui-hidden-accessible">Code:</label>
 			    <input type="text" id="checkincode2" name="checkincode2" placeholder="Confirmation Code"/>
-                 <button data-theme="b" onClick="checkin()" onKeyPress="checkin()">Check-in</button>
+                 <button data-theme="b" onClick="checkin()" onKeyPress="checkin()">Submit</button>
+                
             </p>
 		</div>
 		<div id="loginPage" data-role="collapsible">
@@ -404,24 +444,24 @@ $(document).ready(function() {
 		</p>
 		</div>-->
     <div id="myPage" data-role="collapsible">
-    <h3 onClick="myCheckin()"><img src="css/images/chekin.png"/>My Check-in's</h3>
+    <h3 title="To see your Hotel Stay Information "onClick="myCheckin()"><img src="css/images/chekin.png"/>My Hotel Status</h3>
     <p>
       <div data-role="collapsible">
-      <h3 ><img src="css/images/chekin.png"/>New Confirmations</h3>
+      <h3 title="The Check-in confirmation waiting for approving"><img src="css/images/chekin.png"/>Pending Check-in Confirmation</h3>
       <p>
                  <ul id="myConfirmation" data-role="listview">
                  </ul>
       </p>
       </div>
       <div data-role="collapsible">
-      <h3 ><img src="css/images/chekin.png"/>Current Check-in</h3>
+      <h3 title="Browse your Consume Information in hotel"><img src="css/images/chekin.png"/>Current Check-in</h3>
       <p>
                  <ul id="currentCheckin" data-role="listview">
                  </ul>
       </p>
       </div>
       <div data-role="collapsible">
-      <h3><img src="css/images/chekin.png"/>History</h3>
+      <h3 title="To see your historical informaiton in hotel"><img src="css/images/chekin.png"/>History</h3>
       <p>
                  <ul id="myHistory" data-role="listview">
                  </ul>
@@ -430,15 +470,18 @@ $(document).ready(function() {
     </p>
     </div>
       <div id="account" data-role="collapsible">
-                 <h3> <img src="css/images/signup.png"/>My Account</h3>
+                 <h3 title="Go to your account to modify your personal information"> <img src="css/images/signup.png"/>My Account</h3>
                  <p>
                  <a id="account" data-rel="dialog" data-theme="a" onClick="gotoAccount()" onKeyPress="gotoAccount()" data-role="button">
                  Go to My Account
                  </a>
                  </p>
+                
+                 
         </div>
+        
         <div id="logoutPage" data-role="collapsible">
-                 <h3> <img src="css/images/signup.png"/>Log Out</h3>
+                 <h3 title="Log out your current account"> <img src="css/images/signup.png"/>Log Out</h3>
                  <p>
                  <a id="logout" data-rel="dialog" data-theme="a" onClick="logout()" onKeyPress="logout()" data-role="button">
                  Confirm
@@ -446,7 +489,7 @@ $(document).ready(function() {
                  </p>
         </div>
 		<div data-role="collapsible">
-		<h3><img src="css/images/about.png"/>Contact Us</h3>
+		<h3 title="See contact information of hotel"><img src="css/images/about.png"/>Contact Us</h3>
 				            <p>
               <table>
                 <tr>

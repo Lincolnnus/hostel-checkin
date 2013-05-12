@@ -32,6 +32,7 @@ function saveRecord($booking)
 {
 	$bid=$booking[0];
 	$confirmation=$booking[1];
+	$email=$booking[16];
 	for($i=0;$i<count($booking);$i++)
 	{
 	  $b[]= $booking[$i];
@@ -132,7 +133,133 @@ function saveRecord($booking)
 	    $message .= 'Whole query: ' . $query;
 	    die($message);
 	}else {
-		$name=$b[7]."".$b[9]." ".$b[8];
-		return sendConfirmation($b[16],$name,$b[1]);
+		
+		
+		            $query = sprintf("SELECT * FROM `user` WHERE email='%s'",mysql_real_escape_string($email));
+                    $result = mysql_query($query);
+                    
+                    if (!$result) {
+                        $message  = 'Invalid query:'.mysql_error();
+                    }else if(mysql_num_rows($result)<=0)
+                    {
+                        
+                        //No Such User,create one
+                        
+                        $insert=  splittable ($email,$confirmation);
+                        if (!$insert) {
+                            $message  = 'Invalid query:'.mysql_error();
+                       }else
+
+                        {
+							 $password=md5(time());
+							  $query2 = sprintf("UPDATE `user` SET password='%s' WHERE email='%s'",mysql_real_escape_string($password),mysql_real_escape_string($email));
+							   $result2=mysql_query($query2);
+							  update_token($email);
+							 
+	
+							 
+							
+							 $query = sprintf("SELECT * FROM `user` WHERE email='%s'",mysql_real_escape_string($email));
+                    $result = mysql_query($query);
+							if (!$result) {
+	                             $message  = 'Invalid query: ' . mysql_error() . "\n";
+                    $message .= 'Whole query: ' . $query;
+                    die($message);
+	               }else if(mysql_num_rows($result)<=0){echo "No Such Hotel";}
+	else { 
+		 $row=mysql_fetch_array($result);
+		 $userId=$row["uid"];
+		 setPre($userId);
+                    $CustomerName=array('fname'=>$row["fname"],'lname'=>$row["lname"]);
+		
+	}
+					$fname=$CustomerName['fname'];	
+					$lname=$CustomerName['lname'];	
+					$Customer=$fname.$lname;
+							
+			return sendFreshCustomer($email,$Customer,$password,$confirmation);
+				
+							
+							
+                        }
+                        
+                    }
+                    else
+                    {
+                     	$name=$b[7]."".$b[9]." ".$b[8];
+		                return sendConfirmation($b[16],$name,$b[1]);
+                    }
+
+		
+		
+		
+		
+		
+		
+	
 	}
 }
+
+ function splittable ($email,$confirmation){
+        $resultI = FALSE;
+        if (mysql_query('BEGIN')) {
+            $queryInsertUser = sprintf("INSERT user (title, fname, lname, uaddress, email, phone)SELECT title, firstName, name, address,  email, tel  FROM `record` WHERE email='%s' AND confirmation='%s'",mysql_real_escape_string($email),mysql_real_escape_string($confirmation));
+            $resultI1= mysql_query($queryInsertUser);
+            //$cid = mysql_insert_id();
+            
+            /* $bid = mysql_insert_id();
+             $queryUpdateBooking= sprintf("UPDATE booking SET cid='%s' WHERE id='%s'", mysql_real_escape_string($cid),mysql_real_escape_string($bid));
+             $resultI3= mysql_query($queryUpdateBooking);*/
+            if($resultI1)  {
+                $resultI = mysql_query('COMMIT'); // both queries looked OK, save
+            }
+            else{
+                mysql_query('ROLLBACK'); // problems with queries, no changes
+            }
+        }
+        return $resultI;
+        
+    }
+	function update_token($email)
+{
+   $tokenLen = 16;
+   if (file_exists('/dev/urandom')) { // Get 100 bytes of random data
+		$randomData = file_get_contents('/dev/urandom', false, null, 0, 100) . uniqid(mt_rand(), true);
+   } else {
+		$randomData = mt_rand() . mt_rand() . mt_rand() . mt_rand() . microtime(true) . uniqid(mt_rand(), true);
+   }
+   $token= substr(hash('sha512', $randomData), 0, $tokenLen);
+   $query = sprintf("UPDATE user SET token='%s' WHERE email='%s'",
+		mysql_real_escape_string($token),
+		mysql_real_escape_string($email)
+	 );
+	$result = mysql_query($query);
+	if (!$result) {
+	    $message  = 'Invalid query: ' . mysql_error() . "\n";
+	    $message .= 'Whole query: ' . $query;
+	    return 0;
+	}
+        else
+        {
+           return $token;
+        }
+}
+function setPre($uid){
+			
+    $query = sprintf("INSERT INTO `preference`(uid) VALUES('%s')",
+	mysql_real_escape_string($uid)
+ );
+	$result = mysql_query($query);
+	if (!$result) {
+	    $message  = 'Invalid query: ' . mysql_error() . "\n";
+	    $message .= 'Whole query: ' . $query;
+	      return 0;
+	}
+        else
+        {
+          return true;
+        }
+}
+
+
+?>

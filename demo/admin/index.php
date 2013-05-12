@@ -189,7 +189,7 @@ function showHotel(hotel)
 { 
  
   $("#logo").html('<center><img src="'+hotel.logo+'" title="'+hotel.name+'" width="150px"></center>');
-                  $("#welcome").html("Enterprise Guest Engagement System - Customer Instance System"+'<br />'+"Administration Modulel-");
+                  $("#welcome").html("Enterprise Guest Engagement System - Customer Instance System"+'<br />'+"Administration Module-");
 		    $("#welcome").append(hotel.name);
 
                  console.log(hotel);

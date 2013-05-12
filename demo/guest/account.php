@@ -511,26 +511,39 @@ function timeCount(){
                                           $("#expireDate").datepicker({
 		                   prevText: ' ', 
                            nextText: ' ',						
-						   showButtonPanel:true,						 
-						   flat: true                         
+						   showButtonPanel:true,	
+						   changeMonth: true,
+                           changeYear: true,	
+	                       yearRange: "-100:+0",				 
+						   flat: true  
+						                          
     });
                                           $("#issueDate").datepicker({
 		                   prevText: ' ', 
                            nextText: ' ',						
-						   showButtonPanel:true,						 
-						   flat: true                         
+						   showButtonPanel:true,	
+						   changeMonth: true,
+                           changeYear: true,	
+	                       yearRange: "-100:+0",				 
+						   flat: true                     
     });
 										  $("#birth").datepicker({
 		                   prevText: ' ', 
                            nextText: ' ',						
-						   showButtonPanel:true,						 
-						   flat: true                         
+						   showButtonPanel:true,	
+						   changeMonth: true,
+                           changeYear: true,	
+	                       yearRange: "-100:+0",				 
+						   flat: true                  
     });
 										   $("#birth2").datepicker({
 		                   prevText: ' ', 
                            nextText: ' ',						
-						   showButtonPanel:true,						 
-						   flat: true                         
+						   showButtonPanel:true,	
+						   changeMonth: true,
+                           changeYear: true,	
+	                       yearRange: "-100:+0",				 
+						   flat: true           
     });
 										   getPreference();
 										  
@@ -558,8 +571,8 @@ if(checkCookie("uid")==0){
    <div><h3 id="userName2">My Account-User Profile for </h3></div>
 
   <div data-role="collapsible-set">
-    <div id="changeprofile" data-role="collapsible">
-    <h3><img src="css/images/login.png"/>Basic Information</h3>
+    <div id="changeprofile" data-role="collapsible" data-theme="a">
+    <h3 ><img src="css/images/login.png"/>Basic Information</h3>
     <p>     
           <label>First Name:</label><input type="text" id="fname" name="fname"/>
           <label>Last Name:</label><input type="text" id="lname" name="lname"/>
@@ -600,7 +613,7 @@ if(checkCookie("uid")==0){
                     </td>
                     <td>
                      Place of Birth:
-                     <input type="text" id="birthPlace" name="birthplace" palceholder="Place of Birth"/>
+                     <input type="text" id="birthPlace" name="birthplace" placeholder="Place of Birth"/>
                      </td>
                      <td>
                      Date of Birth:

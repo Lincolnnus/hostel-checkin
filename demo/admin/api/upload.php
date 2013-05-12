@@ -151,7 +151,7 @@ function checkRecord()
    	i++;
     } 
 	
-	showError("There are " +count+ " records have already been found in database(hilighted by red) and " +count2+ " new records can be saved into database(hilighted in red)");
+	showError('<P>'+"Number of available record (highlighted in green): "+count+'</p><P>'+"Number of saved record (highlighted in red): "+count2+'</p>');
 	$("#saveDB").show();
 	$("#checkRe").hide();
 }
@@ -189,7 +189,7 @@ function saveToDB()
         }
         i++;
     }
-	showError("There are " +count+ " records have already been saved in database(hilighted by yellow) and " +count2+ " records failed to be saved into database(hilighted in blue)");
+	showError('<P>'+"Number of saved record in database (highlighted in yellow): "+count+'<p/><P>'+"Number of saved record in database (highlighted in yellow): "+count2+'</p>');
 }
 </script>
 </head>

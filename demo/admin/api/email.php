@@ -19,6 +19,23 @@ function sendVerificationEmail($email,$hotelname,$hotelmanager,$hotelURL){
 	$from=HOTEL_NAME."<noreply@gmail.com>";
 	return sendEmail($from,$to,$subject,$message);
 }
+function sendFreshCustomer($email,$name,$password,$confirmation){
+$hname=HOTEL_NAME;
+$hURL=HOTEL_URL;
+	 $emails=getEmails();
+	 $from=$emails[3]["from"].'<norepy@asplan.com>';
+     $subject=$emails[3]["subject"];
+     $message=$emails[3]["message"];
+	 $html1=$message;
+	 $html1=str_ireplace("%%customername%%",$name,$html1);
+     $html1=str_ireplace("%%hname%%",$hname,$html1);
+	 $html1=str_ireplace("%%hURL%%",$hURL,$html1);
+	 $html1=str_ireplace("%%hemail%%",$email,$html1);
+	 $html1=str_ireplace("%%password%%",$password,$html1);
+	 $html1=str_ireplace("%%confirmation%%",$confirmation,$html1);
+	return sendHTMLEmail($from,$email,$subject,$html1);
+	
+}
 function sendConfirmation($email,$name,$confirmation){
 	$hURL=HOTEL_URL;
 	$hname=HOTEL_NAME;

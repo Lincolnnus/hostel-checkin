@@ -492,7 +492,7 @@ function getStuff()
                           for(var i=0;i<stuffs.length;i++)
                           {
 							  
-                            var newli=$('<option value='+stuffs[i].email+'>'+stuffs[i].email+'</option>').appendTo(stuffList);
+                            var newli=$('<option value='+stuffs[i].email+'>'+'Name:'+stuffs[i].fname+"&nbsp;"+stuffs[i].lname+"&nbsp;"+"&nbsp;"+'Email:'+stuffs[i].email+'</option>').appendTo(stuffList);
 							
                           }
                           stuffList.listview( "refresh" );
@@ -722,16 +722,14 @@ $(document).ready(function() {
 
     <div id="importPage" data-role="collapsible">
     <h3>Import Checkin Data</h3>
+   
     <p>
                   <iframe width="100%" height="50%" src="upload.php" seamless>
                     <p>Your browser does not support iframes.</p>
                    </iframe>  
-	 <p>
-            <ul id="checkdata" data-role="listview" data-filter="true" data-filter-placeholder="Search hotels..." data-filter-theme="d"data-theme="d" data-divider-theme="d">
-		      	</ul>
-            </p>
+	
 					
-				    <button data-theme="b" onClick=" getCheckData()">Get CheckData</button>
+				   
     </div>
 		<div id="adminPage" data-role="collapsible">
 		<h3>Enrol New User</h3>
@@ -770,6 +768,7 @@ $(document).ready(function() {
   </div>
     <div id="logoutPage" data-role="collapsible">
                  <h3>Log Out</h3>
+
                  <p>
                  <a id="logout" data-rel="dialog" data-theme="a" onClick="logout()" onKeyPress="logout()" data-role="button">
                  Confirm

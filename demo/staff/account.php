@@ -349,10 +349,43 @@ float:right;
                                                           }).fail(function(msg){alert("Unauthorized");//window.location="index.php";
                                                         });
                                         }$(document).ready(function() {
-                                          $("#expireDate").datepicker();
-                                          $("#issueDate").datepicker();
-										  $("#birth").datepicker();
-										   $("#birth2").datepicker();
+                                          $("#expireDate").datepicker({
+		                   prevText: ' ', 
+                           nextText: ' ',						
+						   showButtonPanel:true,	
+						   changeMonth: true,
+                           changeYear: true,	
+	                       yearRange: "-100:+0",				 
+						   flat: true  
+						                          
+    });
+                                            $("#issueDate").datepicker({
+		                   prevText: ' ', 
+                           nextText: ' ',						
+						   showButtonPanel:true,	
+						   changeMonth: true,
+                           changeYear: true,	
+	                       yearRange: "-100:+0",				 
+						   flat: true                     
+    });
+										  $("#birth").datepicker({
+		                   prevText: ' ', 
+                           nextText: ' ',						
+						   showButtonPanel:true,	
+						   changeMonth: true,
+                           changeYear: true,	
+	                       yearRange: "-100:+0",				 
+						   flat: true                  
+    });
+										    $("#birth2").datepicker({
+		                   prevText: ' ', 
+                           nextText: ' ',						
+						   showButtonPanel:true,	
+						   changeMonth: true,
+                           changeYear: true,	
+	                       yearRange: "-100:+0",				 
+						   flat: true           
+    });
 if(checkCookie("uid")==0){
     window.location="index.php";
 }else{
@@ -414,7 +447,7 @@ if(checkCookie("uid")==0){
                     </td>
                     <td>
                      Place of Birth:
-                     <input type="text" id="birthPlace" name="birthplace" palceholder="Place of Birth"/>
+                     <input type="text" id="birthPlace" name="birthplace" placeholder="Place of Birth"/>
                      </td>
                      <td>
                      Date of Birth:

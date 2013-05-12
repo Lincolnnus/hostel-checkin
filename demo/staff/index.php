@@ -95,7 +95,28 @@ function getBooking()
                           bookingList.listview( "refresh" );
     }).fail(function(msg){showError("Error Getting Stuffs");});
 }
- 
+ function getCheckout()
+{
+  var uid=getCookie('uid');
+  var token=getCookie('token');               
+  $.ajax({
+      type: "POST",
+      url: "api/getCheckout.php",
+      dataType: "json",
+      data: {uid:uid,token:token}
+    }).success(function( msg ) {
+//		alert(msg);
+       var booking=msg;
+                          var bookingList=$("#checkout");
+                          bookingList.html('');
+                          for(var i=0;i<booking.length;i++)
+                          {
+                            var newli=$('<li><a onclick="showBooking(\''+booking[i].confirmation+'\',\''+booking[i].email+'\')">'+"Check-in Date:"+booking[i].arrivalday1+'/'+booking[i].arrivalmonth1+'/'+booking[i].arrivalyear1+'&nbsp;'+'&nbsp;'+'&nbsp;'+"Confirmation Code:"+booking[i].confirmation+'</a></li>').appendTo(bookingList);
+                          }
+                          bookingList.listview( "refresh" );
+    }).fail(function(msg){showError("Error Getting Stuffs");});
+}
+
  function showBooking(msg1,msg2){
 	                                    var code=setCookie('confirmation',msg1,1);
                                         var email=setCookie('email',msg2,1);
@@ -241,6 +262,7 @@ function checkUser()
     $('#logoutPage').hide();
 	$('#getbooking').hide();
 	$('#confirmapage').hide();
+	$('#getcheckout').hide();
   }
 }
 $(document).ready(function() {
@@ -264,9 +286,16 @@ $(document).ready(function() {
 	</div>
 	<div data-role="collapsible-set">
 	<div id="getbooking" data-role="collapsible">
-            <h3 onClick="getBooking()"><img src="css/images/chekin.png"/>Get Booking Customer</h3>
+            <h3 onClick="getBooking()"><img src="css/images/chekin.png"/>Get Check-in Confirmation</h3>
             <p>
             <ul id="newBooking" data-role="listview" data-filter="true" data-filter-placeholder="Search Booking..." data-filter-theme="d"data-theme="d" data-divider-theme="d">
+            </ul>
+            </p>
+		</div>
+        <div id="getcheckout" data-role="collapsible">
+            <h3 onClick="getCheckout()"><img src="css/images/chekin.png"/>Get Pending Check-out Customer</h3>
+            <p>
+            <ul id="checkout" data-role="listview" data-filter="true" data-filter-placeholder="Search Booking..." data-filter-theme="d"data-theme="d" data-divider-theme="d">
             </ul>
             </p>
 		</div>
@@ -274,13 +303,13 @@ $(document).ready(function() {
 
 			
 	<div id="confirmapage" data-role="collapsible">
-            <h3><img src="css/images/chekin.png"/>Guest Confirmation</h3>
+            <h3><img src="css/images/chekin.png"/>Search Historical Information</h3>
             <p>
                 <label class="ui-hidden-accessible">Email:</label>
 			    <input type="text" id="checkinemail" name="checkinemail" placeholder="Email"/>
                 <label class="ui-hidden-accessible">Code:</label>
 			    <input type="text" id="checkincode" name="checkincode" placeholder="Confirmation Code"/>
-                 <button data-theme="b" onClick="checkin()" onKeyPress="checkin()">Checkin</button>
+                 <button data-theme="b" onClick="checkin()" onKeyPress="checkin()">Search</button>
             </p>
 		</div>
 		<div id="loginPage" data-role="collapsible">
