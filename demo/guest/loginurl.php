@@ -6,6 +6,7 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.mobile-1.1.1.js"></script>
 <script src="js/cookie.js"></script>
+<script src="js/jquery.blockUI.js"></script>
 
 <style>
 .ui-collapsible.ui-collapsible-collapsed .ui-collapsible-heading .ui-icon-plus,
@@ -160,7 +161,10 @@ function login()
 	var email=$("#loginemail").val();
 	var password=$("#loginpassword").val();
     var confirmation=$("#confirmation").val();
-	alert(confirmation);
+	setCookie('email',email,1);
+	setCookie('confirmation',confirmation,1);
+	setCookie('freshUser',"yes",1);
+	//alert(confirmation);
         if(validateEmail(email))
 	{
 		$.ajax({
@@ -171,7 +175,8 @@ function login()
 		}).success(function( msg ) {
 		 setCookie('uid',msg.uid,1);
 		 setCookie('token',msg.token,1);
-		 setCookie('confirmation',msg.token,1);
+		 
+		 
 		 $("#inputForm").show();
 		}).fail(function(msg){
                 showError("Invalid Access");
@@ -231,8 +236,18 @@ function login()
                                                dataType: "json",
                                                data: { uid: uid, token: token,oldpass:oldpass,password:password,confirmpass:confirmpass,task:'changePass'}
                                                }).success(function( msg ) {
+												   $.blockUI({ message: $('#question'), css: { width: '500px',border:"none" } }); 
+	   $('#yes').click(function() { 
+            // update the block message 
+            //$.blockUI({ message: "<h1>Remote call in progress...</h1>" }); 
+			 $.unblockUI(); 
+			 
+			   window.location="index.php";
+ 
+         
+        }); 
                                                          
-                                                           window.location="index.php";
+                                                         
                                                           }).fail(function(msg){alert("Fail To Update Password");//window.location="index.php";
                                                           });
                                         }else alert("Please Enter the password correctly");
@@ -391,7 +406,7 @@ function update_token($uid)
 	<div id="logo">
 	<br>
 	</div>
-     <div id="passPage" data-role="collapsible">
+     <div id="passPage" data-role="collapsible" data-collapsed="false" >
     <h3><img src="css/images/login.png"/>Change Password</h3>
    
    <div id="inputForm" hidden="true"> 
@@ -415,6 +430,12 @@ function update_token($uid)
 	</div><!-- /content -->
 	<div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
 Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div>
+<div id="question" style="display:none; cursor: default"> 
+        <h1>Set Password Successfully !</h1> 
+		<p><strong>Note:</strong><br/>You can use email and password to log in your account next time</p>
+        <input type="button" id="yes" value="Go To Check-in" /> 
+      
+</div> 
     <div id="errorWrapper" style="display:none;">
                   <center id="errorMsg"></center>
                   <img src="../css/images/close_icon.png" width="30px" title="close" onClick="hideError()" id="errorClose"/>

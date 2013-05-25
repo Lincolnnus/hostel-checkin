@@ -47,6 +47,7 @@ function getHotel()
                                  }).success(function( msg ) {
 			console.log(msg);						
                                             alert("successfully checkout");
+											setCookie('confirmation','','-1');
 											    window.location="index.php";
                                             }).fail(function(msg){alert("Invalid Checkin Email and Checkin Code");});
                           
@@ -80,10 +81,11 @@ function getcheckinfo()
                                  dataType: "json",
                                  data: {uid:uid, email: email, confirmation:confirmation,token:token }
                                  }).success(function( msg ) {
+									  
 									   $("#welcome").append(hotel.name);
 			console.log(msg);						
                                             if(msg.step=="0"){
-												
+											setCookie('confirmation','','-1');
                                             displayCanvas(hotel,msg.user,msg.booking);
 											
 											loadPassport();
@@ -99,11 +101,13 @@ function getcheckinfo()
 											 
 										
                                             }else if(msg.step == "3"){
+												setCookie('confirmation','','-1');
 										
-displayCanvasCheckOut(hotel,msg.user,msg.booking);
+                                                displayCanvasCheckOut(hotel,msg.user,msg.booking);
 
 }
                                             }).fail(function(msg){
+												setCookie('confirmation','','-1');
 												alert("Invalid Checkin Email and Checkin Code");
 												 	window.location="index.php";
 												
@@ -434,18 +438,19 @@ if(checkCookie("email")==0)
 
 	<div data-role="content">
 	<div data-role="collapsible-set">
-		<div data-role="collapsible" >
-		<h3><img src="css/images/login.png"/>Hotel Status Information</h3>
-	      
-        	<div data-role="collapsible" >	
-            <h3 onClick="loadPassport()" ><img src="css/images/login.png"/>Load Information</h3>
+		<!--<div data-role="collapsible" >-->
+		<!--<h3><img src="css/images/login.png"/>Hotel Status Information</h3>-->
+        	      
+        	<!--<div data-role="collapsible" >	-->
+            <h3 onClick="loadPassport()" ><img src="css/images/login.png"/>Hotel Status Information</h3>
             <div id="checkinfo"></div>   
             <div id="checkout" hidden="true" ><button onClick="checkOut()" data-theme="c" >Check Out</button>
             </div>     
            
      
-	</div>
-	</div>
+	<!--</div>-->
+	<!--</div>-->
+    </div>
     </div>
 	<div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
 Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div> 

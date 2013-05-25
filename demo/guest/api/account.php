@@ -39,6 +39,8 @@ switch ($_SERVER['REQUEST_METHOD'])
 					 $issueCity=$row["issueCity"];
 					  $phone=$row["phone"];
 					  $sex=$row["sex"];
+					  $email=$row["email"];
+					  
 					  
                  $user = array(
                                "uid" => $uid,
@@ -56,6 +58,7 @@ switch ($_SERVER['REQUEST_METHOD'])
 								  "issueCity"=>$issueCity,
 								     "birthPlace"=>$birthPlace,
 									 "phone"=>$phone,
+									 "email"=>$email,
 									 "sex"=>$sex
 									
 							  

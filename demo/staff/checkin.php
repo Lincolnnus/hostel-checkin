@@ -6,6 +6,7 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.mobile-1.1.1.js"></script>
 <script src="js/cookie.js"></script>
+<script src="js/jquery.blockUI.js"></script>
 <style>
 #errorWrapper{
   border: 1px solid  #456f9a /*{b-bar-border}*/;
@@ -108,7 +109,23 @@ function getcheckinfo()
 									  $("#welcome").html("Enterprise Guest Engagement System - Customer Instance System "+'<br />'+"Checkin Modulel-");
 		                              $("#welcome").append(hname);
                                             if(msg.step=="0"){
-                                            displayCanvas(hotel,msg.user,msg.booking);
+												
+												var pPhoto=msg.user.passportPhoto;
+												//$('#pass').html('<img src="' + tt + '" />');
+											
+                                            //displayCanvas(hotel,msg.user,msg.booking);
+											if(pPhoto=""){
+							$.blockUI({ message: $('#question1'), css: { width: '500px',border:"none" } }); 
+	                              $('#yes1').click(function() { 
+            // update the block message 
+            //$.blockUI({ message: "<h1>Remote call in progress...</h1>" }); 
+			                      $.unblockUI(); 
+			 
+			 
+ 
+           
+                                             }); 	
+											 }
 											fname=msg.user.fname;
 											lname=msg.user.lname;
 											
@@ -479,6 +496,8 @@ if(checkCookie("uid")==0)
 	<div data-role="collapsible-set">
 		<div data-role="collapsible" data-collapsed="false">
 		<h3><img src="css/images/login.png"/>Customer Hotel Status Information</h3>
+        
+        <p id="pass"></p>
 		<p>
                 <button onClick="loadPassport()" data-theme="b" >Load Information</button>
           
@@ -496,6 +515,11 @@ if(checkCookie("uid")==0)
 	</div>
 	<div data-role="footer" data-theme="b"><h4>Enterprise Guest Engagement System.
 Copyright &copy;2012-2013 Asplan Services Private Limited (19834692/W), Singapore. All Rights Reserved</h4></div> 
+ <div id="question1" style="display:none; cursor: default">
+    <h1>Please help Customer to take Passsport photo or ID photo</h1>	
+    <input type="button" id="yes1" value="OK" />
+    <input type="button" id="no1" value="No" />
+  </div>
      <div id="errorWrapper" style="display:none;">
                   <center id="errorMsg"></center>
                   <img src="css/images/close_icon.png" width="30px" title="close" onClick="hideError()" id="errorClose"/>

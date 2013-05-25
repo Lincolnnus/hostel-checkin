@@ -14,6 +14,9 @@ function getPreferences(){
 		define("GMAIL_PORT",$row["mailPort"]); 
 		define("HOTEL_NAME",$row["companyName"]);
 		define("HOTEL_URL","http://54.251.118.233/pl");
+		define("SMS_SID",$row["smsSID"]);
+		define("SMS_TOKEN",$row["smsToken"]);
+		define("SMS_NUMBER",$row["smsNumber"]);
 		return $row;
 	}
 }

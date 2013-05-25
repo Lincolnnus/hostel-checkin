@@ -1,6 +1,7 @@
 <?php
 include_once("../connection.php"); 
 require_once("../settings2.php");
+require_once("../sms/sendSMS.php");
 getPreferences();
 
 if(isset($_POST["uid"])&&isset($_POST["email"])){
@@ -56,13 +57,51 @@ if (!$result) {
 		    echo $message;
 		}else{
 			
+			
+			$phone=getPhoneNumber($to);
+			$Customer=$username;
+			$email2=$to;
+			
+		
+			
+		
 			echo json_encode(sendHTMLEmail($from,$to,$subject,$html1,$destFile));
+			sendCheckinSMS($phone,$Customer,$email2);
 			unlink ($destFile);
 			
 			
 		}
 	   		
 }
+
+function getPhoneNumber($email){
+	
+	
+	
+							 $query = sprintf("SELECT * FROM `user` WHERE email='%s'",mysql_real_escape_string($email));
+                    $result = mysql_query($query);
+							if (!$result) {
+	                             $message  = 'Invalid query: ' . mysql_error() . "\n";
+                    $message .= 'Whole query: ' . $query;
+                    die($message);
+	               }else if(mysql_num_rows($result)<=0){echo "No Such Hotel";}
+	else { 
+		            $row=mysql_fetch_array($result);
+                    $phone=$row["phone"];
+					return $phone;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	}
 
 function sendHTMLEmail($from,$to,$subject,$html1,$destFile){
 	ini_set('include_path', PEAR_PATH);
